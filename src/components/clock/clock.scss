@@ -1,0 +1,25 @@
+@import "@assets/css/globals";
+
+.clock {
+    position: relative;
+    font-family: "Digital";
+    font-size: 16rem;
+    margin-bottom: 20px;
+}
+
+.clock_fg {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+    color: red;
+    text-shadow: 0 0 20px rgba(230, 58, 82, 0.8);
+}
+
+.clock_bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    user-select: none;
+    color: $unlit-color;
+}
