@@ -32,7 +32,8 @@ export default function App() {
     });
 
     const handleStartButtonClick = () => {
-        if (isOn) {
+        let newIsOn = !isOn;
+        if (newIsOn) {
             let d = new Date();
             d.setHours(hours, minutes, 0, 0);
 
@@ -55,7 +56,7 @@ export default function App() {
             audio.current.currentTime = 0;
         }
 
-        setIsOn(!isOn);
+        setIsOn(newIsOn);
     }
 
     const handleChangeTimeButtonClick = (action: ActionType, unit: UnitType): void => {
