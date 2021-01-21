@@ -4,15 +4,18 @@
     "description": "",
     "main": "webpack.config.js",
     "scripts": {
-        "serve": "webpack serve",
-        "build": "webpack",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "serve": "webpack serve --config config/webpack.dev.js",
+        "build": "webpack --config config/webpack.dev.js",
+        "build:dev": "webpack --config config/webpack.dev.js",
+        "build:prod": "webpack --config config/webpack.prod.js",
+        "build:github": "webpack --config config/webpack.github.js"
     },
     "author": "",
     "license": "ISC",
     "devDependencies": {
         "@types/react": "^17.0.0",
         "@types/react-dom": "^17.0.0",
+        "clean-webpack-plugin": "^3.0.0",
         "css-loader": "^5.0.1",
         "node-sass": "^5.0.0",
         "sass-loader": "^10.1.1",

@@ -1,11 +1,13 @@
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require("path");
+
+const root = path.resolve(__dirname, "..");
 
 module.exports = {
     entry: "./src/index.tsx",
-    mode: "development",
     output: {
         filename: "bundle.js",
-        path: path.resolve(__dirname, "dist"),
+        path: path.resolve(root, "dist"),
         publicPath: "/"
     },
     module: {
@@ -28,18 +30,21 @@ module.exports = {
             }
         ]
     },
+    plugins: [
+        new CleanWebpackPlugin({
+            cleanOnceBeforeBuildPatterns: ["**/*", "!index.html"]
+        })
+    ],
     resolve: {
         alias: {
-            "@components": path.resolve(__dirname, "src/components"),
-            "@assets":     path.resolve(__dirname, "src/assets"),
-            "@hooks":      path.resolve(__dirname, "src/hooks")
+            "@components": path.resolve(root, "src/components"),
+            "@assets":     path.resolve(root, "src/assets"),
+            "@hooks":      path.resolve(root, "src/hooks")
         },
         extensions: [".js", ".jsx", ".json", ".ts", ".tsx"]
     },
     devServer: {
-        publicPath: "/",
-        contentBase: path.join(__dirname, "dist"),
+        contentBase: path.join(root, "dist"),
         hot: true
-    },
-    devtool: "eval-source-map"
-}
+    }
+};
