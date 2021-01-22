@@ -3,16 +3,20 @@
 .clock {
     position: relative;
     font-family: "Digital";
-    font-size: 16rem;
+    font-size: $min-clock-font-size;
     margin-bottom: 20px;
+
+    @media screen and (min-width: $extra-small) {
+        font-size: $min-clock-font-size * 1.14285;
+    }
 }
 
 .clock_fg {
     position: relative;
     display: inline-block;
     z-index: 1;
-    color: red;
-    text-shadow: 0 0 20px rgba(230, 58, 82, 0.8);
+    color: $red1;
+    text-shadow: 0 0 20px $red3;
 }
 
 .clock_bg {
@@ -21,5 +25,5 @@
     left: 0;
     z-index: 0;
     user-select: none;
-    color: $unlit-color;
+    color: $red2;
 }

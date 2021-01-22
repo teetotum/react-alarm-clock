@@ -1,37 +1,40 @@
 @import "@assets/css/globals";
 
+$min-controls-font-size: $min-clock-font-size * 0.3;
+
 .controls {
     display: flex;
     position: relative;
 }
 
 .controls .button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     flex-grow: 1;
     box-sizing: border-box;
     outline: 0;
-    padding: 0;
+    text-align: center;
     font-family: "Digital";
-    font-size: 4rem;
+    font-size: $min-controls-font-size;
     font-weight: 700;
     background: black;
-    color: red;
-    box-shadow: inset 0 0 8px rgba(230, 58, 82, 0.8), 0 0 8px rgba(230, 58, 82, 0.8);
+    color: $red1;
+    box-shadow: inset 0 0 8px $red3, 0 0 8px $red3;
     user-select: none;
+
+    @media screen and (min-width: $extra-small) {
+        font-size: $min-controls-font-size * 1.14285;
+    }
 }
 
 .controls .button:first-child {
-    border: 3px solid red;
+    border: 3px solid $red1;
 }
 
 .controls .button:not(:first-child) {
-    border: 3px solid red;
+    border: 3px solid $red1;
     border-left-width: 0;
 }
 
 #start-button.on {
-    background: red;
+    background: $red1;
     color: black;
 }

@@ -6,3 +6,8 @@ html, body {
 #root {
     height: 100%;
 }
+
+@font-face {
+    font-family: "Digital";
+    src: url("@assets/fonts/digital.ttf") format("truetype");
+}

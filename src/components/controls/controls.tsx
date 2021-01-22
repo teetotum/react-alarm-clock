@@ -24,12 +24,12 @@ export default function Controls(props: PropsType) {
         if (isOn) return [null, null];
         return [
             <>
-            <a className="button" type="button" onClick={_onChangeTimeButtonClick} data-action="increase" data-unit="hour">+</a>
-            <a className="button" type="button" onClick={_onChangeTimeButtonClick} data-action="decrease" data-unit="hour">-</a>
+            <a className="button" onClick={_onChangeTimeButtonClick} data-action="increase" data-unit="hour">+</a>
+            <a className="button" onClick={_onChangeTimeButtonClick} data-action="decrease" data-unit="hour">-</a>
             </>,
             <>
-            <a className="button" type="button" onClick={_onChangeTimeButtonClick} data-action="increase" data-unit="minute">+</a>
-            <a className="button" type="button" onClick={_onChangeTimeButtonClick} data-action="decrease" data-unit="minute">-</a>
+            <a className="button" onClick={_onChangeTimeButtonClick} data-action="increase" data-unit="minute">+</a>
+            <a className="button" onClick={_onChangeTimeButtonClick} data-action="decrease" data-unit="minute">-</a>
             </>
         ];
     })();

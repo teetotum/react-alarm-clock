@@ -1,6 +1,11 @@
-$unlit-color: #330000;
+$mobile:      320px;
+$extra-small: 480px;
+$small:       768px;
+$medium:      992px;
+$large:       1200px;
 
-@font-face {
-    font-family: "Digital";
-    src: url("@assets/fonts/digital.ttf") format("truetype");
-}
+$min-clock-font-size: 14rem;
+
+$red1: #ff0000;
+$red2: #330000;
+$red3: rgba(230, 58, 82, 0.8);
