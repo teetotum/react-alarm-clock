@@ -24,12 +24,12 @@ export default function Controls(props: PropsType) {
         if (isOn) return [null, null];
         return [
             <>
-            <button className="button" type="button" onClick={_onChangeTimeButtonClick} data-action="increase" data-unit="hour">+</button>
-            <button className="button" type="button" onClick={_onChangeTimeButtonClick} data-action="decrease" data-unit="hour">-</button>
+            <a className="button" type="button" onClick={_onChangeTimeButtonClick} data-action="increase" data-unit="hour">+</a>
+            <a className="button" type="button" onClick={_onChangeTimeButtonClick} data-action="decrease" data-unit="hour">-</a>
             </>,
             <>
-            <button className="button" type="button" onClick={_onChangeTimeButtonClick} data-action="increase" data-unit="minute">+</button>
-            <button className="button" type="button" onClick={_onChangeTimeButtonClick} data-action="decrease" data-unit="minute">-</button>
+            <a className="button" type="button" onClick={_onChangeTimeButtonClick} data-action="increase" data-unit="minute">+</a>
+            <a className="button" type="button" onClick={_onChangeTimeButtonClick} data-action="decrease" data-unit="minute">-</a>
             </>
         ];
     })();
@@ -37,7 +37,7 @@ export default function Controls(props: PropsType) {
     return (
         <div className="controls">
             {left}
-            <button id="start-button" className={`button ${isOn ? "on" : "off"}`} type="button" onClick={onStartButtonClick}>&gt;</button>
+            <a id="start-button" className={`button ${isOn ? "on" : "off"}`} type="button" onClick={onStartButtonClick}>&gt;</a>
             {right}
         </div>
     );

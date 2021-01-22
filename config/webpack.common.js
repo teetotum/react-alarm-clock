@@ -32,7 +32,11 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin({
-            cleanOnceBeforeBuildPatterns: ["**/*", "!index.html"]
+            cleanOnceBeforeBuildPatterns: [
+                "**/*",
+                "!index.html",
+                "!.git"
+            ]
         })
     ],
     resolve: {
