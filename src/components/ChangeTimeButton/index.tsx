@@ -1,1 +1,1 @@
-export { default, UnitType, ActionType } from "./ChangeTimeButton";
+export { default } from "./ChangeTimeButton";

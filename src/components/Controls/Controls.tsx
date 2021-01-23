@@ -1,37 +1,31 @@
-import React, { useState } from "react";
-import ChangeTimeButton, { UnitType, ActionType } from "@components/ChangeTimeButton";
+import React from "react";
+import ChangeTimeButton from "@components/ChangeTimeButton";
 import StartButton from "@components/StartButton";
+import { Action, Unit } from "@common/types";
 import "./Controls.scss";
 
 type PropsType = {
     isOn: boolean;
-    onStartButtonClick: () => void;
-    onChangeTimeButtonClick: (actionType: ActionType, unit: UnitType) => void;
+    start: () => void;
+    changeTime: (action: Action, unit: Unit) => void;
 };
 
 export default function Controls(props: PropsType) {
-    const {isOn, onStartButtonClick, onChangeTimeButtonClick} = props;
-
-    const _onChangeTimeButtonClick = (e: React.MouseEvent) => {
-        let anchor = e.currentTarget as HTMLAnchorElement;
-        let action = anchor.dataset.action as ActionType;
-        let unit   = anchor.dataset.unit   as UnitType;
-        onChangeTimeButtonClick(action, unit);
-    }
+    const {isOn, start, changeTime} = props;
 
     return (
         <div className="controls">
             {!isOn &&
             <>
-            <ChangeTimeButton unit="hour" action="increase" onClick={_onChangeTimeButtonClick} />
-            <ChangeTimeButton unit="hour" action="decrease" onClick={_onChangeTimeButtonClick} />
+            <ChangeTimeButton unit="hour" action="increase" changeTime={changeTime} />
+            <ChangeTimeButton unit="hour" action="decrease" changeTime={changeTime} />
             </>
             }
-            <StartButton isOn={isOn} onClick={onStartButtonClick} />
+            <StartButton isOn={isOn} onClick={start} />
             {!isOn &&
             <>
-            <ChangeTimeButton unit="minute" action="increase" onClick={_onChangeTimeButtonClick} />
-            <ChangeTimeButton unit="minute" action="decrease" onClick={_onChangeTimeButtonClick} />
+            <ChangeTimeButton unit="minute" action="increase" changeTime={changeTime} />
+            <ChangeTimeButton unit="minute" action="decrease" changeTime={changeTime} />
             </>
             }
         </div>

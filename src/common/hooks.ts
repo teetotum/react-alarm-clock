@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-const useConstructor = (callback: Function, args: any[] = []) => {
+export function useConstructor(callback: Function, args: any[] = []) {
     const hasBeenCalled = useRef(false);
     if (hasBeenCalled.current) {
         return;
@@ -9,5 +9,3 @@ const useConstructor = (callback: Function, args: any[] = []) => {
         hasBeenCalled.current = true;
     }
 }
-
-export default useConstructor;

@@ -14,6 +14,7 @@ $min-controls-button-size: $min-clock-font-size * 0.15;
     color: $red1;
     box-shadow: inset 0 0 10px $red3, 0 0 10px $red3;
     user-select: none;
+    touch-action: none;
 }
 
 .controls .button:first-child {

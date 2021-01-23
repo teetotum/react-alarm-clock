@@ -1,14 +1,12 @@
 import React, { useState, useRef } from "react";
 import Clock from "@components/Clock";
 import Controls from "@components/Controls";
-import { UnitType, ActionType } from "@components/ChangeTimeButton";
-import useConstructor from "@hooks/useConstructor.tsx";
+import { TimeoutId, Action, Unit } from "@common/types";
+import { useConstructor } from "@common/hooks";
 import audioSrc from "@assets/audio/alarm.mp3";
 import "./App.scss";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
-
-type TimeoutId = ReturnType<typeof setTimeout>;
 
 export default function App() {
     let [isOn, setIsOn]       = useState<boolean>(false);
@@ -32,7 +30,7 @@ export default function App() {
         audio.current.loop = true;
     });
 
-    const handleStartButtonClick = () => {
+    const start = () => {
         let newIsOn = !isOn;
         if (newIsOn) {
             let d = new Date();
@@ -60,7 +58,7 @@ export default function App() {
         setIsOn(newIsOn);
     }
 
-    const handleChangeTimeButtonClick = (action: ActionType, unit: UnitType): void => {
+    const changeTime = (action: Action, unit: Unit): void => {
         const increase = (x: number, max: number) => (x < max) ? x + 1 : 0;
         const decrease = (x: number, max: number) => (x > 0)   ? x - 1 : max;
         let mod = (action === "increase") ? increase : decrease;
@@ -76,8 +74,7 @@ export default function App() {
         <div className="outer-container">
             <div className="inner-container">
                 <Clock hours={hours} minutes={minutes} />
-                <Controls isOn={isOn} onStartButtonClick={handleStartButtonClick}
-                          onChangeTimeButtonClick={handleChangeTimeButtonClick} />
+                <Controls isOn={isOn} start={start} changeTime={changeTime} />
             </div>
         </div>
     );

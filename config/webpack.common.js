@@ -47,7 +47,7 @@ module.exports = {
         alias: {
             "@components": path.resolve(root, "src/components"),
             "@assets":     path.resolve(root, "src/assets"),
-            "@hooks":      path.resolve(root, "src/hooks")
+            "@common":     path.resolve(root, "src/common")
         },
         extensions: [".js", ".jsx", ".json", ".ts", ".tsx"]
     },
