@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./clock.scss";
+import "./Clock.scss";
 
 type PropsType = {
     hours: number;

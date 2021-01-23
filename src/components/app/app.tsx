@@ -1,9 +1,10 @@
 import React, { useState, useRef } from "react";
-import Clock from "@components/clock";
-import Controls, {ActionType, UnitType} from "@components/controls";
+import Clock from "@components/Clock";
+import Controls from "@components/Controls";
+import { UnitType, ActionType } from "@components/ChangeTimeButton";
 import useConstructor from "@hooks/useConstructor.tsx";
 import audioSrc from "@assets/audio/alarm.mp3";
-import "./app.scss";
+import "./App.scss";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 

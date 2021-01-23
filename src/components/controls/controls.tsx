@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import "./controls.scss";
-
-export type ActionType = "increase"|"decrease";
-export type UnitType   = "hour"|"minute";
+import ChangeTimeButton, { UnitType, ActionType } from "@components/ChangeTimeButton";
+import StartButton from "@components/StartButton";
+import "./Controls.scss";
 
 type PropsType = {
     isOn: boolean;
@@ -14,31 +13,27 @@ export default function Controls(props: PropsType) {
     const {isOn, onStartButtonClick, onChangeTimeButtonClick} = props;
 
     const _onChangeTimeButtonClick = (e: React.MouseEvent) => {
-        let button = e.target as HTMLButtonElement;
-        let action = button.dataset.action as ActionType;
-        let unit   = button.dataset.unit   as UnitType;
+        let anchor = e.currentTarget as HTMLAnchorElement;
+        let action = anchor.dataset.action as ActionType;
+        let unit   = anchor.dataset.unit   as UnitType;
         onChangeTimeButtonClick(action, unit);
     }
 
-    const [left, right] = (() => {
-        if (isOn) return [null, null];
-        return [
-            <>
-            <a className="button" onClick={_onChangeTimeButtonClick} data-action="increase" data-unit="hour">+</a>
-            <a className="button" onClick={_onChangeTimeButtonClick} data-action="decrease" data-unit="hour">-</a>
-            </>,
-            <>
-            <a className="button" onClick={_onChangeTimeButtonClick} data-action="increase" data-unit="minute">+</a>
-            <a className="button" onClick={_onChangeTimeButtonClick} data-action="decrease" data-unit="minute">-</a>
-            </>
-        ];
-    })();
-
     return (
         <div className="controls">
-            {left}
-            <a id="start-button" className={`button ${isOn ? "on" : "off"}`} type="button" onClick={onStartButtonClick}>&gt;</a>
-            {right}
+            {!isOn &&
+            <>
+            <ChangeTimeButton unit="hour" action="increase" onClick={_onChangeTimeButtonClick} />
+            <ChangeTimeButton unit="hour" action="decrease" onClick={_onChangeTimeButtonClick} />
+            </>
+            }
+            <StartButton isOn={isOn} onClick={onStartButtonClick} />
+            {!isOn &&
+            <>
+            <ChangeTimeButton unit="minute" action="increase" onClick={_onChangeTimeButtonClick} />
+            <ChangeTimeButton unit="minute" action="decrease" onClick={_onChangeTimeButtonClick} />
+            </>
+            }
         </div>
     );
 }
