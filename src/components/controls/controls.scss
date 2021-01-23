@@ -35,11 +35,3 @@ $min-controls-button-size: $min-clock-font-size * 0.15;
         font-size: $min-controls-button-size * 1.14285;
     }
 }
-
-#start-button.on {
-    background: $red1;
-}
-
-#start-button.on .icon {
-    fill: black;
-}
