@@ -31,24 +31,24 @@ export default function ChangeTimeButton(props: PropsType) {
         let action = anchor.dataset.action as ButtonAction;
         let unit   = anchor.dataset.unit   as TimeUnit;
 
+        classes.current = replace(classes.current, "fadeout", "fadein", true);
+
         changeTime(action, unit);
         timeoutId.current = setTimeout(() => {
             intervalId.current = setInterval(
                 () => changeTime(action, unit),
                 CHANGE_TIME_REPEAT_PERIOD);
         }, CHANGE_TIME_INITIAL_DELAY);
-
-        classes.current = replace(classes.current, "fadeout", "fadein", true);
     };
 
     const release = (e: any) => {
         e.preventDefault();
 
-        clearTimeout(timeoutId.current);
-        clearInterval(intervalId.current);
-
         classes.current = replace(classes.current, "fadein", "fadeout", false);
         forceUpdate();
+
+        clearTimeout(timeoutId.current);
+        clearInterval(intervalId.current);
     };
 
     useEffect(() => {
