@@ -11,7 +11,7 @@ $min-controls-button-size: $min-clock-font-size * 0.15;
     flex-grow: 1;
     text-align: center;
     background: black;
-    color: $red1;
+    fill: $red1;
     box-shadow: inset 0 0 10px $red3, 0 0 10px $red3;
     user-select: none;
     touch-action: none;
@@ -29,7 +29,6 @@ $min-controls-button-size: $min-clock-font-size * 0.15;
 .controls .icon {
     width: $min-controls-button-size;
     height: $min-controls-button-size;
-    fill: $red1;
     padding: 1rem 0;
 
     @media screen and (min-width: $extra-small) {
