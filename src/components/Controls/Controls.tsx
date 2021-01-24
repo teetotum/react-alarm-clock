@@ -1,28 +1,28 @@
 import React from "react";
 import ChangeTimeButton from "@components/ChangeTimeButton";
 import StartButton from "@components/StartButton";
-import { Action, Unit } from "@common/types";
+import { ButtonAction, TimeUnit } from "@common/types";
 import "./Controls.scss";
 
 type PropsType = {
-    isOn: boolean;
-    start: () => void;
-    changeTime: (action: Action, unit: Unit) => void;
+    running: boolean;
+    toggleRunning: () => void;
+    changeTime: (action: ButtonAction, unit: TimeUnit) => void;
 };
 
 export default function Controls(props: PropsType) {
-    const {isOn, start, changeTime} = props;
+    const {running, toggleRunning, changeTime} = props;
 
     return (
         <div className="controls">
-            {!isOn &&
+            {!running &&
             <>
             <ChangeTimeButton unit="hour" action="increase" changeTime={changeTime} />
             <ChangeTimeButton unit="hour" action="decrease" changeTime={changeTime} />
             </>
             }
-            <StartButton isOn={isOn} onClick={start} />
-            {!isOn &&
+            <StartButton running={running} toggleRunning={toggleRunning} />
+            {!running &&
             <>
             <ChangeTimeButton unit="minute" action="increase" changeTime={changeTime} />
             <ChangeTimeButton unit="minute" action="decrease" changeTime={changeTime} />

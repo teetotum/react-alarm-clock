@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Clock.scss";
 
 type PropsType = {
@@ -20,6 +20,5 @@ export default function Clock(props: PropsType) {
 const formatTime = (hours: number, minutes: number): string => {
     let hoursString = hours.toString().padStart(2, "0");
     let minutesString = minutes.toString().padStart(2, "0");
-
     return `${hoursString}:${minutesString}`;
 }

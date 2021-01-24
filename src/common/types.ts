@@ -1,5 +1,5 @@
 export type TimeoutId  = ReturnType<typeof setTimeout>;
 export type IntervalId = ReturnType<typeof setInterval>;
 
-export type Action = "increase"|"decrease";
-export type Unit   = "hour"|"minute";
+export type ButtonAction = "increase"|"decrease";
+export type TimeUnit = "hour"|"minute";

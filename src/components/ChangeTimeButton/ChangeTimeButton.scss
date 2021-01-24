@@ -1,40 +1,41 @@
 @import "@assets/css/globals";
 
-@mixin fade-animation() {
+@mixin fade-animation($name) {
+    animation-name: $name;
     animation-duration: 0.1s;
     animation-fill-mode: forwards;
 }
 
 .controls .button.fadein {
-    @include fade-animation();
-    animation-name: fadein;
-
+    @include fade-animation(fadein);
     @keyframes fadein {
         from {
             background: black;
             fill: $red1;
+            box-shadow: $shadow;
         }
 
         to {
             background: $red1;
             fill: black;
+            box-shadow: none;
         }
     }
 }
 
 .controls .button.fadeout {
-    @include fade-animation();
-    animation-name: fadeout;
-
+    @include fade-animation(fadeout);
     @keyframes fadeout {
         from {
             background: $red1;
             color: black;
+            box-shadow: none;
         }
 
         to {
             background: black;
             color: $red1;
+            box-shadow: $shadow;
         }
     }
 }
