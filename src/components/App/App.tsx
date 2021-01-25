@@ -3,7 +3,7 @@ import Clock from "@components/Clock";
 import Controls from "@components/Controls";
 import { TimeoutId, ButtonAction, TimeUnit } from "@common/types";
 import { useConstructor } from "@common/hooks";
-import audioSrc from "@assets/audio/alarm.mp3";
+import alarmSound from "@assets/audio/alarm.mp3";
 import "./App.scss";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
@@ -22,7 +22,7 @@ export default function App() {
         setHours(defaultHours);
         setMinutes(defaultMinutes);
 
-        audio.current = new Audio(audioSrc);
+        audio.current = new Audio(alarmSound);
         audio.current.loop = true;
     });
 
