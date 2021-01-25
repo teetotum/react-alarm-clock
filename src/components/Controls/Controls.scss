@@ -5,6 +5,7 @@ $min-controls-button-size: $min-clock-font-size * 0.15;
 .controls {
     display: flex;
     user-select: none;
+    box-shadow: shadow-values();
 }
 
 .controls .button {
@@ -12,7 +13,7 @@ $min-controls-button-size: $min-clock-font-size * 0.15;
     text-align: center;
     background: black;
     fill: $red1;
-    box-shadow: inset $shadow, $shadow;
+    box-shadow: shadow-values(inset);
     user-select: none;
     touch-action: none;
 }

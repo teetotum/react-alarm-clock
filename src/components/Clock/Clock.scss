@@ -16,7 +16,7 @@
     display: inline-block;
     z-index: 1;
     color: $red1;
-    text-shadow: $shadow;
+    text-shadow: shadow-values();
 }
 
 .clock_bg {
