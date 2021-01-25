@@ -32,7 +32,7 @@ export default function Controls(props: PropsType) {
     })();
 
     return (
-        <div className="controls">
+        <div id="controls">
             {left}
             <StartButton running={running} toggleRunning={toggleRunning} />
             {right}

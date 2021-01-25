@@ -15,3 +15,7 @@ export function useForceUpdate() {
     const increment = () => setCount(prevCount => prevCount + 1);
     return increment;
 }
+
+export function useClasses(...classes: string[]) {
+    return useRef<string[]>(classes);
+}

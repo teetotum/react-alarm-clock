@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import PlusIcon from "./plus.svg";
 import MinusIcon from "./minus.svg";
-import { useForceUpdate } from "@common/hooks";
+import { useForceUpdate, useClasses } from "@common/hooks";
 import { TimeoutId, IntervalId, ButtonAction, TimeUnit } from "@common/types";
+import { replace } from "@common/utils";
 import "./ChangeTimeButton.scss";
 
 const CHANGE_TIME_REPEAT_PERIOD = 100;
@@ -18,7 +19,7 @@ export default function ChangeTimeButton(props: PropsType) {
     let anchorRef  = useRef<HTMLAnchorElement>();
     let timeoutId  = useRef<TimeoutId>();
     let intervalId = useRef<IntervalId>();
-    let classes    = useRef<string[]>(["button"]);
+    let classes    = useClasses("change-time-button", "button");
     const forceUpdate = useForceUpdate();
 
     const {unit, action, changeTime} = props;
@@ -31,7 +32,7 @@ export default function ChangeTimeButton(props: PropsType) {
         let action = anchor.dataset.action as ButtonAction;
         let unit   = anchor.dataset.unit   as TimeUnit;
 
-        classes.current = replace(classes.current, "fadeout", "fadein", true);
+        classes.current = replace(classes.current, "off", "on", true);
 
         changeTime(action, unit);
         timeoutId.current = setTimeout(() => {
@@ -44,7 +45,7 @@ export default function ChangeTimeButton(props: PropsType) {
     const release = (e: any) => {
         e.preventDefault();
 
-        classes.current = replace(classes.current, "fadein", "fadeout", false);
+        classes.current = replace(classes.current, "on", "off", false);
         forceUpdate();
 
         clearTimeout(timeoutId.current);
@@ -66,15 +67,4 @@ export default function ChangeTimeButton(props: PropsType) {
             {icon}
         </a>
     );
-}
-
-const replace = (arr: string[], x: string, y: string, insert: boolean) => {
-    let result = arr.slice();
-    let index = result.indexOf(x);
-    if (index > -1) {
-        result.splice(index, 1, y);
-    } else if (insert) {
-        result.push(y);
-    }
-    return result;
 }

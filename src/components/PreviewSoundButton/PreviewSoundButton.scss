@@ -1,9 +1,9 @@
 @import "@assets/css/globals";
 
-.change-time-button.on {
+#preview-sound-button.on {
     @include fadein-animation();
 }
 
-.change-time-button.off {
+#preview-sound-button.off {
     @include fadeout-animation();
 }

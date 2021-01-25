@@ -10,9 +10,9 @@ export default function Clock(props: PropsType) {
     let {hours, minutes} = props;
 
     return (
-        <div className="clock">
-            <span className="clock_fg">{formatTime(hours, minutes)}</span>
-            <span className="clock_bg">88:88</span>
+        <div id="clock">
+            <span id="clock_fg">{formatTime(hours, minutes)}</span>
+            <span id="clock_bg">88:88</span>
         </div>
     );
 };

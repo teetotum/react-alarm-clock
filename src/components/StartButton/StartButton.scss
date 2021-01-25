@@ -1,9 +1,9 @@
 @import "@assets/css/globals";
 
-#start-button.on {
+#controls #start-button.on {
     background: $red1;
-}
 
-#start-button.on .icon {
-    fill: black;
+    .icon {
+        fill: black;
+    }
 }

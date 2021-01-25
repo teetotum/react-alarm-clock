@@ -2,32 +2,28 @@
 
 $min-controls-button-size: $min-clock-font-size * 0.15;
 
-.controls {
+#controls {
     display: flex;
     user-select: none;
     box-shadow: shadow-values();
 }
 
-.controls .button {
+#controls .button {
     flex-grow: 1;
     text-align: center;
     background: black;
-    fill: $red1;
+    border: 3px solid $red1;
     box-shadow: shadow-values(inset);
+    fill: $red1;
     user-select: none;
     touch-action: none;
 }
 
-.controls .button:first-child {
-    border: 3px solid $red1;
-}
-
-.controls .button:not(:first-child) {
-    border: 3px solid $red1;
+#controls .button:not(:first-child) {
     border-left-width: 0;
 }
 
-.controls .icon {
+#controls .icon {
     width: $min-controls-button-size;
     height: $min-controls-button-size;
     padding: 1rem 0;
