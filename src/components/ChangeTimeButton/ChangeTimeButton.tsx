@@ -1,8 +1,6 @@
-import React, { useEffect, useRef } from "react";
-import PlusIcon from "./plus.svg";
-import MinusIcon from "./minus.svg";
+import React, { useEffect, useRef, FunctionComponent } from "react";
 import { useForceUpdate, useClasses } from "@common/hooks";
-import { TimeoutId, IntervalId, ButtonAction, TimeUnit } from "@common/types";
+import { TimeoutId, IntervalId, ButtonAction, TimeUnit, ChangeTimeFunction } from "@common/types";
 import { replace } from "@common/utils";
 import "./ChangeTimeButton.scss";
 
@@ -12,10 +10,10 @@ const CHANGE_TIME_INITIAL_DELAY = 400;
 type PropsType = {
     action: ButtonAction,
     unit: TimeUnit,
-    changeTime: (action: ButtonAction, unit: TimeUnit) => void;
+    changeTime: ChangeTimeFunction;
 };
 
-export default function ChangeTimeButton(props: PropsType) {
+const ChangeTimeButton: FunctionComponent<PropsType> = (props) => {
     let anchorRef  = useRef<HTMLAnchorElement>();
     let timeoutId  = useRef<TimeoutId>();
     let intervalId = useRef<IntervalId>();
@@ -57,14 +55,15 @@ export default function ChangeTimeButton(props: PropsType) {
         anchorRef.current.addEventListener("touchend",   release);
     }, []);
 
-    let icon = (action === "increase") ?  <PlusIcon  className="icon"/> : <MinusIcon className="icon"/>
     let className = classes.current.join(" ");
 
     return (
         <a className={className} data-action={action} data-unit={unit}
             onMouseDown={press} onMouseUp={release} onMouseLeave={release}
             ref={anchorRef}>
-            {icon}
+            {props.children}
         </a>
     );
 }
+
+export default ChangeTimeButton;

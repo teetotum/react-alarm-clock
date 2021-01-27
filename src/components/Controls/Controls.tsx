@@ -1,14 +1,14 @@
 import React from "react";
-import ChangeTimeButton from "@components/ChangeTimeButton";
 import StartButton from "@components/StartButton";
-import PreviewSoundButton from "@components/PreviewSoundButton";
-import { ButtonAction, TimeUnit } from "@common/types";
+import IncreaseButton from "@components/IncreaseButton";
+import DecreaseButton from "@components/DecreaseButton";
+import { TimeUnit, ChangeTimeFunction } from "@common/types";
 import "./Controls.scss";
 
 type PropsType = {
     running: boolean;
     toggleRunning: () => void;
-    changeTime: (action: ButtonAction, unit: TimeUnit) => void;
+    changeTime: ChangeTimeFunction;
 };
 
 export default function Controls(props: PropsType) {
@@ -20,12 +20,12 @@ export default function Controls(props: PropsType) {
         } else {
             return [
                 <>
-                <ChangeTimeButton unit="hour" action="increase" changeTime={changeTime} />
-                <ChangeTimeButton unit="hour" action="decrease" changeTime={changeTime} />
+                <IncreaseButton changeTime={changeTime} unit="hour"/>
+                <DecreaseButton changeTime={changeTime} unit="hour"/>
                 </>,
                 <>
-                <ChangeTimeButton unit="minute" action="increase" changeTime={changeTime} />
-                <ChangeTimeButton unit="minute" action="decrease" changeTime={changeTime} />
+                <IncreaseButton changeTime={changeTime} unit="minute"/>
+                <DecreaseButton changeTime={changeTime} unit="minute"/>
                 </>
             ];
         }
