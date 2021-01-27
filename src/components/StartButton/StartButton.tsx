@@ -10,7 +10,7 @@ type PropsType = {
 
 export default function StartButton(props: PropsType) {
     const {running, toggleRunning} = props;
-    const className = `button ${running ? "on" : "off"}`;
+    const className = `button ${running ? "pressed" : "unpressed"}`;
     const icon = (running) ?
         <PauseIcon className="icon" /> :
         <PlayIcon  className="icon" />

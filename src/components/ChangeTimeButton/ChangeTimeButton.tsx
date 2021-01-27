@@ -32,7 +32,7 @@ export default function ChangeTimeButton(props: PropsType) {
         let action = anchor.dataset.action as ButtonAction;
         let unit   = anchor.dataset.unit   as TimeUnit;
 
-        classes.current = replace(classes.current, "off", "on", true);
+        classes.current = replace(classes.current, "unpressed", "pressed", true);
 
         changeTime(action, unit);
         timeoutId.current = setTimeout(() => {
@@ -45,7 +45,7 @@ export default function ChangeTimeButton(props: PropsType) {
     const release = (e: any) => {
         e.preventDefault();
 
-        classes.current = replace(classes.current, "on", "off", false);
+        classes.current = replace(classes.current, "pressed", "unpressed", false);
         forceUpdate();
 
         clearTimeout(timeoutId.current);
