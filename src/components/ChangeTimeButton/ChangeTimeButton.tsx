@@ -1,16 +1,18 @@
 import React, { useEffect, useRef, FunctionComponent } from "react";
 import { useClassName } from "@common/hooks";
-import { TimeoutId, IntervalId, ButtonAction, TimeUnit, ChangeTimeFunction } from "@common/types";
-import { replace } from "@common/utils";
+import {
+    BoolMap,
+    TimeoutId,
+    IntervalId,
+    ButtonAction,
+    TimeUnit,
+    ChangeTimeFunction
+} from "@common/types";
 import "./ChangeTimeButton.scss";
 
+const BASE_CLASSES = {"change-time-button": true, "button": true};
 const CHANGE_TIME_REPEAT_PERIOD = 100;
 const CHANGE_TIME_INITIAL_DELAY = 400;
-
-const BASE_CLASSES = {
-    "change-time-button": true,
-    "button": true
-};
 
 type PropsType = {
     action: ButtonAction,
@@ -34,7 +36,7 @@ const ChangeTimeButton: FunctionComponent<PropsType> = (props) => {
         let action = anchor.dataset.action as ButtonAction;
         let unit   = anchor.dataset.unit   as TimeUnit;
 
-        setClassName((classes: Object) => {
+        setClassName((classes: BoolMap) => {
             return Object.assign({}, BASE_CLASSES, {pressed: true});
         });
 
@@ -50,9 +52,8 @@ const ChangeTimeButton: FunctionComponent<PropsType> = (props) => {
     const release = (e: any) => {
         e.preventDefault();
 
-        // @Typescript: Type classes appropriately.
-        setClassName((classes: any) => {
-            return Object.assign({}, BASE_CLASSES, {unpressed: classes["pressed"]});
+        setClassName((classes: BoolMap) => {
+            return Object.assign({}, BASE_CLASSES, {unpressed: classes.pressed});
         });
 
         clearTimeout(timeoutId.current);

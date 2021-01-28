@@ -1,3 +1,5 @@
+export type BoolMap = {[key: string]: boolean};
+
 export type TimeoutId  = ReturnType<typeof setTimeout>;
 export type IntervalId = ReturnType<typeof setInterval>;
 

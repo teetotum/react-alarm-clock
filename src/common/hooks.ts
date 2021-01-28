@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { isFunction } from "@common/utils";
+import { BoolMap } from "@common/types";
 
 export function useConstructor(callback: Function, args: any[] = []) {
     const hasBeenCalled = useRef(false);
@@ -11,11 +12,10 @@ export function useConstructor(callback: Function, args: any[] = []) {
     }
 }
 
-// @nocommit: Think about the types more throughly.
-export function useClassName(initial: Object): [string, Function] {
-    const [classes, setClasses] = useState<Object>(initial);
+export function useClassName(initial: BoolMap): [string, Function] {
+    const [classes, setClasses] = useState<BoolMap>(initial);
 
-    const serialize = (classes: Object): string => {
+    const serialize = (classes: BoolMap): string => {
         type KeyType = keyof typeof classes;
         let fn = (key: KeyType) => classes[key];
 
@@ -25,12 +25,12 @@ export function useClassName(initial: Object): [string, Function] {
         return result;
     }
 
-    type ArgumentType = Object|((obj: Object) => Object);
+    type ArgumentType = BoolMap|((obj: BoolMap) => BoolMap);
     const setter = (arg: ArgumentType) => {
         if (isFunction(arg)) {
             setClasses((arg as Function)(classes));
         } else {
-            setClasses(arg as Object);
+            setClasses(arg as BoolMap);
         }
     }
 
