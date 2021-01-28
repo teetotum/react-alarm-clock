@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import Clock from "@components/Clock";
 import Controls from "@components/Controls";
 import { useConstructor } from "@common/hooks";
-import { TimeoutId, Time, ChangeTimeFunction } from "@common/types";
+import { Time, ChangeTimeFunction } from "@common/types";
 import alarmSound from "@assets/audio/alarm.mp3";
 import "./App.scss";
 
@@ -13,7 +13,7 @@ const MAX_MINUTE = 59;
 export default function App() {
     const [running, setRunning] = useState<boolean>(false);
     const [time, setTime]       = useState<Time>();
-    let timeoutId               = useRef<TimeoutId>();
+    let timeoutId               = useRef<number>();
     let audio                   = useRef<HTMLAudioElement>();
 
     useConstructor(() => {
@@ -26,7 +26,7 @@ export default function App() {
     const toggleRunning = () => {
         if (!running) {
             let delta = calcTimeUntilAlert(time);
-            timeoutId.current = setTimeout(() => audio.current.play(), delta);
+            timeoutId.current = window.setTimeout(() => audio.current.play(), delta);
 
             setDefaultTime(time);
         } else {
@@ -38,9 +38,9 @@ export default function App() {
         setRunning(!running);
     }
 
-    const applyChangeTime = (changeTime: ChangeTimeFunction) => {
+    const applyChangeTime = useCallback((changeTime: ChangeTimeFunction) => {
         setTime((prevTime: Time) => changeTime(prevTime));
-    };
+    }, []);
 
     return (
         <div className="outer-container">

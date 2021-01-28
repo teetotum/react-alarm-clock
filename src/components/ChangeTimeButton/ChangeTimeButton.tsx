@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, FunctionComponent } from "react";
+import React, { useEffect, useRef, memo, FunctionComponent} from "react";
 import { useClassName } from "@common/hooks";
-import { BoolMap, TimeoutId, IntervalId } from "@common/types";
+import { BoolMap } from "@common/types";
 import "./ChangeTimeButton.scss";
 
 const BASE_CLASSES = {"change-time-button": true, "button": true};
@@ -9,13 +9,13 @@ const CHANGE_TIME_INITIAL_DELAY = 400;
 
 type PropsType = { callback: Function; };
 
-const ChangeTimeButton: FunctionComponent<PropsType> = (props) => {
+const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
     const {callback} = props;
 
     const [className, setClassName] = useClassName(BASE_CLASSES);
     let anchorRef  = useRef<HTMLAnchorElement>();
-    let timeoutId  = useRef<TimeoutId>();
-    let intervalId = useRef<IntervalId>();
+    let timeoutId  = useRef<number>();
+    let intervalId = useRef<number>();
 
     const press = (e: any) => {
         e.preventDefault();
@@ -25,10 +25,8 @@ const ChangeTimeButton: FunctionComponent<PropsType> = (props) => {
         });
 
         callback();
-        timeoutId.current = setTimeout(() => {
-            const id = setInterval(callback, CHANGE_TIME_REPEAT_PERIOD);
-            // @Note: Why do we have to do this?
-            intervalId.current = (id as unknown) as TimeoutId;
+        timeoutId.current = window.setTimeout(() => {
+            intervalId.current = window.setInterval(callback, CHANGE_TIME_REPEAT_PERIOD);
         }, CHANGE_TIME_INITIAL_DELAY);
     };
 
@@ -54,6 +52,6 @@ const ChangeTimeButton: FunctionComponent<PropsType> = (props) => {
             {props.children}
         </a>
     );
-}
+});
 
 export default ChangeTimeButton;
