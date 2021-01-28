@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { isFunction } from "@common/utils";
 
 export function useConstructor(callback: Function, args: any[] = []) {
     const hasBeenCalled = useRef(false);
@@ -10,12 +11,28 @@ export function useConstructor(callback: Function, args: any[] = []) {
     }
 }
 
-export function useForceUpdate() {
-    const [count, setCount] = useState<number>(0);
-    const increment = () => setCount(prevCount => prevCount + 1);
-    return increment;
-}
+// @nocommit: Think about the types more throughly.
+export function useClassName(initial: Object): [string, Function] {
+    const [classes, setClasses] = useState<Object>(initial);
 
-export function useClasses(...classes: string[]) {
-    return useRef<string[]>(classes);
+    const serialize = (classes: Object): string => {
+        type KeyType = keyof typeof classes;
+        let fn = (key: KeyType) => classes[key];
+
+        const keys = Object.keys(classes);
+        const classArray = keys.filter(fn);
+        const result = classArray.join(" ");
+        return result;
+    }
+
+    type ArgumentType = Object|((obj: Object) => Object);
+    const setter = (arg: ArgumentType) => {
+        if (isFunction(arg)) {
+            setClasses((arg as Function)(classes));
+        } else {
+            setClasses(arg as Object);
+        }
+    }
+
+    return [serialize(classes), setter];
 }

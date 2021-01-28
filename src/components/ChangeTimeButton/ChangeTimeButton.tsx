@@ -1,11 +1,16 @@
 import React, { useEffect, useRef, FunctionComponent } from "react";
-import { useForceUpdate, useClasses } from "@common/hooks";
+import { useClassName } from "@common/hooks";
 import { TimeoutId, IntervalId, ButtonAction, TimeUnit, ChangeTimeFunction } from "@common/types";
 import { replace } from "@common/utils";
 import "./ChangeTimeButton.scss";
 
 const CHANGE_TIME_REPEAT_PERIOD = 100;
 const CHANGE_TIME_INITIAL_DELAY = 400;
+
+const BASE_CLASSES = {
+    "change-time-button": true,
+    "button": true
+};
 
 type PropsType = {
     action: ButtonAction,
@@ -14,13 +19,12 @@ type PropsType = {
 };
 
 const ChangeTimeButton: FunctionComponent<PropsType> = (props) => {
+    const {unit, action, changeTime} = props;
+
+    const [className, setClassName] = useClassName(BASE_CLASSES);
     let anchorRef  = useRef<HTMLAnchorElement>();
     let timeoutId  = useRef<TimeoutId>();
     let intervalId = useRef<IntervalId>();
-    let classes    = useClasses("change-time-button", "button");
-    const forceUpdate = useForceUpdate();
-
-    const {unit, action, changeTime} = props;
 
     const press = (e: any) => {
         e.preventDefault();
@@ -30,9 +34,12 @@ const ChangeTimeButton: FunctionComponent<PropsType> = (props) => {
         let action = anchor.dataset.action as ButtonAction;
         let unit   = anchor.dataset.unit   as TimeUnit;
 
-        classes.current = replace(classes.current, "unpressed", "pressed", true);
+        setClassName((classes: Object) => {
+            return Object.assign({}, BASE_CLASSES, {pressed: true});
+        });
 
         changeTime(action, unit);
+
         timeoutId.current = setTimeout(() => {
             intervalId.current = setInterval(
                 () => changeTime(action, unit),
@@ -43,8 +50,10 @@ const ChangeTimeButton: FunctionComponent<PropsType> = (props) => {
     const release = (e: any) => {
         e.preventDefault();
 
-        classes.current = replace(classes.current, "pressed", "unpressed", false);
-        forceUpdate();
+        // @Typescript: Type classes appropriately.
+        setClassName((classes: any) => {
+            return Object.assign({}, BASE_CLASSES, {unpressed: classes["pressed"]});
+        });
 
         clearTimeout(timeoutId.current);
         clearInterval(intervalId.current);
@@ -54,8 +63,6 @@ const ChangeTimeButton: FunctionComponent<PropsType> = (props) => {
         anchorRef.current.addEventListener("touchstart", press);
         anchorRef.current.addEventListener("touchend",   release);
     }, []);
-
-    let className = classes.current.join(" ");
 
     return (
         <a className={className} data-action={action} data-unit={unit}

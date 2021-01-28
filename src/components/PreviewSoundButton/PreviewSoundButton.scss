@@ -1,9 +1,0 @@
-@import "@assets/css/globals";
-
-#preview-sound-button.pressed {
-    @include fadein-animation();
-}
-
-#preview-sound-button.unpressed {
-    @include fadeout-animation();
-}
