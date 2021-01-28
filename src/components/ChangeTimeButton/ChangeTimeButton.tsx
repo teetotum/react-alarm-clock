@@ -1,27 +1,16 @@
 import React, { useEffect, useRef, FunctionComponent } from "react";
 import { useClassName } from "@common/hooks";
-import {
-    BoolMap,
-    TimeoutId,
-    IntervalId,
-    ButtonAction,
-    TimeUnit,
-    ChangeTimeFunction
-} from "@common/types";
+import { BoolMap, TimeoutId, IntervalId } from "@common/types";
 import "./ChangeTimeButton.scss";
 
 const BASE_CLASSES = {"change-time-button": true, "button": true};
 const CHANGE_TIME_REPEAT_PERIOD = 100;
 const CHANGE_TIME_INITIAL_DELAY = 400;
 
-type PropsType = {
-    action: ButtonAction,
-    unit: TimeUnit,
-    changeTime: ChangeTimeFunction;
-};
+type PropsType = { callback: Function; };
 
 const ChangeTimeButton: FunctionComponent<PropsType> = (props) => {
-    const {unit, action, changeTime} = props;
+    const {callback} = props;
 
     const [className, setClassName] = useClassName(BASE_CLASSES);
     let anchorRef  = useRef<HTMLAnchorElement>();
@@ -31,21 +20,15 @@ const ChangeTimeButton: FunctionComponent<PropsType> = (props) => {
     const press = (e: any) => {
         e.preventDefault();
 
-        let currentTarget = e.currentTarget;
-        let anchor = currentTarget as HTMLAnchorElement;
-        let action = anchor.dataset.action as ButtonAction;
-        let unit   = anchor.dataset.unit   as TimeUnit;
-
         setClassName((classes: BoolMap) => {
             return Object.assign({}, BASE_CLASSES, {pressed: true});
         });
 
-        changeTime(action, unit);
-
+        callback();
         timeoutId.current = setTimeout(() => {
-            intervalId.current = setInterval(
-                () => changeTime(action, unit),
-                CHANGE_TIME_REPEAT_PERIOD);
+            const id = setInterval(callback, CHANGE_TIME_REPEAT_PERIOD);
+            // @Note: Why do we have to do this?
+            intervalId.current = (id as unknown) as TimeoutId;
         }, CHANGE_TIME_INITIAL_DELAY);
     };
 
@@ -66,9 +49,8 @@ const ChangeTimeButton: FunctionComponent<PropsType> = (props) => {
     }, []);
 
     return (
-        <a className={className} data-action={action} data-unit={unit}
-            onMouseDown={press} onMouseUp={release} onMouseLeave={release}
-            ref={anchorRef}>
+        <a className={className} onMouseDown={press} onMouseUp={release}
+         onMouseLeave={release} ref={anchorRef}>
             {props.children}
         </a>
     );

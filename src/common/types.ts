@@ -1,9 +1,8 @@
-export type BoolMap = {[key: string]: boolean};
-
 export type TimeoutId  = ReturnType<typeof setTimeout>;
 export type IntervalId = ReturnType<typeof setInterval>;
 
-export type ButtonAction = "increase"|"decrease";
-export type TimeUnit = "hour"|"minute";
+export type BoolMap = {[key: string]: boolean};
 
-export type ChangeTimeFunction = (action: ButtonAction, unit: TimeUnit) => void;
+export type Time = {hours: number; minutes: number};
+export type ChangeTimeFunction = (time: Time) => Time;
+export type ApplyChangeTimeFunction = (changeTime: ChangeTimeFunction) => void;

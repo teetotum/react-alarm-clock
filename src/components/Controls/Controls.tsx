@@ -1,18 +1,20 @@
 import React from "react";
 import StartButton from "@components/StartButton";
-import IncreaseButton from "@components/IncreaseButton";
-import DecreaseButton from "@components/DecreaseButton";
-import { TimeUnit, ChangeTimeFunction } from "@common/types";
+import IncreaseHourButton from "@components/IncreaseHourButton";
+import DecreaseHourButton from "@components/DecreaseHourButton";
+import IncreaseMinuteButton from "@components/IncreaseMinuteButton";
+import DecreaseMinuteButton from "@components/DecreaseMinuteButton";
+import { ApplyChangeTimeFunction } from "@common/types";
 import "./Controls.scss";
 
 type PropsType = {
     running: boolean;
     toggleRunning: () => void;
-    changeTime: ChangeTimeFunction;
+    applyChangeTime: ApplyChangeTimeFunction;
 };
 
 export default function Controls(props: PropsType) {
-    const {running, toggleRunning, changeTime} = props;
+    const {running, toggleRunning, applyChangeTime} = props;
 
     let [left, right] = (() => {
         if (running) {
@@ -20,12 +22,12 @@ export default function Controls(props: PropsType) {
         } else {
             return [
                 <>
-                <IncreaseButton changeTime={changeTime} unit="hour"/>
-                <DecreaseButton changeTime={changeTime} unit="hour"/>
+                <IncreaseHourButton applyChangeTime={applyChangeTime}/>
+                <DecreaseHourButton applyChangeTime={applyChangeTime}/>
                 </>,
                 <>
-                <IncreaseButton changeTime={changeTime} unit="minute"/>
-                <DecreaseButton changeTime={changeTime} unit="minute"/>
+                <IncreaseMinuteButton applyChangeTime={applyChangeTime}/>
+                <DecreaseMinuteButton applyChangeTime={applyChangeTime}/>
                 </>
             ];
         }
