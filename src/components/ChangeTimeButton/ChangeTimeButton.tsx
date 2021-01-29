@@ -1,4 +1,9 @@
-import React, { useEffect, useRef, memo, FunctionComponent} from "react";
+import React, {
+    memo,
+    useEffect,
+    useRef,
+    FunctionComponent
+} from "react";
 import { useClassName } from "@common/hooks";
 import { BoolMap } from "@common/types";
 import "./ChangeTimeButton.scss";
@@ -13,9 +18,9 @@ type PropsType = {
 };
 
 const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
-    let anchorRef  = useRef<HTMLAnchorElement>();
-    let timeoutId  = useRef<number>();
-    let intervalId = useRef<number>();
+    const anchorRef  = useRef<HTMLAnchorElement>();
+    const timeoutId  = useRef<number>();
+    const intervalId = useRef<number>();
 
     const [className, setClassName, updateClassName] = useClassName({
         changeTimeButton__pressed: false,
@@ -24,16 +29,17 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
         button: true,
     }, props.className);
 
-    useEffect(() => updateClassName({
-        changeTimeButton__disabled: props.disabled,
-        changeTimeButton__pressed: false,
-        changeTimeBUtton__unpressed: false
-    }), [props.disabled]);
-
     const press = (e: any) => {
         e.preventDefault();
 
-        if (props.disabled) return;
+        if (props.disabled) {
+            return;
+        }
+
+        // @Todo: Are we checking this correctly?
+        if (e.type === "mousedown" && (("buttons" in e && e.buttons !== 1) || ("which" in e && e.which !== 1))) {
+            return;
+        }
 
         updateClassName({
             changeTimeButton__pressed: true,
@@ -50,7 +56,9 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
     const release = (e: any) => {
         e.preventDefault();
 
-        if (props.disabled) return;
+        if (props.disabled) {
+            return;
+        }
 
         updateClassName((classes: BoolMap) => {
             return {
@@ -65,9 +73,20 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
     };
 
     useEffect(() => {
+        updateClassName({
+            changeTimeButton__disabled: props.disabled,
+            changeTimeButton__pressed: false,
+            changeTimeBUtton__unpressed: false
+        });
+
         anchorRef.current.addEventListener("touchstart", press);
-        anchorRef.current.addEventListener("touchend",   release);
-    }, []);
+        anchorRef.current.addEventListener("touchend", release);
+
+        return () => {
+            anchorRef.current.removeEventListener("touchstart", press);
+            anchorRef.current.removeEventListener("touchend", release);
+        }
+    }, [props.disabled]);
 
     return (
         <a className={className} onMouseDown={press} onMouseUp={release}
