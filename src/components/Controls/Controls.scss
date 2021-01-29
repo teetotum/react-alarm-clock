@@ -1,10 +1,11 @@
 @import "@assets/css/globals";
 
-
 .controls {
     display: flex;
     user-select: none;
     box-shadow: shadow-values();
+    transition: box-shadow $set-alarm-transition-duration
+                $set-alarm-transition-timing-function;
 }
 
 .controls__disabled {

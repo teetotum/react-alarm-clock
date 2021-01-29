@@ -1,6 +1,13 @@
 @import "@assets/css/globals";
 
+.startButton {
+    transition: all $set-alarm-transition-duration
+                $set-alarm-transition-timing-function;
+    transition-property: flex-grow, box-shadow;
+}
+
 .startButton__pressed {
+    flex-grow: 2;
     box-shadow: shadow-values(inset), shadow-values();
     z-index: 2;
 }

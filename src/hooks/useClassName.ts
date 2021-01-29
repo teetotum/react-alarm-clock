@@ -6,7 +6,7 @@ type UpdateFunction = (x: BoolMap) => BoolMap;
 type SetClassNameArgument = string|BoolMap|UpdateFunction;
 
 export default function useClassName(...initialState: (string|BoolMap)[]): [string, Function] {
-    const [classes, setClasses] = useState<BoolMap>(() => parse(initialState));
+    const [classes, setClasses] = useState<BoolMap>(() => init(initialState));
 
     const setClassName = (mode: "set"|"update", ...args: SetClassNameArgument[]) => {
         const objs = args.map((x: SetClassNameArgument) => {
@@ -32,7 +32,7 @@ export default function useClassName(...initialState: (string|BoolMap)[]): [stri
     return [serialize(classes), setClassName];
 }
 
-const parse = (initialState: (string|BoolMap)[]): BoolMap => {
+const init = (initialState: (string|BoolMap)[]): BoolMap => {
     let objs = initialState.map((x: string|BoolMap) => {
         if (isString(x)) {
             return {[x as string]: true};

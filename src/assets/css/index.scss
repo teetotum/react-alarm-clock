@@ -25,6 +25,9 @@ html, body {
     fill: $red1;
     user-select: none;
     touch-action: none;
+    transition: all $set-alarm-transition-duration
+                $set-alarm-transition-timing-function;
+    transition-property: border-color, box-shadow, fill;
 }
 
 .button_icon {
