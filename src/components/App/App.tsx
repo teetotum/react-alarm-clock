@@ -7,8 +7,6 @@ import alarmSound from "@assets/audio/alarm.mp3";
 import "./App.scss";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
-const MAX_HOUR   = 23;
-const MAX_MINUTE = 59;
 
 export default function App() {
     const [running, setRunning] = useState<boolean>(false);
@@ -43,8 +41,8 @@ export default function App() {
     }, []);
 
     return (
-        <div className="outer-container">
-            <div className="inner-container">
+        <div className="outerContainer">
+            <div className="innerContainer">
                 <Clock time={time} />
                 <Controls running={running} toggleRunning={toggleRunning}
                  applyChangeTime={applyChangeTime} />

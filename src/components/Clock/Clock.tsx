@@ -6,9 +6,9 @@ type PropsType = { time: Time };
 
 export default function Clock(props: PropsType) {
     return (
-        <div id="clock">
-            <span id="clock_fg">{formatTime(props.time)}</span>
-            <span id="clock_bg">88:88</span>
+        <div className="clock">
+            <span className="clock_fg">{formatTime(props.time)}</span>
+            <span className="clock_bg">88:88</span>
         </div>
     );
 };

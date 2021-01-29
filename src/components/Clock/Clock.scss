@@ -1,6 +1,6 @@
 @import "@assets/css/globals";
 
-#clock {
+.clock {
     position: relative;
     font-family: "Digital";
     font-size: $min-clock-font-size;
@@ -11,7 +11,7 @@
     }
 }
 
-#clock_fg {
+.clock_fg {
     position: relative;
     display: inline-block;
     z-index: 1;
@@ -19,7 +19,7 @@
     text-shadow: shadow-values();
 }
 
-#clock_bg {
+.clock_bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -27,6 +27,6 @@
     color: $red2;
 }
 
-#clock_fg, #clock_bg {
+.clock_fg, .clock_bg {
     user-select: none;
 }

@@ -1,3 +1,5 @@
+@import "@assets/css/globals";
+
 html, body {
     height: 100%;
     font-size: 62.5%;
@@ -10,4 +12,27 @@ html, body {
 @font-face {
     font-family: "Digital";
     src: url("@assets/fonts/digital.ttf") format("truetype");
+}
+
+.button {
+    flex-grow: 1;
+    text-align: center;
+    background: black;
+    border-width: 3px;
+    border-style: solid;
+    border-color: $red1;
+    box-shadow: shadow-values(inset);
+    fill: $red1;
+    user-select: none;
+    touch-action: none;
+}
+
+.button_icon {
+    width: $min-controls-button-size;
+    height: $min-controls-button-size;
+    padding: 1rem 0;
+
+    @media screen and (min-width: $extra-small) {
+        font-size: $min-controls-button-size * 1.14285;
+    }
 }

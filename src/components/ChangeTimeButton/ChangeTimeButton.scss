@@ -1,9 +1,23 @@
 @import "@assets/css/globals";
 
-.change-time-button.pressed {
+.changeTimeButton__pressed {
     @include fadein-animation();
 }
 
-.change-time-button.unpressed {
+.changeTimeButton__unpressed {
     @include fadeout-animation();
+}
+
+.changeTimeButton__disabled {
+    fill: $red2;
+    border-color: $red2;
+    box-shadow: none;
+}
+
+.changeTimeButton__left {
+    border-right-width: 0;
+}
+
+.changeTimeButton__right {
+    border-left-width: 0;
 }

@@ -1,9 +1,6 @@
 @import "@assets/css/globals";
 
-#controls #start-button.pressed {
-    background: $red1;
-
-    .icon {
-        fill: black;
-    }
+.startButton__pressed {
+    box-shadow: shadow-values(inset), shadow-values();
+    z-index: 2;
 }

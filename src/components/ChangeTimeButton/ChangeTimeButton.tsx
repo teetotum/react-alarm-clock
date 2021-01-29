@@ -3,38 +3,61 @@ import { useClassName } from "@common/hooks";
 import { BoolMap } from "@common/types";
 import "./ChangeTimeButton.scss";
 
-const BASE_CLASSES = {"change-time-button": true, "button": true};
 const CHANGE_TIME_REPEAT_PERIOD = 100;
 const CHANGE_TIME_INITIAL_DELAY = 400;
 
-type PropsType = { callback: Function; };
+type PropsType = {
+    callback: Function;
+    disabled: boolean;
+    className: (string|BoolMap);
+};
 
 const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
-    const {callback} = props;
-
-    const [className, setClassName] = useClassName(BASE_CLASSES);
     let anchorRef  = useRef<HTMLAnchorElement>();
     let timeoutId  = useRef<number>();
     let intervalId = useRef<number>();
 
+    const [className, setClassName, updateClassName] = useClassName({
+        changeTimeButton__pressed: false,
+        changeTimeButton__unpressed: false,
+        changeTimeButton: true,
+        button: true,
+    }, props.className);
+
+    useEffect(() => updateClassName({
+        changeTimeButton__disabled: props.disabled,
+        changeTimeButton__pressed: false,
+        changeTimeBUtton__unpressed: false
+    }), [props.disabled]);
+
     const press = (e: any) => {
         e.preventDefault();
 
-        setClassName((classes: BoolMap) => {
-            return Object.assign({}, BASE_CLASSES, {pressed: true});
+        if (props.disabled) return;
+
+        updateClassName({
+            changeTimeButton__pressed: true,
+            changeTimeButton__unpressed: false,
+            changeTimeButton__disabled: false
         });
 
-        callback();
+        props.callback();
         timeoutId.current = window.setTimeout(() => {
-            intervalId.current = window.setInterval(callback, CHANGE_TIME_REPEAT_PERIOD);
+            intervalId.current = window.setInterval(props.callback, CHANGE_TIME_REPEAT_PERIOD);
         }, CHANGE_TIME_INITIAL_DELAY);
     };
 
     const release = (e: any) => {
         e.preventDefault();
 
-        setClassName((classes: BoolMap) => {
-            return Object.assign({}, BASE_CLASSES, {unpressed: classes.pressed});
+        if (props.disabled) return;
+
+        updateClassName((classes: BoolMap) => {
+            return {
+                changeTimeButton__unpressed: classes.changeTimeButton__pressed,
+                changeTimeButton__pressed: false,
+                changeTimeButton__disabled: false
+            };
         });
 
         clearTimeout(timeoutId.current);

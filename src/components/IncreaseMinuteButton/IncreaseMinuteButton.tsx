@@ -1,21 +1,33 @@
 import React, { memo, useCallback } from "react";
 import ChangeTimeButton from "@components/ChangeTimeButton";
-import { Time, ChangeTimeFunction, ApplyChangeTimeFunction } from "@common/types";
+import { MAX_MINUTE } from "@common/constants";
+import {
+    BoolMap,
+    Time,
+    ChangeTimeFunction,
+    ApplyChangeTimeFunction
+} from "@common/types";
 import PlusIcon from "@assets/svg/plus.svg";
 
-type PropsType = { applyChangeTime: ApplyChangeTimeFunction; };
+type PropsType = {
+    applyChangeTime: ApplyChangeTimeFunction;
+    disabled: boolean;
+    className: (string|BoolMap);
+};
 
-const IncreaseMinuteButton = ({applyChangeTime}: PropsType) => {
+const IncreaseMinuteButton = (props: PropsType) => {
+    const {applyChangeTime, disabled, className} = props;
+
     let increaseMinute: ChangeTimeFunction = ({hours, minutes}: Time) => {
-        minutes = (minutes < 59) ? minutes + 1 : 0;
+        minutes = (minutes < MAX_MINUTE) ? minutes + 1 : 0;
         return {hours: hours, minutes: minutes};
     }
 
     const callback = useCallback(() => applyChangeTime(increaseMinute), []);
 
     return (
-        <ChangeTimeButton callback={callback}>
-            <PlusIcon  className="icon"/>
+        <ChangeTimeButton callback={callback} disabled={disabled} className={className}>
+            <PlusIcon  className="button_icon"/>
         </ChangeTimeButton>
     );
 }

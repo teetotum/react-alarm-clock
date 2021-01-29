@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { isFunction } from "@common/utils";
+import { isString, isFunction } from "@common/utils";
 import { BoolMap } from "@common/types";
 
 export function useConstructor(callback: Function, args: any[] = []) {
@@ -12,8 +12,21 @@ export function useConstructor(callback: Function, args: any[] = []) {
     }
 }
 
-export function useClassName(initial: BoolMap): [string, Function] {
-    const [classes, setClasses] = useState<BoolMap>(initial);
+export function useClassName(...initial: (string|BoolMap)[]): [string, Function, Function] {
+    const init = (): BoolMap => {
+        let objs = [];
+        for (let i = 0; i < initial.length; i++) {
+            let x = initial[i];
+            if (isString(x)) {
+                objs.push({[x as string]: true});
+            } else {
+                objs.push(x);
+            }
+        }
+        return Object.assign({}, ...objs);
+    }
+
+    const [classes, setClasses] = useState<BoolMap>(init);
 
     const serialize = (classes: BoolMap): string => {
         type KeyType = keyof typeof classes;
@@ -25,14 +38,27 @@ export function useClassName(initial: BoolMap): [string, Function] {
         return result;
     }
 
-    type ArgumentType = BoolMap|((obj: BoolMap) => BoolMap);
-    const setter = (arg: ArgumentType) => {
+    type FunctionType = (obj: BoolMap) => BoolMap;
+    type ArgumentType = BoolMap|FunctionType;
+    const set = (arg: ArgumentType) => {
+        let newState: BoolMap;
         if (isFunction(arg)) {
-            setClasses((arg as Function)(classes));
+            newState = (arg as Function)(classes);
         } else {
-            setClasses(arg as BoolMap);
+            newState = arg as BoolMap;
         }
+        setClasses(newState);
     }
 
-    return [serialize(classes), setter];
+    const update = (arg: ArgumentType) => {
+        let delta: BoolMap;
+        if (isFunction(arg)) {
+            delta = (arg as Function)(classes);
+        } else {
+            delta = (arg as BoolMap);
+        }
+        setClasses(Object.assign({}, classes, delta));
+    }
+
+    return [serialize(classes), set, update];
 }
