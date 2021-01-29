@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import Clock from "@components/Clock";
 import Controls from "@components/Controls";
-import { useConstructor } from "@common/hooks";
+import useConstructor from "@hooks/useConstructor";
 import { Time, ChangeTimeFunction } from "@common/types";
 import alarmSound from "@assets/audio/alarm.mp3";
 import "./App.scss";

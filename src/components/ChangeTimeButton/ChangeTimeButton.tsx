@@ -4,7 +4,7 @@ import React, {
     useRef,
     FunctionComponent
 } from "react";
-import { useClassName } from "@common/hooks";
+import useClassName from "@hooks/useClassName";
 import { BoolMap } from "@common/types";
 import "./ChangeTimeButton.scss";
 
@@ -22,7 +22,7 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
     const timeoutId  = useRef<number>();
     const intervalId = useRef<number>();
 
-    const [className, setClassName, updateClassName] = useClassName({
+    const [className, setClassName] = useClassName({
         changeTimeButton__pressed: false,
         changeTimeButton__unpressed: false,
         changeTimeButton: true,
@@ -41,7 +41,7 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
             return;
         }
 
-        updateClassName({
+        setClassName("update", {
             changeTimeButton__pressed: true,
             changeTimeButton__unpressed: false,
             changeTimeButton__disabled: false
@@ -60,7 +60,7 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
             return;
         }
 
-        updateClassName((classes: BoolMap) => {
+        setClassName("update", (classes: BoolMap) => {
             return {
                 changeTimeButton__unpressed: classes.changeTimeButton__pressed,
                 changeTimeButton__pressed: false,
@@ -73,7 +73,7 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
     };
 
     useEffect(() => {
-        updateClassName({
+        setClassName("update", {
             changeTimeButton__disabled: props.disabled,
             changeTimeButton__pressed: false,
             changeTimeBUtton__unpressed: false

@@ -4,7 +4,7 @@ import IncreaseHourButton from "@components/IncreaseHourButton";
 import DecreaseHourButton from "@components/DecreaseHourButton";
 import IncreaseMinuteButton from "@components/IncreaseMinuteButton";
 import DecreaseMinuteButton from "@components/DecreaseMinuteButton";
-import { useClassName } from "@common/hooks";
+import useClassName from "@hooks/useClassName";
 import { ApplyChangeTimeFunction } from "@common/types";
 import "./Controls.scss";
 
@@ -17,12 +17,12 @@ type PropsType = {
 export default function Controls(props: PropsType) {
     const {running, toggleRunning, applyChangeTime} = props;
 
-    const [className, setClassName, updateClassName] = useClassName({
+    const [className, setClassName] = useClassName({
         controls: true,
         controls__disabled: true
     });
 
-    useEffect(() => updateClassName({controls__disabled: running}), [running]);
+    useEffect(() => setClassName("update", {controls__disabled: running}), [running]);
 
     return (
         <div className={className} >
