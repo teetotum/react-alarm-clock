@@ -13,16 +13,14 @@ export default function StartButton(props: PropsType) {
     const {running, toggleRunning} = props;
 
     const [className, setClassName] = useClassName({
-        startButton__pressed: false,
-        startButton__unpressed: false,
+        startButton__alarmIsSet: false,
         startButton: true,
         button: true
     });
 
     useEffect(() => {
         setClassName("update", {
-            startButton__pressed: running,
-            startButton__unpressed: !running
+            startButton__alarmIsSet: running
         });
     }, [running]);
 
@@ -31,8 +29,8 @@ export default function StartButton(props: PropsType) {
         <PlayIcon  className="button_icon" />
 
     return (
-        <a className={className} onClick={toggleRunning} >
+        <span className={className} onClick={toggleRunning} >
             {icon}
-        </a>
+        </span>
     );
 }

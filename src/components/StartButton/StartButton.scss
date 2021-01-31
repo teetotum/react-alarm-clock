@@ -6,7 +6,7 @@
     transition-property: flex-grow, box-shadow;
 }
 
-.startButton__pressed {
+.startButton__alarmIsSet {
     flex-grow: 2;
     box-shadow: shadow-values(inset), shadow-values();
     z-index: 2;

@@ -23,8 +23,6 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
     const intervalId = useRef<number>();
 
     const [className, setClassName] = useClassName({
-        changeTimeButton__pressed: false,
-        changeTimeButton__unpressed: false,
         changeTimeButton: true,
         button: true,
     }, props.className);
@@ -44,7 +42,7 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
         setClassName("update", {
             changeTimeButton__pressed: true,
             changeTimeButton__unpressed: false,
-            changeTimeButton__disabled: false
+            changeTimeButton__alarmIsSet: false
         });
 
         props.callback();
@@ -64,7 +62,7 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
             return {
                 changeTimeButton__unpressed: classes.changeTimeButton__pressed,
                 changeTimeButton__pressed: false,
-                changeTimeButton__disabled: false
+                changeTimeButton__alarmIsSet: false
             };
         });
 
@@ -74,9 +72,9 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
 
     useEffect(() => {
         setClassName("update", {
-            changeTimeButton__disabled: props.disabled,
+            changeTimeButton__alarmIsSet: props.disabled,
             changeTimeButton__pressed: false,
-            changeTimeBUtton__unpressed: false
+            changeTimeButton__unpressed: false
         });
 
         anchorRef.current.addEventListener("touchstart", press);
@@ -89,10 +87,10 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
     }, [props.disabled]);
 
     return (
-        <a className={className} onMouseDown={press} onMouseUp={release}
+        <span className={className} onMouseDown={press} onMouseUp={release}
          onMouseLeave={release} ref={anchorRef}>
             {props.children}
-        </a>
+        </span>
     );
 });
 

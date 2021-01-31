@@ -18,11 +18,11 @@ export default function Controls(props: PropsType) {
     const {running, toggleRunning, applyChangeTime} = props;
 
     const [className, setClassName] = useClassName({
-        controls: true,
-        controls__disabled: true
+        controls__alarmIsSet: true,
+        controls: true
     });
 
-    useEffect(() => setClassName("update", {controls__disabled: running}), [running]);
+    useEffect(() => setClassName("update", {controls__alarmIsSet: running}), [running]);
 
     return (
         <div className={className} >

@@ -8,7 +8,7 @@
     @include fadeout-animation();
 }
 
-.changeTimeButton__disabled {
+.changeTimeButton__alarmIsSet {
     fill: $red2;
     border-color: $red2;
     box-shadow: none;
