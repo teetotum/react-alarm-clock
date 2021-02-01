@@ -61,7 +61,7 @@ const increaseHour = ({hours, minutes}: Time) => {
 }
 
 const increaseMinute = ({hours, minutes}: Time) => {
-    minutes = (hours < MAX_MINUTE) ? minutes + 1 : 0;
+    minutes = (minutes < MAX_MINUTE) ? minutes + 1 : 0;
     return {hours: hours, minutes: minutes};
 }
 
