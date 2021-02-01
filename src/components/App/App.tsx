@@ -11,8 +11,8 @@ const MILLISECONDS_IN_A_DAY = 86400000;
 export default function App() {
     const [running, setRunning] = useState<boolean>(false);
     const [time, setTime]       = useState<Time>();
-    let timeoutId               = useRef<number>();
-    let audio                   = useRef<HTMLAudioElement>();
+    const timeoutId               = useRef<number>();
+    const audio                   = useRef<HTMLAudioElement>();
 
     useConstructor(() => {
         setTime(getDefaultTime());
