@@ -13,8 +13,8 @@ const CHANGE_TIME_INITIAL_DELAY = 400;
 
 type PropsType = {
     callback: Function;
-    disabled: boolean;
-    className: (string|BoolMap);
+    alarmIsSet: boolean;
+    className: string|BoolMap;
 };
 
 const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
@@ -30,7 +30,7 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
     const press = (e: any) => {
         e.preventDefault();
 
-        if (props.disabled) {
+        if (props.alarmIsSet) {
             return;
         }
 
@@ -54,7 +54,7 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
     const release = (e: any) => {
         e.preventDefault();
 
-        if (props.disabled) {
+        if (props.alarmIsSet) {
             return;
         }
 
@@ -72,7 +72,7 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
 
     useEffect(() => {
         setClassName("update", {
-            changeTimeButton__alarmIsSet: props.disabled,
+            changeTimeButton__alarmIsSet: props.alarmIsSet,
             changeTimeButton__pressed: false,
             changeTimeButton__unpressed: false
         });
@@ -84,7 +84,7 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
             anchorRef.current.removeEventListener("touchstart", press);
             anchorRef.current.removeEventListener("touchend", release);
         }
-    }, [props.disabled]);
+    }, [props.alarmIsSet]);
 
     return (
         <span className={className} onMouseDown={press} onMouseUp={release}

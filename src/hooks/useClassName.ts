@@ -2,8 +2,7 @@ import { useState } from "react";
 import { isString, isFunction } from "@common/utils";
 import { BoolMap } from "@common/types";
 
-type UpdateFunction = (x: BoolMap) => BoolMap;
-type SetClassNameArgument = string|BoolMap|UpdateFunction;
+type SetClassNameArgument = string|BoolMap|((x: BoolMap) => BoolMap);
 
 export default function useClassName(...initialState: (string|BoolMap)[]): [string, Function] {
     const [classes, setClasses] = useState<BoolMap>(() => init(initialState));

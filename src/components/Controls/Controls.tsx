@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import StartButton from "@components/StartButton";
-import IncreaseHourButton from "@components/IncreaseHourButton";
-import DecreaseHourButton from "@components/DecreaseHourButton";
-import IncreaseMinuteButton from "@components/IncreaseMinuteButton";
-import DecreaseMinuteButton from "@components/DecreaseMinuteButton";
+import MakeChangeTimeButton from "@components/MakeChangeTimeButton";
 import useClassName from "@hooks/useClassName";
 import { ApplyChangeTimeFunction } from "@common/types";
 import "./Controls.scss";
@@ -26,15 +23,15 @@ export default function Controls(props: PropsType) {
 
     return (
         <div className={className} >
-            <IncreaseHourButton applyChangeTime={applyChangeTime}
-                disabled={running} className="changeTimeButton__left" />
-            <DecreaseHourButton applyChangeTime={applyChangeTime}
-                disabled={running} className="changeTimeButton__left" />
+            <MakeChangeTimeButton type="h+" applyChangeTime={applyChangeTime}
+                alarmIsSet={running} className="changeTimeButton__left" />
+            <MakeChangeTimeButton type="h-" applyChangeTime={applyChangeTime}
+                alarmIsSet={running} className="changeTimeButton__left" />
             <StartButton running={running} toggleRunning={toggleRunning} />
-            <IncreaseMinuteButton applyChangeTime={applyChangeTime}
-                disabled={running} className="changeTimeButton__right"/>
-            <DecreaseMinuteButton applyChangeTime={applyChangeTime}
-                disabled={running} className="changeTimeButton__right"/>
+            <MakeChangeTimeButton type="m+" applyChangeTime={applyChangeTime}
+                alarmIsSet={running} className="changeTimeButton__right"/>
+            <MakeChangeTimeButton type="m-" applyChangeTime={applyChangeTime}
+                alarmIsSet={running} className="changeTimeButton__right"/>
         </div>
     );
 }
