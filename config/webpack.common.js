@@ -18,7 +18,19 @@ module.exports = {
             },
             {
                 test: /\.(scss|css)$/,
-                use: ["style-loader", "css-loader", "sass-loader"]
+                use: [
+                    "style-loader",
+                    "css-loader",
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            postcssOptions: {
+                                config: path.resolve(__dirname, "postcss.config.js")
+                            }
+                        }
+                    },
+                    "sass-loader"
+                ]
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/i,
