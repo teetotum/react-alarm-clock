@@ -4,10 +4,8 @@ import React, {
     useRef,
     FunctionComponent
 } from "react";
-import useConstructor from "@hooks/useConstructor";
 import useClassName from "@hooks/useClassName";
 import { BoolMap } from "@common/types";
-import buttonSound from "./button.mp3";
 import "./ChangeTimeButton.scss";
 
 const CHANGE_TIME_REPEAT_PERIOD = 100;
@@ -23,11 +21,6 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
     const anchorRef  = useRef<HTMLAnchorElement>();
     const timeoutId  = useRef<number>();
     const intervalId = useRef<number>();
-    const audio      = useRef<HTMLAudioElement>();
-
-    useConstructor(() => {
-        audio.current = new Audio(buttonSound);
-    });
 
     const [className, setClassName] = useClassName({
         changeTimeButton: true,
@@ -52,14 +45,10 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
             changeTimeButton__alarmIsSet: false
         });
 
-        audio.current.currentTime = 0;
-        audio.current.play();
         props.callback();
 
         timeoutId.current = window.setTimeout(() => {
             intervalId.current = window.setInterval(() => {
-                audio.current.currentTime = 0;
-                audio.current.play();
                 props.callback();
             }, CHANGE_TIME_REPEAT_PERIOD);
         }, CHANGE_TIME_INITIAL_DELAY);

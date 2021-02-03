@@ -1,7 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import useConstructor from "@hooks/useConstructor";
+import React, { useEffect } from "react";
 import useClassName from "@hooks/useClassName";
-import buttonSound from "./button.mp3";
 import PlayIcon from "./play.svg";
 import PauseIcon from "./pause.svg";
 import "./StartButton.scss";
@@ -13,12 +11,6 @@ type PropsType = {
 
 export default function StartButton(props: PropsType) {
     const {running, toggleRunning} = props;
-
-    const audio = useRef<HTMLAudioElement>();
-
-    useConstructor(() => {
-        audio.current = new Audio(buttonSound);
-    });
 
     const [className, setClassName] = useClassName({
         startButton__alarmIsSet: false,
@@ -33,9 +25,6 @@ export default function StartButton(props: PropsType) {
     }, [running]);
 
     const callback = (e: React.MouseEvent) => {
-        audio.current.currentTime = 0;
-        audio.current.play();
-
         toggleRunning(e);
     }
 
