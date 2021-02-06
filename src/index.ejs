@@ -5,6 +5,7 @@
         <meta name="description" content="Set the hour and minute, then hit play">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Alarm Clock</title>
+        <link rel="icon" href="<%= htmlWebpackPlugin.files.favicon %>" type="image/x-icon" />
         <!-- @Todo: Maybe use handlebars for this? -->
         <%= htmlWebpackPlugin.files.css.map(href =>
             '<link href="' + href + '" rel="stylesheet">'
