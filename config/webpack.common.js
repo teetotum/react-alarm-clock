@@ -1,3 +1,5 @@
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require("path");
 
@@ -6,7 +8,7 @@ const root = path.resolve(__dirname, "..");
 module.exports = {
     entry: path.resolve(root, "src", "index.tsx"),
     output: {
-        filename: "bundle.js",
+        filename: "[name].[fullhash].js",
         path: path.resolve(root, "dist"),
         publicPath: "/"
     },
@@ -19,7 +21,14 @@ module.exports = {
             {
                 test: /\.(scss|css)$/,
                 use: [
-                    "style-loader",
+                    // @Todo: mini-css-extract-plugin is more often used in production mode
+                    // to get separate css files. For development mode
+                    // (including webpack-dev-server) you can use style-loader, because it
+                    // injects CSS into the DOM using multiple and works faster.
+                    //
+                    // Do something like this instead:
+                    // devMode ? 'style-loader' : MiniCssExtractPlugin.loader
+                    MiniCssExtractPlugin.loader,
                     "css-loader",
                     {
                         loader: "postcss-loader",
@@ -47,12 +56,15 @@ module.exports = {
         ]
     },
     plugins: [
+        new MiniCssExtractPlugin({
+            filename: "[name].[fullhash].css"
+        }),
         new CleanWebpackPlugin({
-            cleanOnceBeforeBuildPatterns: [
-                "**/*",
-                "!index.html",
-                "!.git"
-            ]
+            cleanOnceBeforeBuildPatterns: ["**/*", "!.git"] // @Note: Only do this in gh-pages build?
+        }),
+        new HtmlWebpackPlugin({
+            template: path.resolve(root, "src", "index.ejs"),
+            inject: false
         })
     ],
     resolve: {

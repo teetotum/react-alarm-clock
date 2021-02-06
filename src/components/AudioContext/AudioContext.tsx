@@ -1,9 +1,6 @@
-import React, { createContext, ReactNode } from "react";
+import React, { useRef, createContext, ReactNode } from "react";
+import useConstructor from "@hooks/useConstructor";
 
-(window as any).AudioContext = (window as any).AudioContext || (window as any).webkitAudioContext;
-let audioContext = new AudioContext();
-
-// @nocommit: Why do we need to pass a default value here?
 export const AudioContextContext = createContext(undefined);
 
 type PropsType = {
@@ -11,8 +8,16 @@ type PropsType = {
 };
 
 export const AudioContextProvider = (props: PropsType) => {
+    let audioContextRef = useRef<any>();
+
+    useConstructor(() => {
+        const _window = window as any;
+        const AudioContextClass = _window.AudioContext || _window.webkitAudioContext;
+        audioContextRef.current = new AudioContextClass();
+    });
+
     return (
-        <AudioContextContext.Provider value={audioContext}>
+        <AudioContextContext.Provider value={audioContextRef.current}>
             {props.children}
         </AudioContextContext.Provider>
     );

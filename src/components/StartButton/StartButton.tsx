@@ -19,11 +19,9 @@ export default function StartButton(props: PropsType) {
     const audioContext = useContext(AudioContextContext);
     const audioBuffer = useRef<AudioBuffer>();
 
-    useConstructor(() => {
-        loadAudio(audioContext, buttonSound, (data: any) => {
-            audioBuffer.current = data;
-        });
-    });
+    useConstructor(() => loadAudio(audioContext, buttonSound, (data: any) => {
+        audioBuffer.current = data;
+    }));
 
     const [className, setClassName] = useClassName({
         startButton__alarmIsSet: false,

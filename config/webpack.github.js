@@ -1,11 +1,16 @@
 const merge = require("webpack-merge");
 const common = require("./webpack.common.js");
 
-module.exports = (env) => {
+const path = require("path");
+const root = path.resolve(__dirname, "..");
+const dotenv = require("dotenv").config({
+    path: path.resolve(root, ".env")
+}).parsed;
+
+module.exports = env => {
     return merge(common, {
         mode: "production",
-        // @Todo: Grab the project name from package.json.
-        output:    { publicPath: "/react-alarm-clock/" },
-        devServer: { publicPath: "/react-alarm-clock/" },
+        output:    { publicPath: `/${dotenv.REPO_NAME}/` },
+        devServer: { publicPath: `/${dotenv.REPO_NAME}/` },
     });
 }
