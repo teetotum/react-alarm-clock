@@ -4,7 +4,7 @@ const path = require("path");
 const root = path.resolve(__dirname, "..");
 
 module.exports = {
-    entry: "./src/index.tsx",
+    entry: path.resolve(root, "src", "index.tsx"),
     output: {
         filename: "bundle.js",
         path: path.resolve(root, "dist"),
@@ -57,10 +57,10 @@ module.exports = {
     ],
     resolve: {
         alias: {
-            "@components": path.resolve(root, "src/components"),
-            "@assets":     path.resolve(root, "src/assets"),
-            "@hooks":      path.resolve(root, "src/hooks"),
-            "@common":     path.resolve(root, "src/common")
+            "@components": path.resolve(root, "src", "components"),
+            "@assets":     path.resolve(root, "src", "assets"),
+            "@hooks":      path.resolve(root, "src", "hooks"),
+            "@common":     path.resolve(root, "src", "common")
         },
         extensions: [".js", ".jsx", ".json", ".ts", ".tsx"]
     },

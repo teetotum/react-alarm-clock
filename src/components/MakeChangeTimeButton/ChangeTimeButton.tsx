@@ -2,25 +2,38 @@ import React, {
     memo,
     useEffect,
     useRef,
-    FunctionComponent
+    useContext,
+    ReactNode
 } from "react";
+import { AudioContextContext } from "@components/AudioContext";
+import useConstructor from "@hooks/useConstructor";
 import useClassName from "@hooks/useClassName";
+import { loadAudio, playAudioBuffer } from "@common/utils";
 import { BoolMap } from "@common/types";
+import buttonSound from "./button.mp3";
 import "./ChangeTimeButton.scss";
 
 const CHANGE_TIME_REPEAT_PERIOD = 100;
 const CHANGE_TIME_INITIAL_DELAY = 400;
 
 type PropsType = {
+    children: ReactNode;
     callback: Function;
     alarmIsSet: boolean;
     className: string|BoolMap;
 };
 
-const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
+const ChangeTimeButton = memo((props: PropsType) => {
     const anchorRef  = useRef<HTMLAnchorElement>();
     const timeoutId  = useRef<number>();
     const intervalId = useRef<number>();
+
+    const audioContext = useContext(AudioContextContext);
+    const audioBuffer = useRef<AudioBuffer>();
+
+    useConstructor(() => loadAudio(audioContext, buttonSound, (data: any) => {
+        audioBuffer.current = data;
+    }));
 
     const [className, setClassName] = useClassName({
         changeTimeButton: true,
@@ -46,10 +59,12 @@ const ChangeTimeButton: FunctionComponent<PropsType> = memo((props) => {
         });
 
         props.callback();
+        playAudioBuffer(audioContext, audioBuffer.current);
 
         timeoutId.current = window.setTimeout(() => {
             intervalId.current = window.setInterval(() => {
                 props.callback();
+                playAudioBuffer(audioContext, audioBuffer.current);
             }, CHANGE_TIME_REPEAT_PERIOD);
         }, CHANGE_TIME_INITIAL_DELAY);
     };
