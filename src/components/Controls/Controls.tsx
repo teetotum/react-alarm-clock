@@ -2,13 +2,12 @@ import React, { useEffect } from "react";
 import StartButton from "@components/StartButton";
 import MakeChangeTimeButton from "@components/MakeChangeTimeButton";
 import useClassName from "@hooks/useClassName";
-import { ApplyChangeTimeFunction } from "@common/types";
 import "./Controls.scss";
 
 type PropsType = {
     running: boolean;
     toggleRunning: () => void;
-    applyChangeTime: ApplyChangeTimeFunction;
+    applyChangeTime: types.ApplyChangeTimeFunction;
 };
 
 export default function Controls(props: PropsType) {

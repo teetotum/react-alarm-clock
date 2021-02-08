@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useContext } from "react";
 import { AudioContextContext } from "@components/AudioContext";
 import useConstructor from "@hooks/useConstructor";
 import useClassName from "@hooks/useClassName";
-import { loadAudio, playAudioBuffer } from "@common/utils";
+import { loadAudio, playAudioBuffer } from "@utils";
 import buttonSound from "./button.mp3";
 import PlayIcon from "./play.svg";
 import PauseIcon from "./pause.svg";

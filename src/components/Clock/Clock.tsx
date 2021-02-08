@@ -1,8 +1,7 @@
 import React from "react";
-import { Time } from "@common/types";
 import "./Clock.scss";
 
-type PropsType = { time: Time };
+type PropsType = { time: types.Time };
 
 export default function Clock(props: PropsType) {
     return (
@@ -13,7 +12,7 @@ export default function Clock(props: PropsType) {
     );
 };
 
-const formatTime = ({hours, minutes}: Time): string => {
+const formatTime = ({hours, minutes}: types.Time): string => {
     let hoursString = hours.toString().padStart(2, "0");
     let minutesString = minutes.toString().padStart(2, "0");
     return `${hoursString}:${minutesString}`;

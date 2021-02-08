@@ -8,8 +8,7 @@ import React, {
 import { AudioContextContext } from "@components/AudioContext";
 import useConstructor from "@hooks/useConstructor";
 import useClassName from "@hooks/useClassName";
-import { loadAudio, playAudioBuffer } from "@common/utils";
-import { BoolMap } from "@common/types";
+import { loadAudio, playAudioBuffer } from "@utils";
 import buttonSound from "./button.mp3";
 import "./ChangeTimeButton.scss";
 
@@ -20,7 +19,7 @@ type PropsType = {
     children: ReactNode;
     callback: Function;
     alarmIsSet: boolean;
-    className: string|BoolMap;
+    className: string|types.BoolMap;
 };
 
 const ChangeTimeButton = memo((props: PropsType) => {
@@ -76,7 +75,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
             return;
         }
 
-        setClassName("update", (classes: BoolMap) => {
+        setClassName("update", (classes: types.BoolMap) => {
             return {
                 changeTimeButton__unpressed: classes.changeTimeButton__pressed,
                 changeTimeButton__pressed: false,

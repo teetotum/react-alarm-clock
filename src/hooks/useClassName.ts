@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { isString, isFunction } from "@common/utils";
-import { BoolMap } from "@common/types";
+import { isString, isFunction } from "@utils";
 
-type SetClassNameArgument = string|BoolMap|((x: BoolMap) => BoolMap);
+type SetClassNameArgument = string|types.BoolMap|((x: types.BoolMap) => types.BoolMap);
 
-export default function useClassName(...initialState: (string|BoolMap)[]): [string, Function] {
-    const [classes, setClasses] = useState<BoolMap>(() => init(initialState));
+export default function useClassName(...initialState: (string|types.BoolMap)[]): [string, Function] {
+    const [classes, setClasses] = useState<types.BoolMap>(() => init(initialState));
 
     const setClassName = (mode: "set"|"update", ...args: SetClassNameArgument[]) => {
         const objs = args.map((x: SetClassNameArgument) => {
@@ -31,8 +30,8 @@ export default function useClassName(...initialState: (string|BoolMap)[]): [stri
     return [serialize(classes), setClassName];
 }
 
-const init = (initialState: (string|BoolMap)[]): BoolMap => {
-    let objs = initialState.map((x: string|BoolMap) => {
+const init = (initialState: (string|types.BoolMap)[]): types.BoolMap => {
+    let objs = initialState.map((x: string|types.BoolMap) => {
         if (isString(x)) {
             return {[x as string]: true};
         } else {
@@ -43,7 +42,7 @@ const init = (initialState: (string|BoolMap)[]): BoolMap => {
     return Object.assign({}, ...objs);
 }
 
-const serialize = (classes: BoolMap): string => {
+const serialize = (classes: types.BoolMap): string => {
     let fn = (key: keyof typeof classes) => classes[key];
     const keys = Object.keys(classes);
     const classArray = keys.filter(fn);

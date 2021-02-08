@@ -98,8 +98,8 @@ module.exports = env => {
             alias: {
                 "@components": path.resolve(srcDir, "components"),
                 "@hooks":      path.resolve(srcDir, "hooks"),
-                "@common":     path.resolve(srcDir, "common"),
-                "@assets":     assetsDir
+                "@utils":      path.resolve(srcDir, "utils.ts"),
+                "@assets":     assetsDir,
             },
             extensions: [".js", ".jsx", ".json", ".ts", ".tsx"]
         },

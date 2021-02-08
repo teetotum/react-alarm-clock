@@ -3,7 +3,6 @@ import Clock from "@components/Clock";
 import Controls from "@components/Controls";
 import { AudioContextProvider } from "@components/AudioContext";
 import useConstructor from "@hooks/useConstructor";
-import { Time, ChangeTimeFunction } from "@common/types";
 import alarmSound from "@assets/audio/alarm.mp3";
 import "./App.scss";
 
@@ -11,7 +10,7 @@ const MILLISECONDS_IN_A_DAY = 86400000;
 
 export default function App() {
     const [running, setRunning] = useState<boolean>(false);
-    const [time, setTime]       = useState<Time>();
+    const [time, setTime]       = useState<types.Time>();
     const timeoutId             = useRef<number>();
     const audio                 = useRef<HTMLAudioElement>();
 
@@ -37,8 +36,8 @@ export default function App() {
         setRunning(!running);
     }
 
-    const applyChangeTime = useCallback((changeTime: ChangeTimeFunction) => {
-        setTime((prevTime: Time) => changeTime(prevTime));
+    const applyChangeTime = useCallback((changeTime: types.ChangeTimeFunction) => {
+        setTime((prevTime: types.Time) => changeTime(prevTime));
     }, []);
 
     return (
@@ -54,7 +53,7 @@ export default function App() {
     );
 }
 
-const calcTimeUntilAlert = ({hours, minutes}: Time): number => {
+const calcTimeUntilAlert = ({hours, minutes}: types.Time): number => {
     let d = new Date();
     d.setHours(hours, minutes, 0, 0);
 
@@ -68,7 +67,7 @@ const calcTimeUntilAlert = ({hours, minutes}: Time): number => {
     return result;
 }
 
-const getDefaultTime = (): Time => {
+const getDefaultTime = (): types.Time => {
     const d = new Date();
 
     const localStorageHours = localStorage.getItem("hours");
@@ -80,7 +79,7 @@ const getDefaultTime = (): Time => {
     return {hours: hours, minutes: minutes};
 }
 
-const setDefaultTime = ({hours, minutes}: Time) => {
+const setDefaultTime = ({hours, minutes}: types.Time) => {
     localStorage.setItem("hours",   hours.toString());
     localStorage.setItem("minutes", minutes.toString());
 }
