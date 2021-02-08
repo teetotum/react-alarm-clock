@@ -47,7 +47,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
             return;
         }
 
-        // @Todo: Are we checking this correctly?
+        // @@Todo: Are we checking this correctly?
         if (e.type === "mousedown" && (("buttons" in e && e.buttons !== 1) || ("which" in e && e.which !== 1))) {
             return;
         }

@@ -6,7 +6,7 @@ export function isString(obj: any) {
     return Object.prototype.toString.call(obj) === "[object String]";
 }
 
-// @Todo: Figure out the type for audioContext.
+// @@Todo: Figure out the type for audioContext.
 export function loadAudio(audioContext: any, url: string, onload: Function) {
     const request = new XMLHttpRequest();
     request.open("GET", url);
@@ -20,7 +20,7 @@ export function loadAudio(audioContext: any, url: string, onload: Function) {
     request.send();
 }
 
-// @Todo: Figure out the type for audioContext.
+// @@Todo: Figure out the type for audioContext.
 export function playAudioBuffer(audioContext: any, audioBuffer: AudioBuffer) {
     const source = audioContext.createBufferSource();
     source.buffer = audioBuffer;

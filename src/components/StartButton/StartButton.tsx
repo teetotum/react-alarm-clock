@@ -37,7 +37,7 @@ export default function StartButton(props: PropsType) {
 
     const callback = (e: React.MouseEvent) => {
         toggleRunning(e);
-        // @Note: This could be undefined if the audio file took
+        // @@Note: This could be undefined if the audio file took
         // a long time to load.
         playAudioBuffer(audioContext, audioBuffer.current);
     }
