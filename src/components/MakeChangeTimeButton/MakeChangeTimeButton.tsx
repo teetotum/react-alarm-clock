@@ -1,10 +1,8 @@
 import React, { memo, useCallback } from "react";
 import ChangeTimeButton from "./ChangeTimeButton";
+import { changeTime } from "@business/time";
 import PlusIcon from "./plus.svg";
 import MinusIcon from "./minus.svg";
-
-export const MAX_HOUR   = 23;
-export const MAX_MINUTE = 59;
 
 type PropsType = {
     type: "h+"|"h-"|"m+"|"m-";
@@ -16,28 +14,21 @@ type PropsType = {
 const MakeChangeTimeButton = memo((props: PropsType) => {
     const {type, applyChangeTime, alarmIsSet, className} = props;
 
-    let changeTime: types.ChangeTimeFunction;
+    const _changeTime = {
+        "h+": (time: types.Time) => changeTime(time,  1,  0),
+        "h-": (time: types.Time) => changeTime(time, -1,  0),
+        "m+": (time: types.Time) => changeTime(time,  0,  1),
+        "m-": (time: types.Time) => changeTime(time,  0, -1)
+    }[type];
+
     let icon;
-    switch(type) {
-        case "h+": {
-            changeTime = increaseHour;
-            icon = <PlusIcon className="button_icon" />;
-        } break;
-        case "h-": {
-            changeTime = decreaseHour;
-            icon = <MinusIcon className="button_icon" />
-        } break;
-        case "m+": {
-            changeTime = increaseMinute;
-            icon = <PlusIcon className="button_icon" />;
-        } break;
-        case "m-": {
-            changeTime = decreaseMinute;
-            icon = <MinusIcon className="button_icon" />
-        } break;
+    if (type === "h+" || type === "m+") {
+        icon = <PlusIcon className="button_icon" />;
+    } else {
+        icon = <MinusIcon className="button_icon" />;
     }
 
-    const callback = useCallback(() => applyChangeTime(changeTime), []);
+    const callback = useCallback(() => applyChangeTime(_changeTime), []);
 
     return (
         <ChangeTimeButton callback={callback} alarmIsSet={alarmIsSet}
@@ -48,23 +39,3 @@ const MakeChangeTimeButton = memo((props: PropsType) => {
 });
 
 export default MakeChangeTimeButton;
-
-const increaseHour = ({hours, minutes}: types.Time) => {
-    hours = (hours < MAX_HOUR) ? hours + 1 : 0;
-    return {hours: hours, minutes: minutes};
-}
-
-const increaseMinute = ({hours, minutes}: types.Time) => {
-    minutes = (minutes < MAX_MINUTE) ? minutes + 1 : 0;
-    return {hours: hours, minutes: minutes};
-}
-
-const decreaseHour = ({hours, minutes}: types.Time) => {
-    hours = (hours > 0) ? hours - 1 : MAX_HOUR;
-    return {hours: hours, minutes: minutes};
-}
-
-const decreaseMinute = ({hours, minutes}: types.Time) => {
-    minutes = (minutes > 0) ? minutes - 1 : MAX_MINUTE;
-    return {hours: hours, minutes: minutes};
-}

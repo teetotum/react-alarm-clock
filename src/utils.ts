@@ -5,3 +5,7 @@ export function isFunction(obj: any) {
 export function isString(obj: any) {
     return Object.prototype.toString.call(obj) === "[object String]";
 }
+
+export function mod(n: number, m: number) {
+    return ((n % m) + m) % m;
+}

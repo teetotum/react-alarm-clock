@@ -2,10 +2,10 @@ import React, { useState, useRef, useCallback } from "react";
 import Clock from "@components/Clock";
 import Controls from "@components/Controls";
 import useConstructor from "@hooks/useConstructor";
+import { calcTimeUntilAlert, getCurrentTime } from "@business/time";
+import { retrieveTime, storeTime } from "@business/storage";
 import alarmSound from "@assets/audio/alarm.mp3";
 import "./App.scss";
-
-const MILLISECONDS_IN_A_DAY = 86400000;
 
 export default function App() {
     const [running, setRunning] = useState<boolean>(false);
@@ -14,18 +14,16 @@ export default function App() {
     const audio                 = useRef<HTMLAudioElement>();
 
     useConstructor(() => {
-        setTime(getDefaultTime());
-
+        setTime(retrieveTime() || getCurrentTime());
         audio.current = new Audio(alarmSound);
         audio.current.loop = true;
     });
 
     const toggleRunning = () => {
         if (!running) {
+            storeTime(time);
             let delta = calcTimeUntilAlert(time);
             timeoutId.current = window.setTimeout(() => audio.current.play(), delta);
-
-            setDefaultTime(time);
         } else {
             clearTimeout(timeoutId.current);
             audio.current.pause();
@@ -48,35 +46,4 @@ export default function App() {
             </div>
         </div>
     );
-}
-
-const calcTimeUntilAlert = ({hours, minutes}: types.Time): number => {
-    let d = new Date();
-    d.setHours(hours, minutes, 0, 0);
-
-    let targetTime = d.getTime();
-    let currentTime = Date.now();
-    if (targetTime < currentTime) {
-        targetTime += MILLISECONDS_IN_A_DAY;
-    }
-
-    let result = targetTime - currentTime;
-    return result;
-}
-
-const getDefaultTime = (): types.Time => {
-    const d = new Date();
-
-    const localStorageHours = localStorage.getItem("hours");
-    const hours = localStorageHours ? parseInt(localStorageHours) : d.getHours();
-
-    const localStorageMinutes = localStorage.getItem("minutes");
-    const minutes = localStorageMinutes ? parseInt(localStorageMinutes) : d.getMinutes();
-
-    return {hours: hours, minutes: minutes};
-}
-
-const setDefaultTime = ({hours, minutes}: types.Time) => {
-    localStorage.setItem("hours",   hours.toString());
-    localStorage.setItem("minutes", minutes.toString());
 }
