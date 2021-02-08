@@ -98,6 +98,7 @@ module.exports = env => {
             alias: {
                 "@components": path.resolve(srcDir, "components"),
                 "@hooks":      path.resolve(srcDir, "hooks"),
+                "@business":   path.resolve(srcDir, "business"),
                 "@utils":      path.resolve(srcDir, "utils.ts"),
                 "@assets":     assetsDir,
             },

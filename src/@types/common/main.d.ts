@@ -13,5 +13,10 @@ declare namespace types {
     type ApplyChangeTimeFunction = (changeTime: ChangeTimeFunction) => void;
 }
 
+interface Window {
+    AudioContext:       typeof AudioContext
+    webkitAudioContext: typeof AudioContext // @@Note: Why do we need this?
+}
+
 declare module "*.mp3";
 declare module '*.svg';

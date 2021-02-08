@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useContext } from "react";
-import { AudioContextContext } from "@components/AudioContext";
+import React, { useEffect, useRef } from "react";
 import useConstructor from "@hooks/useConstructor";
 import useClassName from "@hooks/useClassName";
-import { loadAudio, playAudioBuffer } from "@utils";
+import AudioManager from "@business/AudioManager";
+import Sound from "@business/Sound";
 import buttonSound from "./button.mp3";
 import PlayIcon from "./play.svg";
 import PauseIcon from "./pause.svg";
@@ -16,12 +16,12 @@ type PropsType = {
 export default function StartButton(props: PropsType) {
     const {running, toggleRunning} = props;
 
-    const audioContext = useContext(AudioContextContext);
-    const audioBuffer = useRef<AudioBuffer>();
+    const sound = useRef<Sound>();
 
-    useConstructor(() => loadAudio(audioContext, buttonSound, (data: any) => {
-        audioBuffer.current = data;
-    }));
+    useConstructor(() => {
+        const audioContext = AudioManager.instance().context;
+        sound.current = new Sound(audioContext, buttonSound);
+    });
 
     const [className, setClassName] = useClassName({
         startButton__alarmIsSet: false,
@@ -37,9 +37,7 @@ export default function StartButton(props: PropsType) {
 
     const callback = (e: React.MouseEvent) => {
         toggleRunning(e);
-        // @@Note: This could be undefined if the audio file took
-        // a long time to load.
-        playAudioBuffer(audioContext, audioBuffer.current);
+        sound.current.play();
     }
 
     const icon = (running) ?

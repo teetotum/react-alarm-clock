@@ -1,7 +1,6 @@
 import React, { useState, useRef, useCallback } from "react";
 import Clock from "@components/Clock";
 import Controls from "@components/Controls";
-import { AudioContextProvider } from "@components/AudioContext";
 import useConstructor from "@hooks/useConstructor";
 import alarmSound from "@assets/audio/alarm.mp3";
 import "./App.scss";
@@ -41,15 +40,13 @@ export default function App() {
     }, []);
 
     return (
-        <AudioContextProvider>
-            <div className="outerContainer">
-                <div className="innerContainer">
-                    <Clock time={time} />
-                    <Controls running={running} toggleRunning={toggleRunning}
-                     applyChangeTime={applyChangeTime} />
-                </div>
+        <div className="outerContainer">
+            <div className="innerContainer">
+                <Clock time={time} />
+                <Controls running={running} toggleRunning={toggleRunning}
+                 applyChangeTime={applyChangeTime} />
             </div>
-        </AudioContextProvider>
+        </div>
     );
 }
 
