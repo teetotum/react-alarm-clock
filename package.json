@@ -4,11 +4,11 @@
     "description": "",
     "main": "webpack.config.js",
     "scripts": {
-        "serve":        "webpack serve --config config/webpack.config.js --env mode=development",
-        "build":        "webpack --config config/webpack.config.js --env mode=development",
-        "build:dev":    "webpack --config config/webpack.config.js --env mode=development",
-        "build:prod":   "webpack --config config/webpack.config.js --env mode=production",
-        "build:github": "webpack --config config/webpack.config.js --env mode=github"
+        "serve": "webpack serve --env mode=development",
+        "build": "webpack --env mode=development",
+        "build:dev": "webpack --env mode=development",
+        "build:prod": "webpack --env mode=production",
+        "build:github": "webpack --env mode=github"
     },
     "author": "",
     "license": "ISC",

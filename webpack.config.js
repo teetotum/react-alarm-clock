@@ -4,7 +4,7 @@ const MiniCssExtractPlugin   = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin      = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const rootDir   = path.resolve(__dirname, "..");
+const rootDir   = __dirname;
 const distDir   = path.resolve(rootDir, "dist");
 const srcDir    = path.resolve(rootDir, "src");
 const assetsDir = path.resolve(srcDir, "assets");
