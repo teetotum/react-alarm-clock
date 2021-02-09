@@ -8,10 +8,10 @@ import alarmSound from "@assets/audio/alarm.mp3";
 import "./App.scss";
 
 export default function App() {
-    const [running, setRunning] = useState<boolean>(false);
-    const [time, setTime]       = useState<types.Time>();
-    const timeoutId             = useRef<number>();
-    const audio                 = useRef<HTMLAudioElement>();
+    const [mode, setMode]  = useState<types.AlarmClockMode>("idle");
+    const [time, setTime]  = useState<types.Time>();
+    const timeoutId        = useRef<number>();
+    const audio            = useRef<HTMLAudioElement>();
 
     useConstructor(() => {
         setTime(retrieveTime() || getCurrentTime());
@@ -19,18 +19,25 @@ export default function App() {
         audio.current.loop = true;
     });
 
-    const toggleRunning = () => {
-        if (!running) {
-            storeTime(time);
+    const onArmButtonPress = () => {
+        if (mode === "idle") {
+            setMode("armed");
+
             let delta = calcTimeUntilAlert(time);
-            timeoutId.current = window.setTimeout(() => audio.current.play(), delta);
+            timeoutId.current = window.setTimeout(() => {
+                setMode("fired");
+                audio.current.play()
+            }, delta);
+
+            storeTime(time);
         } else {
+            setMode("idle");
+
             clearTimeout(timeoutId.current);
+
             audio.current.pause();
             audio.current.currentTime = 0;
         }
-
-        setRunning(!running);
     }
 
     const applyChangeTime = useCallback((changeTime: types.ChangeTimeFunction) => {
@@ -41,8 +48,10 @@ export default function App() {
         <div className="outerContainer">
             <div className="innerContainer">
                 <Clock time={time} />
-                <Controls running={running} toggleRunning={toggleRunning}
-                 applyChangeTime={applyChangeTime} />
+                <Controls
+                    alarmClockMode={mode}
+                    onArmButtonPress={onArmButtonPress}
+                    applyChangeTime={applyChangeTime} />
             </div>
         </div>
     );

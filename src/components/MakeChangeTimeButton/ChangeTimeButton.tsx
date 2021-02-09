@@ -12,7 +12,7 @@ const CHANGE_TIME_INITIAL_DELAY = 400;
 type PropsType = {
     children: ReactNode;
     callback: Function;
-    alarmIsSet: boolean;
+    alarmClockMode: types.AlarmClockMode;
     className: string|types.BoolMap;
 };
 
@@ -35,7 +35,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
     const press = (e: any) => {
         e.preventDefault();
 
-        if (props.alarmIsSet) {
+        if (props.alarmClockMode !== "idle") {
             return;
         }
 
@@ -47,7 +47,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
         setClassName("update", {
             changeTimeButton__pressed: true,
             changeTimeButton__unpressed: false,
-            changeTimeButton__alarmIsSet: false
+            changeTimeButton__alarmIsNotIdle: false
         });
 
         props.callback();
@@ -64,7 +64,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
     const release = (e: any) => {
         e.preventDefault();
 
-        if (props.alarmIsSet) {
+        if (props.alarmClockMode !== "idle") {
             return;
         }
 
@@ -72,7 +72,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
             return {
                 changeTimeButton__unpressed: classes.changeTimeButton__pressed,
                 changeTimeButton__pressed: false,
-                changeTimeButton__alarmIsSet: false
+                changeTimeButton__alarmIsNotIdle: false
             };
         });
 
@@ -82,7 +82,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
 
     useEffect(() => {
         setClassName("update", {
-            changeTimeButton__alarmIsSet: props.alarmIsSet,
+            changeTimeButton__alarmIsNotIdle: props.alarmClockMode !== "idle",
             changeTimeButton__pressed: false,
             changeTimeButton__unpressed: false
         });
@@ -94,7 +94,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
             anchorRef.current.removeEventListener("touchstart", press);
             anchorRef.current.removeEventListener("touchend", release);
         }
-    }, [props.alarmIsSet]);
+    }, [props.alarmClockMode]);
 
     return (
         <span className={className} onMouseDown={press} onMouseUp={release}

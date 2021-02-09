@@ -6,15 +6,15 @@ import Sound from "@business/Sound";
 import buttonSound from "./button.mp3";
 import PlayIcon from "./play.svg";
 import PauseIcon from "./pause.svg";
-import "./StartButton.scss";
+import "./ArmButton.scss";
 
 type PropsType = {
-    running: boolean;
-    toggleRunning: (e: React.MouseEvent) => void;
+    alarmClockMode: types.AlarmClockMode;
+    onArmButtonPress: (e: React.MouseEvent) => void;
 };
 
-export default function StartButton(props: PropsType) {
-    const {running, toggleRunning} = props;
+export default function ArmButton(props: PropsType) {
+    const {alarmClockMode, onArmButtonPress} = props;
 
     const sound = useRef<Sound>();
 
@@ -24,25 +24,27 @@ export default function StartButton(props: PropsType) {
     });
 
     const [className, setClassName] = useClassName({
-        startButton__alarmIsSet: false,
+        startButton__alarmIsArmed: false,
+        startButton__alarmIsFired: false,
         startButton: true,
         button: true
     });
 
     useEffect(() => {
         setClassName("update", {
-            startButton__alarmIsSet: running
+            startButton__alarmIsArmed: alarmClockMode === "armed",
+            startButton__alarmIsFired: alarmClockMode === "fired"
         });
-    }, [running]);
+    }, [alarmClockMode]);
 
     const callback = (e: React.MouseEvent) => {
-        toggleRunning(e);
+        onArmButtonPress(e);
         sound.current.play();
     }
 
-    const icon = (running) ?
-        <PauseIcon className="button_icon" /> :
-        <PlayIcon  className="button_icon" />
+    const icon = (alarmClockMode === "idle") ?
+        <PlayIcon  className="button_icon" /> :
+        <PauseIcon className="button_icon" />;
 
     return (
         <span className={className} onClick={callback} >

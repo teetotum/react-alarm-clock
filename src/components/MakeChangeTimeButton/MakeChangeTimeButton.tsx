@@ -7,12 +7,12 @@ import MinusIcon from "./minus.svg";
 type PropsType = {
     type: "h+"|"h-"|"m+"|"m-";
     applyChangeTime: types.ApplyChangeTimeFunction;
-    alarmIsSet: boolean;
+    alarmClockMode: types.AlarmClockMode;
     className: (string|types.BoolMap);
 };
 
 const MakeChangeTimeButton = memo((props: PropsType) => {
-    const {type, applyChangeTime, alarmIsSet, className} = props;
+    const {alarmClockMode, type, applyChangeTime, className} = props;
 
     const _changeTime = {
         "h+": (time: types.Time) => changeTime(time,  1,  0),
@@ -31,8 +31,10 @@ const MakeChangeTimeButton = memo((props: PropsType) => {
     const callback = useCallback(() => applyChangeTime(_changeTime), []);
 
     return (
-        <ChangeTimeButton callback={callback} alarmIsSet={alarmIsSet}
-         className={className}>
+        <ChangeTimeButton
+            callback={callback}
+            alarmClockMode={alarmClockMode}
+            className={className}>
             {icon}
         </ChangeTimeButton>
     );
