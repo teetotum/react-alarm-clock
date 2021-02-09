@@ -11,6 +11,8 @@ declare namespace types {
     type ChangeTimeFunction = (time: Time) => Time;
 
     type ApplyChangeTimeFunction = (changeTime: ChangeTimeFunction) => void;
+
+    type AlarmClockMode = "idle"|"armed"|"fired";
 }
 
 interface Window {
