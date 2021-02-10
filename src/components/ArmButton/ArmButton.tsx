@@ -24,16 +24,16 @@ export default function ArmButton(props: PropsType) {
     });
 
     const [className, setClassName] = useClassName({
-        startButton__alarmIsArmed: false,
-        startButton__alarmIsFired: false,
-        startButton: true,
+        armButton__alarmIsArmed: false,
+        armButton__alarmIsFired: false,
+        armButton: true,
         button: true
     });
 
     useEffect(() => {
         setClassName("update", {
-            startButton__alarmIsArmed: alarmClockMode === "armed",
-            startButton__alarmIsFired: alarmClockMode === "fired"
+            armButton__alarmIsArmed: alarmClockMode === "armed",
+            armButton__alarmIsFired: alarmClockMode === "fired"
         });
     }, [alarmClockMode]);
 

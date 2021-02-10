@@ -1,16 +1,48 @@
 @import "@assets/css/globals";
 
 .changeTimeButton__pressed {
-    @include fadein-animation();
+    animation-name: fadein;
+    animation-duration: 100ms;
+    animation-fill-mode: forwards;
+
+    @keyframes fadein {
+        from {
+            background: $background-color;
+            fill: $foreground-color-1;
+            box-shadow: shadow-values(inset);
+        }
+
+        to {
+            background: $foreground-color-1;
+            fill: $background-color;
+            box-shadow: none;
+        }
+    }
 }
 
 .changeTimeButton__unpressed {
-    @include fadeout-animation();
+    animation-name: fadeout;
+    animation-duration: 100ms;
+    animation-fill-mode: forwards;
+
+    @keyframes fadeout {
+        from {
+            background: $foreground-color-1;
+            color: $background-color;
+            box-shadow: none;
+        }
+
+        to {
+            background: $background-color;
+            color: $foreground-color-1;
+            box-shadow: shadow-values(inset);
+        }
+    }
 }
 
 .changeTimeButton__alarmIsNotIdle {
-    fill: $red2;
-    border-color: $red2;
+    fill: $foreground-color-2;
+    border-color: $foreground-color-2;
     box-shadow: none;
 }
 

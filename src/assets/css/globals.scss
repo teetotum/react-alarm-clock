@@ -4,61 +4,23 @@ $small:       768px;
 $medium:      992px;
 $large:       1200px;
 
-$min-clock-font-size: 14rem;
-$min-controls-button-size: $min-clock-font-size * 0.17;
+$alarm-width: 36.36rem;
 
-// @@Todo: Rename these variables.
-$red1: #ff0000;
-$red2: #330000;
+$foreground-color-1: #ff0000;
+$foreground-color-2: #330000;
+$background-color:   #000000;
 
 $shadow-offset-x: 0;
 $shadow-offset-y: 0;
 $shadow-blur-radius: 20px;
 $shadow-color: rgba(230, 58, 82, 0.3);
 
-$set-alarm-transition-timing-function: linear;
-$set-alarm-transition-duration: 100ms;
-
 @function shadow-values($prefix: "") {
     @return #{$prefix} #{$shadow-offset-x} #{$shadow-offset-y} #{$shadow-blur-radius} #{$shadow-color}
 }
 
-@mixin fadein-animation() {
-    animation-name: fadein;
-    animation-duration: 100ms;
-    animation-fill-mode: forwards;
-
-    @keyframes fadein {
-        from {
-            background: black;
-            fill: $red1;
-            box-shadow: shadow-values(inset);
-        }
-
-        to {
-            background: $red1;
-            fill: black;
-            box-shadow: none;
-        }
-    }
-}
-
-@mixin fadeout-animation() {
-    animation-name: fadeout;
-    animation-duration: 100ms;
-    animation-fill-mode: forwards;
-
-    @keyframes fadeout {
-        from {
-            background: $red1;
-            color: black;
-            box-shadow: none;
-        }
-
-        to {
-            background: black;
-            color: $red1;
-            box-shadow: shadow-values(inset);
-        }
-    }
+@mixin arm-button-press-transition($properties) {
+    transition-property: #{$properties};
+    transition-duration: 100ms;
+    transition-timing-function: linear;
 }

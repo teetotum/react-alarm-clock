@@ -1,19 +1,17 @@
 @import "@assets/css/globals";
 
-.startButton {
-    transition: all $set-alarm-transition-duration
-                $set-alarm-transition-timing-function;
-    transition-property: flex-grow, box-shadow;
+.armButton {
+    @include arm-button-press-transition("flex-grow, box-shadow");
 }
 
-.startButton__alarmIsArmed,
-.startButton__alarmIsFired {
+.armButton__alarmIsArmed,
+.armButton__alarmIsFired {
     flex-grow: 2;
     box-shadow: shadow-values(inset), shadow-values();
     z-index: 2;
 }
 
-.startButton__alarmIsFired {
+.armButton__alarmIsFired {
     animation-name: blink;
     animation-duration: 500ms;
     animation-iteration-count: infinite;
@@ -23,15 +21,14 @@
     @keyframes blink {
         from {
             background: black;
-            fill: $red1;
+            fill: $foreground-color-1;
             box-shadow: shadow-values(inset);
         }
 
         to {
-            background: $red1;
-            fill: black;
+            background: $foreground-color-1;
+            fill: $background-color;
             box-shadow: none;
         }
     }
 }
-

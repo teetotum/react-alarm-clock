@@ -1,5 +1,8 @@
 @import "@assets/css/globals";
 
+$button-height: $alarm-width * 0.17;
+$icon-height:   $alarm-width * 0.0654;
+
 html, body {
     height: 100%;
     font-size: 62.5%;
@@ -15,27 +18,25 @@ html, body {
 }
 
 .button {
+    @include arm-button-press-transition("border-color, box-shadow, fill");
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
     flex-grow: 1;
+    height: $button-height;
     text-align: center;
     background: black;
     border-width: 3px;
     border-style: solid;
-    border-color: $red1;
-    box-shadow: shadow-values(inset);
-    fill: $red1;
     user-select: none;
     touch-action: none;
-    transition: all $set-alarm-transition-duration
-                $set-alarm-transition-timing-function;
-    transition-property: border-color, box-shadow, fill;
+
+    border-color: $foreground-color-1;
+    box-shadow: shadow-values(inset);
+    fill: $foreground-color-1;
 }
 
 .button_icon {
-    width: $min-controls-button-size;
-    height: $min-controls-button-size;
-    padding: 1.5rem 0;
-
-    @media screen and (min-width: $extra-small) {
-        font-size: $min-controls-button-size * 1.14285;
-    }
+    height: $icon-height;
 }

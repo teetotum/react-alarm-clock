@@ -1,13 +1,15 @@
 @import "@assets/css/globals";
 
+$font-size: $alarm-width * 0.38;
+
 .clock {
     position: relative;
     font-family: "Digital";
-    font-size: $min-clock-font-size;
+    font-size: $font-size;
     margin-bottom: 20px;
 
     @media screen and (min-width: $extra-small) {
-        font-size: $min-clock-font-size * 1.14285;
+        font-size: $font-size * 1.14285;
     }
 }
 
@@ -15,7 +17,7 @@
     position: relative;
     display: inline-block;
     z-index: 1;
-    color: $red1;
+    color: $foreground-color-1;
     text-shadow: shadow-values();
 }
 
@@ -24,7 +26,7 @@
     top: 0;
     left: 0;
     z-index: 0;
-    color: $red2;
+    color: $foreground-color-2;
 }
 
 .clock_fg, .clock_bg {
