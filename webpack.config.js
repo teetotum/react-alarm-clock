@@ -107,7 +107,8 @@ module.exports = env => {
         devServer: {
             contentBase: distDir,
             hot: true
-        }
+        },
+        devtool: mode === "development" ? "inline-source-map" : false
     };
 
     return result;
