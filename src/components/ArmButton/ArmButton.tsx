@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import useConstructor from "@hooks/useConstructor";
-import useClassName from "@hooks/useClassName";
+import useClasses, { serializeClasses } from "@hooks/useClasses";
 import AudioManager from "@business/AudioManager";
 import Sound from "@business/Sound";
 import buttonSound from "./button.mp3";
@@ -23,7 +23,7 @@ export default function ArmButton(props: PropsType) {
         sound.current = new Sound(audioContext, buttonSound);
     });
 
-    const [className, setClassName] = useClassName({
+    const [classes, setClasses] = useClasses({
         armButton__alarmIsArmed: false,
         armButton__alarmIsFired: false,
         armButton: true,
@@ -31,7 +31,7 @@ export default function ArmButton(props: PropsType) {
     });
 
     useEffect(() => {
-        setClassName("update", {
+        setClasses("update", {
             armButton__alarmIsArmed: alarmClockMode === "armed",
             armButton__alarmIsFired: alarmClockMode === "fired"
         });
@@ -47,7 +47,7 @@ export default function ArmButton(props: PropsType) {
         <PauseIcon className="button_icon" />;
 
     return (
-        <span className={className} onClick={callback} >
+        <span className={serializeClasses(classes)} onClick={callback} >
             {icon}
         </span>
     );

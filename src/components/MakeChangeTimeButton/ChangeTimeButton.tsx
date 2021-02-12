@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef, ReactNode } from "react";
 import useConstructor from "@hooks/useConstructor";
-import useClassName from "@hooks/useClassName";
+import useClasses, { serializeClasses } from "@hooks/useClasses";
 import AudioManager from "@business/AudioManager";
 import Sound from "@business/Sound";
 import buttonSound from "./button.mp3";
@@ -27,7 +27,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
         sound.current = new Sound(audioContext, buttonSound);
     });
 
-    const [className, setClassName] = useClassName({
+    const [classes, setClasses] = useClasses({
         changeTimeButton: true,
         button: true,
     }, props.className);
@@ -44,7 +44,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
             return;
         }
 
-        setClassName("update", {
+        setClasses("update", {
             changeTimeButton__pressed: true,
             changeTimeButton__unpressed: false,
             changeTimeButton__alarmIsNotIdle: false
@@ -68,7 +68,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
             return;
         }
 
-        setClassName("update", (classes: types.BoolMap) => {
+        setClasses("update", (classes: types.BoolMap) => {
             return {
                 changeTimeButton__unpressed: classes.changeTimeButton__pressed,
                 changeTimeButton__pressed: false,
@@ -81,7 +81,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
     };
 
     useEffect(() => {
-        setClassName("update", {
+        setClasses("update", {
             changeTimeButton__alarmIsNotIdle: props.alarmClockMode !== "idle",
             changeTimeButton__pressed: false,
             changeTimeButton__unpressed: false
@@ -97,8 +97,12 @@ const ChangeTimeButton = memo((props: PropsType) => {
     }, [props.alarmClockMode]);
 
     return (
-        <span className={className} onMouseDown={press} onMouseUp={release}
-         onMouseLeave={release} ref={anchorRef}>
+        <span
+            className={serializeClasses(classes)}
+            onMouseDown={press}
+            onMouseUp={release}
+            onMouseLeave={release}
+            ref={anchorRef}>
             {props.children}
         </span>
     );

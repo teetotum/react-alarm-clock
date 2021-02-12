@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import ArmButton from "@components/ArmButton";
 import MakeChangeTimeButton from "@components/MakeChangeTimeButton";
-import useClassName from "@hooks/useClassName";
+import useClasses, { serializeClasses } from "@hooks/useClasses";
 import "./Controls.scss";
 
 type PropsType = {
@@ -13,7 +13,7 @@ type PropsType = {
 export default function Controls(props: PropsType) {
     const {alarmClockMode, onArmButtonPress, applyChangeTime} = props;
 
-    const [className, setClassName] = useClassName({
+    const [classes, setClasses] = useClasses({
         controls__alarmIsNotIdle: false,
         controls: true
     });
@@ -21,12 +21,12 @@ export default function Controls(props: PropsType) {
     // @Note: This might trigger an update when alarm
     // is in "fired" state even though we only need to
     // re-render on to-"idle" and to-"armed" transitions.
-    useEffect(() => setClassName("update", {
+    useEffect(() => setClasses("update", {
         controls__alarmIsNotIdle: alarmClockMode !== "idle"
     }), [alarmClockMode]);
 
     return (
-        <div className={className} >
+        <div className={serializeClasses(classes)} >
             <MakeChangeTimeButton
                 type="h+"
                 applyChangeTime={applyChangeTime}
