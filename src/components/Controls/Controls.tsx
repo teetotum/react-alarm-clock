@@ -1,66 +1,55 @@
 import React, { useEffect, useMemo } from "react";
 import ArmButton from "@components/ArmButton";
-import MakeChangeTimeButton from "@components/MakeChangeTimeButton";
+import ChangeTimeButton from "@components/ChangeTimeButton";
 import useClasses, { serializeClasses } from "@hooks/useClasses";
 import "./Controls.scss";
 
 type PropsType = {
-    alarmClockMode: types.AlarmClockMode;
+    mode: types.AlarmClockMode;
     onArmButtonPress: () => void;
-    applyChangeTime: types.ApplyChangeTimeFunction;
+    onChangeTimeButtonPress: (type: types.ChangeTimeButtonType) => void;
 };
 
 export default function Controls(props: PropsType) {
-    const {alarmClockMode, onArmButtonPress, applyChangeTime} = props;
-
-    // @@Note: This might trigger an update when alarm
-    // is in "fired" state even though we only need to
-    // re-render on to-"idle" and to-"armed" transitions.
-    const alarmClockIsNotIdle = useMemo(() => {
-        return alarmClockMode !== "idle";
-    }, [alarmClockMode]);
+    const {mode, onArmButtonPress, onChangeTimeButtonPress} = props;
 
     const [classes, setClasses] = useClasses({
-        controls__alarmClockIsNotIdle: false,
+        controls__isNotIdle: false,
         controls: true
     });
 
-    // @@Note: This might trigger an update when alarm
-    // is in "fired" state even though we only need to
-    // re-render on to-"idle" and to-"armed" transitions.
-    useEffect(() => setClasses("update", {
-        controls__alarmClockIsNotIdle: alarmClockIsNotIdle
-    }), [alarmClockMode]);
+    const isNotIdle = mode !== "idle";
+    useEffect(() => setClasses("update", {controls__isNotIdle: isNotIdle}), [isNotIdle]);
 
     return (
         <div className={serializeClasses(classes)}>
-            <MakeChangeTimeButton
+            <ChangeTimeButton
                 type="h+"
-                applyChangeTime={applyChangeTime}
+                disabled={isNotIdle}
                 className="changeTimeButton__left"
-                disabled={alarmClockIsNotIdle}
+                onPress={onChangeTimeButtonPress}
             />
-            <MakeChangeTimeButton
+            <ChangeTimeButton
                 type="h-"
-                applyChangeTime={applyChangeTime}
+                disabled={isNotIdle}
                 className="changeTimeButton__left"
-                disabled={alarmClockIsNotIdle}
+                onPress={onChangeTimeButtonPress}
             />
             <ArmButton
-                alarmClockMode={alarmClockMode}
-                onArmButtonPress={onArmButtonPress}
+                mode={mode}
+                onPress={onArmButtonPress}
             />
-            <MakeChangeTimeButton
+            <ChangeTimeButton
                 type="m+"
-                applyChangeTime={applyChangeTime}
+                disabled={isNotIdle}
                 className="changeTimeButton__right"
-                disabled={alarmClockIsNotIdle}
+                onPress={onChangeTimeButtonPress}
             />
-            <MakeChangeTimeButton
+            <ChangeTimeButton
                 type="m-"
-                applyChangeTime={applyChangeTime}
+                disabled={isNotIdle}
                 className="changeTimeButton__right"
-                disabled={alarmClockIsNotIdle}
+                onPress={onChangeTimeButtonPress}
             />
         </div>
     );

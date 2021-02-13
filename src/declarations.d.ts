@@ -12,11 +12,11 @@ declare namespace types {
         minutes: number
     };
 
-    type ChangeTimeFunction = (time: Time) => Time;
-
-    type ApplyChangeTimeFunction = (changeTime: ChangeTimeFunction) => void;
+    // type ChangeTimeFunction = (time: Time) => Time;
 
     type AlarmClockMode = "idle"|"armed"|"fired";
+
+    type ChangeTimeButtonType = "h+"|"h-"|"m+"|"m-";
 }
 
 interface Window {

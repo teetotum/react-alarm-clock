@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from "react";
 import Clock from "@components/Clock";
 import Controls from "@components/Controls";
 import useConstructor from "@hooks/useConstructor";
-import { calcTimeUntilAlert, getCurrentTime } from "@business/time";
+import { calcTimeUntilAlert, getCurrentTime, changeTime } from "@business/time";
 import { retrieveTime, storeTime } from "@business/storage";
 import alarmSound from "@assets/audio/alarm.mp3";
 import "./App.scss";
@@ -19,7 +19,7 @@ export default function App() {
         audio.current.loop = true;
     });
 
-    const onArmButtonPress = () => {
+    const onArmButtonPress = useCallback(() => {
         if (mode === "idle") {
             setMode("armed");
 
@@ -38,20 +38,27 @@ export default function App() {
             audio.current.pause();
             audio.current.currentTime = 0;
         }
-    }
+    }, [mode, time])
 
-    const applyChangeTime = useCallback((changeTime: types.ChangeTimeFunction) => {
-        setTime((prevTime: types.Time) => changeTime(prevTime));
-    }, []);
+    const onChangeTimeButtonPress = useCallback((type: types.ChangeTimeButtonType) => {
+        const f = {
+            "h+": (time: types.Time) => changeTime(time,  1,  0),
+            "h-": (time: types.Time) => changeTime(time, -1,  0),
+            "m+": (time: types.Time) => changeTime(time,  0,  1),
+            "m-": (time: types.Time) => changeTime(time,  0, -1)
+        }[type];
+        setTime((time: types.Time) => f(time));
+    }, [time]);
 
     return (
         <div className="outerContainer">
             <div className="innerContainer">
                 <Clock time={time} />
                 <Controls
-                    alarmClockMode={mode}
+                    mode={mode}
                     onArmButtonPress={onArmButtonPress}
-                    applyChangeTime={applyChangeTime} />
+                    onChangeTimeButtonPress={onChangeTimeButtonPress}
+                />
             </div>
         </div>
     );

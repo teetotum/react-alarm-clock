@@ -4,14 +4,14 @@
     @include arm-button-press-transition("flex-grow, box-shadow");
 }
 
-.armButton__alarmIsArmed,
-.armButton__alarmIsFired {
+.armButton__IsArmed,
+.armButton__IsFired {
     flex-grow: 2;
     box-shadow: shadow-values(inset), shadow-values();
     z-index: 2;
 }
 
-.armButton__alarmIsFired {
+.armButton__IsFired {
     animation-name: blink;
     animation-duration: 500ms;
     animation-iteration-count: infinite;

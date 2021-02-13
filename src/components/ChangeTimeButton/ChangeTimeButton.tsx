@@ -3,23 +3,25 @@ import React, {
     useEffect,
     useRef,
     memo,
-    ReactNode
+    useMemo
 } from "react";
 import useConstructor from "@hooks/useConstructor";
 import useClasses, { serializeClasses } from "@hooks/useClasses";
 import AudioManager from "@business/AudioManager";
 import Sound from "@business/Sound";
 import buttonSound from "./button.mp3";
+import PlusIcon from "./plus.svg";
+import MinusIcon from "./minus.svg";
 import "./ChangeTimeButton.scss";
 
 const CHANGE_TIME_REPEAT_PERIOD = 100;
 const CHANGE_TIME_INITIAL_DELAY = 400;
 
 type PropsType = {
-    children: ReactNode;
-    callback: Function;
-    className: string|types.BoolDictionary;
+    type: types.ChangeTimeButtonType;
     disabled: boolean;
+    onPress: (type: types.ChangeTimeButtonType) => void;
+    className: string|types.BoolDictionary;
 };
 
 const ChangeTimeButton = memo((props: PropsType) => {
@@ -37,8 +39,8 @@ const ChangeTimeButton = memo((props: PropsType) => {
         sound.current = new Sound(audioContext, buttonSound);
     });
 
-    const action = () => {
-        props.callback();
+    const action = (type: types.ChangeTimeButtonType) => {
+        props.onPress(type);
         sound.current.play()
     }
 
@@ -62,11 +64,11 @@ const ChangeTimeButton = memo((props: PropsType) => {
             changeTimeButton__disabled: false
         });
 
-        action();
+        action(props.type);
 
         timeoutId.current = window.setTimeout(() => {
             intervalId.current = window.setInterval(() => {
-                action();
+                action(props.type);
             }, CHANGE_TIME_REPEAT_PERIOD);
         }, CHANGE_TIME_INITIAL_DELAY);
     };
@@ -108,14 +110,25 @@ const ChangeTimeButton = memo((props: PropsType) => {
         }
     }, [props.disabled]);
 
+    // @@Note: Maybe it's silly to memoize this, since we probably
+    // won't change the type once it is first set.
+    const icon = useMemo(() => {
+        if (props.type === "h+" || props.type === "m+") {
+            return <PlusIcon className="button_icon"/>;
+        } else {
+            return <MinusIcon className="button_icon"/>;
+        }
+    }, [props.type]);
+
     return (
         <span
-            className={serializeClasses(classes)}
             onMouseDown={press}
             onMouseUp={release}
             onMouseLeave={release}
-            ref={anchorRef}>
-            {props.children}
+            ref={anchorRef}
+            className={serializeClasses(classes)}
+        >
+            {icon}
         </span>
     );
 });

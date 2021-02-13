@@ -9,13 +9,11 @@ import PauseIcon from "./pause.svg";
 import "./ArmButton.scss";
 
 type PropsType = {
-    alarmClockMode: types.AlarmClockMode;
-    onArmButtonPress: (e: React.MouseEvent) => void;
+    mode: types.AlarmClockMode;
+    onPress: () => void;
 };
 
 export default function ArmButton(props: PropsType) {
-    const {alarmClockMode, onArmButtonPress} = props;
-
     const sound = useRef<Sound>();
 
     useConstructor(() => {
@@ -24,25 +22,25 @@ export default function ArmButton(props: PropsType) {
     });
 
     const [classes, setClasses] = useClasses({
-        armButton__alarmIsArmed: false,
-        armButton__alarmIsFired: false,
+        armButton__isArmed: false,
+        armButton__IsFired: false,
         armButton: true,
         button: true
     });
 
     useEffect(() => {
         setClasses("update", {
-            armButton__alarmIsArmed: alarmClockMode === "armed",
-            armButton__alarmIsFired: alarmClockMode === "fired"
+            armButton__IsArmed: props.mode === "armed",
+            armButton__IsFired: props.mode === "fired"
         });
-    }, [alarmClockMode]);
+    }, [props.mode]);
 
     const callback = (e: React.MouseEvent) => {
-        onArmButtonPress(e);
+        props.onPress();
         sound.current.play();
     }
 
-    const icon = (alarmClockMode === "idle") ?
+    const icon = (props.mode === "idle") ?
         <PlayIcon  className="button_icon" /> :
         <PauseIcon className="button_icon" />;
 
