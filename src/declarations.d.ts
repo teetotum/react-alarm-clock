@@ -1,5 +1,9 @@
 declare namespace types {
-    type BoolMap = {
+    interface AnyDictionary {
+        [key: string]: any
+    };
+
+    type BoolDictionary = {
         [key: string]: boolean
     };
 

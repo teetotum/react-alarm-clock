@@ -1,4 +1,10 @@
-import React, { memo, useEffect, useRef, ReactNode } from "react";
+import React, {
+    useState,
+    useEffect,
+    useRef,
+    memo,
+    ReactNode
+} from "react";
 import useConstructor from "@hooks/useConstructor";
 import useClasses, { serializeClasses } from "@hooks/useClasses";
 import AudioManager from "@business/AudioManager";
@@ -12,11 +18,15 @@ const CHANGE_TIME_INITIAL_DELAY = 400;
 type PropsType = {
     children: ReactNode;
     callback: Function;
-    alarmClockMode: types.AlarmClockMode;
-    className: string|types.BoolMap;
+    className: string|types.BoolDictionary;
+    disabled: boolean;
 };
 
 const ChangeTimeButton = memo((props: PropsType) => {
+    const [pressed, setPressed] = useState<boolean>(false);
+    const [classes, setClasses] = useClasses({changeTimeButton: true, button: true});
+    useEffect(() => setClasses("update", props.className), [props.className]);
+
     const anchorRef  = useRef<HTMLAnchorElement>();
     const timeoutId  = useRef<number>();
     const intervalId = useRef<number>();
@@ -27,15 +37,15 @@ const ChangeTimeButton = memo((props: PropsType) => {
         sound.current = new Sound(audioContext, buttonSound);
     });
 
-    const [classes, setClasses] = useClasses({
-        changeTimeButton: true,
-        button: true,
-    }, props.className);
+    const action = () => {
+        props.callback();
+        sound.current.play()
+    }
 
     const press = (e: any) => {
         e.preventDefault();
 
-        if (props.alarmClockMode !== "idle") {
+        if (props.disabled) {
             return;
         }
 
@@ -44,19 +54,19 @@ const ChangeTimeButton = memo((props: PropsType) => {
             return;
         }
 
+        setPressed(true);
+
         setClasses("update", {
             changeTimeButton__pressed: true,
             changeTimeButton__unpressed: false,
-            changeTimeButton__alarmIsNotIdle: false
+            changeTimeButton__disabled: false
         });
 
-        props.callback();
-        sound.current.play()
+        action();
 
         timeoutId.current = window.setTimeout(() => {
             intervalId.current = window.setInterval(() => {
-                props.callback();
-                sound.current.play()
+                action();
             }, CHANGE_TIME_REPEAT_PERIOD);
         }, CHANGE_TIME_INITIAL_DELAY);
     };
@@ -64,15 +74,17 @@ const ChangeTimeButton = memo((props: PropsType) => {
     const release = (e: any) => {
         e.preventDefault();
 
-        if (props.alarmClockMode !== "idle") {
+        if (!pressed || props.disabled) {
             return;
         }
 
-        setClasses("update", (classes: types.BoolMap) => {
+        setPressed(false);
+
+        setClasses("update", (classes: types.BoolDictionary) => {
             return {
                 changeTimeButton__unpressed: classes.changeTimeButton__pressed,
                 changeTimeButton__pressed: false,
-                changeTimeButton__alarmIsNotIdle: false
+                changeTimeButton__disabled: false
             };
         });
 
@@ -82,7 +94,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
 
     useEffect(() => {
         setClasses("update", {
-            changeTimeButton__alarmIsNotIdle: props.alarmClockMode !== "idle",
+            changeTimeButton__disabled: props.disabled,
             changeTimeButton__pressed: false,
             changeTimeButton__unpressed: false
         });
@@ -94,7 +106,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
             anchorRef.current.removeEventListener("touchstart", press);
             anchorRef.current.removeEventListener("touchend", release);
         }
-    }, [props.alarmClockMode]);
+    }, [props.disabled]);
 
     return (
         <span

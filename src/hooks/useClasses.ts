@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { isString, isFunction } from "@utils";
 
-export default function useClasses(...initialState: (string|types.BoolMap)[]): [types.BoolMap, Function] {
-    const [classes, setClasses] = useState<types.BoolMap>(() => {
-        const objs = initialState.map((x: string|types.BoolMap) => {
+export default function useClasses(...initialState: (string|types.BoolDictionary)[]): [types.BoolDictionary, Function] {
+    const [classes, setClasses] = useState<types.BoolDictionary>(() => {
+        const objs = initialState.map((x: string|types.BoolDictionary) => {
             if (isString(x)) {
                 return {[x as string]: true};
             } else {
@@ -14,9 +14,9 @@ export default function useClasses(...initialState: (string|types.BoolMap)[]): [
         return Object.assign({}, ...objs);
     });
 
-    type ArgumentType = string|types.BoolMap|((x: types.BoolMap) => types.BoolMap);
+    type ArgumentType = string|types.BoolDictionary|((x: types.BoolDictionary) => types.BoolDictionary);
     const setter = (mode: "set"|"update", ...args: ArgumentType[]) => {
-        setClasses((classes: types.BoolMap) => {
+        setClasses((classes: types.BoolDictionary) => {
             const objs = args.map((x: ArgumentType) => {
                 if (isFunction(x)) {
                     return (x as Function)(classes);
@@ -38,7 +38,7 @@ export default function useClasses(...initialState: (string|types.BoolMap)[]): [
     return [classes, setter];
 }
 
-export const serializeClasses = (classes: types.BoolMap): string => {
+export const serializeClasses = (classes: types.BoolDictionary): string => {
     let fn = (key: keyof typeof classes) => classes[key];
     const keys = Object.keys(classes);
     const classArray = keys.filter(fn);
