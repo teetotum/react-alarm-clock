@@ -1,8 +1,8 @@
 import React, {
+    memo,
     useState,
     useEffect,
     useRef,
-    memo,
     useMemo
 } from "react";
 import useConstructor from "@hooks/useConstructor";
@@ -25,7 +25,6 @@ type PropsType = {
 };
 
 const ChangeTimeButton = memo((props: PropsType) => {
-    const [pressed, setPressed] = useState<boolean>(false);
     const [classes, setClasses] = useClasses({changeTimeButton: true, button: true});
     useEffect(() => setClasses("update", props.className), [props.className]);
 
@@ -33,6 +32,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
     const timeoutId  = useRef<number>();
     const intervalId = useRef<number>();
     const sound      = useRef<Sound>();
+    const pressed    = useRef(false);
 
     useConstructor(() => {
         const audioContext = AudioManager.instance().context
@@ -56,7 +56,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
             return;
         }
 
-        setPressed(true);
+        pressed.current = true;
 
         setClasses("update", {
             changeTimeButton__pressed: true,
@@ -76,11 +76,11 @@ const ChangeTimeButton = memo((props: PropsType) => {
     const release = (e: any) => {
         e.preventDefault();
 
-        if (!pressed || props.disabled) {
+        if (!pressed.current || props.disabled) {
             return;
         }
 
-        setPressed(false);
+        pressed.current = false;
 
         setClasses("update", (classes: types.BoolDictionary) => {
             return {
@@ -92,7 +92,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
 
         clearTimeout(timeoutId.current);
         clearInterval(intervalId.current);
-    };
+    }
 
     useEffect(() => {
         setClasses("update", {

@@ -1,6 +1,6 @@
 @import "@assets/css/globals";
 
-$button-height: $alarm-width * 0.17;
+$button-height: $alarm-width * 0.16;
 $icon-height:   $alarm-width * 0.0654;
 
 html, body {
@@ -15,6 +15,7 @@ html, body {
 @font-face {
     font-family: "Digital";
     src: url("@assets/fonts/digital.ttf") format("truetype");
+    font-display: swap;
 }
 
 .button {
