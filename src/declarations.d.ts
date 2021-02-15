@@ -1,5 +1,5 @@
 declare namespace types {
-    interface AnyDictionary {
+    type AnyDictionary = {
         [key: string]: any
     };
 
@@ -11,8 +11,6 @@ declare namespace types {
         hours: number;
         minutes: number
     };
-
-    // type ChangeTimeFunction = (time: Time) => Time;
 
     type AlarmClockMode = "idle"|"armed"|"fired";
 

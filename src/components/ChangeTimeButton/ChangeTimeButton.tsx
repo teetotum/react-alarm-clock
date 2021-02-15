@@ -1,10 +1,4 @@
-import React, {
-    memo,
-    useState,
-    useEffect,
-    useRef,
-    useMemo
-} from "react";
+import React, { memo, useState, useEffect, useRef } from "react";
 import useConstructor from "@hooks/useConstructor";
 import useClasses, { serializeClasses } from "@hooks/useClasses";
 import AudioManager from "@business/AudioManager";
@@ -19,9 +13,9 @@ const CHANGE_TIME_INITIAL_DELAY = 400;
 
 type PropsType = {
     type: types.ChangeTimeButtonType;
-    disabled: boolean;
-    onPress: (type: types.ChangeTimeButtonType) => void;
     className: string|types.BoolDictionary;
+    action: (type: types.ChangeTimeButtonType) => void;
+    off: boolean;
 };
 
 const ChangeTimeButton = memo((props: PropsType) => {
@@ -40,14 +34,14 @@ const ChangeTimeButton = memo((props: PropsType) => {
     });
 
     const action = (type: types.ChangeTimeButtonType) => {
-        props.onPress(type);
+        props.action(type);
         sound.current.play()
     }
 
     const press = (e: any) => {
         e.preventDefault();
 
-        if (props.disabled) {
+        if (props.off) {
             return;
         }
 
@@ -76,7 +70,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
     const release = (e: any) => {
         e.preventDefault();
 
-        if (!pressed.current || props.disabled) {
+        if (!pressed.current) {
             return;
         }
 
@@ -96,7 +90,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
 
     useEffect(() => {
         setClasses("update", {
-            changeTimeButton__disabled: props.disabled,
+            changeTimeButton__disabled: props.off,
             changeTimeButton__pressed: false,
             changeTimeButton__unpressed: false
         });
@@ -108,17 +102,16 @@ const ChangeTimeButton = memo((props: PropsType) => {
             anchorRef.current.removeEventListener("touchstart", press);
             anchorRef.current.removeEventListener("touchend", release);
         }
-    }, [props.disabled]);
+    }, [props.off]);
 
     // @@Note: Maybe it's silly to memoize this, since we probably
     // won't change the type once it is first set.
-    const icon = useMemo(() => {
-        if (props.type === "h+" || props.type === "m+") {
-            return <PlusIcon className="button_icon"/>;
-        } else {
-            return <MinusIcon className="button_icon"/>;
-        }
-    }, [props.type]);
+    let icon;
+    if (props.type === "h+" || props.type === "m+") {
+        icon = <PlusIcon className="button_icon"/>;
+    } else {
+        icon = <MinusIcon className="button_icon"/>;
+    }
 
     return (
         <span

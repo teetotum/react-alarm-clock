@@ -40,7 +40,7 @@ export default function App() {
         }
     }, [mode, time])
 
-    const onChangeTimeButtonPress = useCallback((type: types.ChangeTimeButtonType) => {
+    const onChangeTimeButtonAction = useCallback((type: types.ChangeTimeButtonType) => {
         const f = {
             "h+": (time: types.Time) => changeTime(time,  1,  0),
             "h-": (time: types.Time) => changeTime(time, -1,  0),
@@ -48,7 +48,7 @@ export default function App() {
             "m-": (time: types.Time) => changeTime(time,  0, -1)
         }[type];
         setTime((time: types.Time) => f(time));
-    }, [time]);
+    }, []);
 
     return (
         <div className="outerContainer">
@@ -57,7 +57,7 @@ export default function App() {
                 <Controls
                     mode={mode}
                     onArmButtonPress={onArmButtonPress}
-                    onChangeTimeButtonPress={onChangeTimeButtonPress}
+                    onChangeTimeButtonAction={onChangeTimeButtonAction}
                 />
             </div>
         </div>

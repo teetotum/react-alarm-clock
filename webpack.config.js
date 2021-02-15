@@ -14,14 +14,9 @@ const dotenv = require("dotenv").config({
     path: path.resolve(rootDir, ".env")
 }).parsed;
 
-const entryFilename = "index.tsx";
-const entry = path.resolve(srcDir, entryFilename);
-
+const entryFilename    = "index.tsx";
 const templateFilename = "index.ejs";
-const template = path.resolve(srcDir, templateFilename);
-
-const faviconFilename = "favicon.ico";
-const favicon = path.resolve(assetsDir, "images", faviconFilename);
+const faviconFilename  = "favicon.ico";
 
 module.exports = env => {
     const mode = (env.mode === "development") ? "development" : "production"
@@ -32,8 +27,8 @@ module.exports = env => {
             cleanOnceBeforeBuildPatterns: ["**/*", "!.git"] // @Note: Only do this in gh-pages build?
         }),
         new HtmlWebpackPlugin({
-            template: template,
-            favicon: favicon,
+            template: path.resolve(srcDir, templateFilename),
+            favicon: path.resolve(assetsDir, "images", faviconFilename),
             inject: false
         })
     ];
@@ -47,7 +42,7 @@ module.exports = env => {
 
     const result = {
         mode: mode,
-        entry: entry,
+        entry: path.resolve(srcDir, entryFilename),
         output: {
             filename: "[name].[fullhash].js",
             path: outputDir,

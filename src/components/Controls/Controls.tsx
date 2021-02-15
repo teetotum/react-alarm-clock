@@ -7,11 +7,11 @@ import "./Controls.scss";
 type PropsType = {
     mode: types.AlarmClockMode;
     onArmButtonPress: () => void;
-    onChangeTimeButtonPress: (type: types.ChangeTimeButtonType) => void;
+    onChangeTimeButtonAction: (type: types.ChangeTimeButtonType) => void;
 };
 
 export default function Controls(props: PropsType) {
-    const {mode, onArmButtonPress, onChangeTimeButtonPress} = props;
+    const {mode, onArmButtonPress, onChangeTimeButtonAction} = props;
 
     const [classes, setClasses] = useClasses({
         controls__isNotIdle: false,
@@ -25,15 +25,15 @@ export default function Controls(props: PropsType) {
         <div className={serializeClasses(classes)}>
             <ChangeTimeButton
                 type="h+"
-                disabled={isNotIdle}
+                off={isNotIdle}
                 className="changeTimeButton__left"
-                onPress={onChangeTimeButtonPress}
+                action={onChangeTimeButtonAction}
             />
             <ChangeTimeButton
                 type="h-"
-                disabled={isNotIdle}
+                off={isNotIdle}
                 className="changeTimeButton__left"
-                onPress={onChangeTimeButtonPress}
+                action={onChangeTimeButtonAction}
             />
             <ArmButton
                 mode={mode}
@@ -41,15 +41,15 @@ export default function Controls(props: PropsType) {
             />
             <ChangeTimeButton
                 type="m+"
-                disabled={isNotIdle}
+                off={isNotIdle}
                 className="changeTimeButton__right"
-                onPress={onChangeTimeButtonPress}
+                action={onChangeTimeButtonAction}
             />
             <ChangeTimeButton
                 type="m-"
-                disabled={isNotIdle}
+                off={isNotIdle}
                 className="changeTimeButton__right"
-                onPress={onChangeTimeButtonPress}
+                action={onChangeTimeButtonAction}
             />
         </div>
     );
