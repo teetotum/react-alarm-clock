@@ -1,4 +1,4 @@
-import { mod } from "@utils";
+import { mod } from "@src/utils";
 
 const MAX_HOUR   = 24;
 const MAX_MINUTE = 60;

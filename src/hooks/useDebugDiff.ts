@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { isFunction } from "@utils";
+import { isFunction } from "@src/utils";
 
 export const useDebugSelectedDiff = (id: string, selected: string, ...objs: types.AnyDictionary[]): void => {
     const idRef = useRef<string>(id);

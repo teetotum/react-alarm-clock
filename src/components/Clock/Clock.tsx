@@ -1,5 +1,5 @@
 import React from "react";
-import { formatTime } from "@business/time";
+import { formatTime } from "@src/time";
 import "./Clock.scss";
 
 type PropsType = { time: types.Time };

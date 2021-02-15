@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { isString, isFunction } from "@utils";
+import { isString, isFunction } from "@src/utils";
 
 export default function useClasses(...initialState: (string|types.BoolDictionary)[]): [types.BoolDictionary, Function] {
     const [classes, setClasses] = useState<types.BoolDictionary>(() => {

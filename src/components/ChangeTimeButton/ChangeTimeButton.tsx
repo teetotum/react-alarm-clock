@@ -1,8 +1,8 @@
 import React, { memo, useState, useEffect, useRef } from "react";
 import useConstructor from "@hooks/useConstructor";
 import useClasses, { serializeClasses } from "@hooks/useClasses";
-import AudioManager from "@business/AudioManager";
-import Sound from "@business/Sound";
+import AudioManager from "@src/AudioManager";
+import Sound from "@src/Sound";
 import buttonSound from "./button.mp3";
 import PlusIcon from "./plus.svg";
 import MinusIcon from "./minus.svg";

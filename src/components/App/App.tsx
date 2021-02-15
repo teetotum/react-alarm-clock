@@ -2,8 +2,8 @@ import React, { useState, useRef, useCallback } from "react";
 import Clock from "@components/Clock";
 import Controls from "@components/Controls";
 import useConstructor from "@hooks/useConstructor";
-import { calcTimeUntilAlert, getCurrentTime, changeTime } from "@business/time";
-import { retrieveTime, storeTime } from "@business/storage";
+import { calcTimeUntilAlert, getCurrentTime, changeTime } from "@src/time";
+import { retrieveTime, storeTime } from "@src/storage";
 import alarmSound from "@assets/audio/alarm.mp3";
 import "./App.scss";
 
