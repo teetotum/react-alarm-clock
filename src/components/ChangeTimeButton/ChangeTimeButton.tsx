@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useRef } from "react";
+import React, { memo, useEffect, useRef } from "react";
 import useConstructor from "@hooks/useConstructor";
 import useClasses, { serializeClasses } from "@hooks/useClasses";
 import AudioManager from "@src/AudioManager";
@@ -11,21 +11,24 @@ import "./ChangeTimeButton.scss";
 const CHANGE_TIME_REPEAT_PERIOD = 100;
 const CHANGE_TIME_INITIAL_DELAY = 400;
 
-type PropsType = {
+export interface PropsType {
     type: types.ChangeTimeButtonType;
     className: string|types.BoolDictionary;
     action: (type: types.ChangeTimeButtonType) => void;
+    off: boolean;
+};
+
+interface InternalPropsType extends PropsType {
     onPress: () => void;
     onRelease: () => void;
-    off: boolean;
     disabled: boolean;
 };
 
-const ChangeTimeButton = memo((props: PropsType) => {
+const ChangeTimeButton = memo((props: InternalPropsType) => {
     const [classes, setClasses] = useClasses({changeTimeButton: true, button: true});
     useEffect(() => setClasses("update", props.className), [props.className]);
 
-    const anchorRef  = useRef<HTMLAnchorElement>();
+    const spanRef    = useRef<HTMLAnchorElement>();
     const timeoutId  = useRef<number>();
     const intervalId = useRef<number>();
     const sound      = useRef<Sound>();
@@ -93,24 +96,22 @@ const ChangeTimeButton = memo((props: PropsType) => {
         clearInterval(intervalId.current);
     }
 
-    useEffect(() => {
-        setClasses("update", {
-            changeTimeButton__disabled: props.off,
-            changeTimeButton__pressed: false,
-            changeTimeButton__unpressed: false
-        });
+    useEffect(() => setClasses("update", {
+        changeTimeButton__off: props.off,
+        changeTimeButton__pressed: false,
+        changeTimeButton__unpressed: false
+    }), [props.off]);
 
-        anchorRef.current.addEventListener("touchstart", press);
-        anchorRef.current.addEventListener("touchend", release);
+    useEffect(() => {
+        spanRef.current.addEventListener("touchstart", press);
+        spanRef.current.addEventListener("touchend", release);
 
         return () => {
-            anchorRef.current.removeEventListener("touchstart", press);
-            anchorRef.current.removeEventListener("touchend", release);
+            spanRef.current.removeEventListener("touchstart", press);
+            spanRef.current.removeEventListener("touchend", release);
         }
     }, [props.off, props.disabled]);
 
-    // @@Note: Maybe it's silly to memoize this, since we probably
-    // won't change the type once it is first set.
     let icon;
     if (props.type === "h+" || props.type === "m+") {
         icon = <PlusIcon className="button_icon"/>;
@@ -123,7 +124,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
             onMouseDown={press}
             onMouseUp={release}
             onMouseLeave={release}
-            ref={anchorRef}
+            ref={spanRef}
             className={serializeClasses(classes)}
         >
             {icon}
