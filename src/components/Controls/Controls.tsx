@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import ArmButton from "@components/ArmButton";
 import ChangeTimeButton from "@components/ChangeTimeButton";
 import useClasses, { serializeClasses } from "@hooks/useClasses";
@@ -12,6 +12,8 @@ type PropsType = {
 
 export default function Controls(props: PropsType) {
     const {mode, onArmButtonPress, onChangeTimeButtonAction} = props;
+
+    const [pressed, setPressed] = useState<string|null>(null);
 
     const [classes, setClasses] = useClasses({
         controls__isNotIdle: false,
@@ -28,12 +30,18 @@ export default function Controls(props: PropsType) {
                 off={isNotIdle}
                 className="changeTimeButton__left"
                 action={onChangeTimeButtonAction}
+                onPress={() => setPressed("h+")}
+                onRelease={() => setPressed(null)}
+                disabled={pressed !== null && pressed !== "h+"}
             />
             <ChangeTimeButton
                 type="h-"
                 off={isNotIdle}
                 className="changeTimeButton__left"
                 action={onChangeTimeButtonAction}
+                onPress={() => setPressed("h-")}
+                onRelease={() => setPressed(null)}
+                disabled={pressed !== null && pressed !== "h-"}
             />
             <ArmButton
                 mode={mode}
@@ -44,12 +52,18 @@ export default function Controls(props: PropsType) {
                 off={isNotIdle}
                 className="changeTimeButton__right"
                 action={onChangeTimeButtonAction}
+                onPress={() => setPressed("m+")}
+                onRelease={() => setPressed(null)}
+                disabled={pressed !== null && pressed !== "m+"}
             />
             <ChangeTimeButton
                 type="m-"
                 off={isNotIdle}
                 className="changeTimeButton__right"
                 action={onChangeTimeButtonAction}
+                onPress={() => setPressed("m-")}
+                onRelease={() => setPressed(null)}
+                disabled={pressed !== null && pressed !== "m-"}
             />
         </div>
     );

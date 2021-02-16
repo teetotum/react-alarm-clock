@@ -15,7 +15,10 @@ type PropsType = {
     type: types.ChangeTimeButtonType;
     className: string|types.BoolDictionary;
     action: (type: types.ChangeTimeButtonType) => void;
+    onPress: () => void;
+    onRelease: () => void;
     off: boolean;
+    disabled: boolean;
 };
 
 const ChangeTimeButton = memo((props: PropsType) => {
@@ -41,7 +44,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
     const press = (e: any) => {
         e.preventDefault();
 
-        if (props.off) {
+        if (props.off || props.disabled) {
             return;
         }
 
@@ -50,13 +53,14 @@ const ChangeTimeButton = memo((props: PropsType) => {
             return;
         }
 
-        pressed.current = true;
-
         setClasses("update", {
             changeTimeButton__pressed: true,
             changeTimeButton__unpressed: false,
             changeTimeButton__disabled: false
         });
+
+        pressed.current = true;
+        props.onPress();
 
         action(props.type);
 
@@ -74,8 +78,6 @@ const ChangeTimeButton = memo((props: PropsType) => {
             return;
         }
 
-        pressed.current = false;
-
         setClasses("update", (classes: types.BoolDictionary) => {
             return {
                 changeTimeButton__unpressed: classes.changeTimeButton__pressed,
@@ -83,6 +85,9 @@ const ChangeTimeButton = memo((props: PropsType) => {
                 changeTimeButton__disabled: false
             };
         });
+
+        pressed.current = false;
+        props.onRelease();
 
         clearTimeout(timeoutId.current);
         clearInterval(intervalId.current);
@@ -102,7 +107,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
             anchorRef.current.removeEventListener("touchstart", press);
             anchorRef.current.removeEventListener("touchend", release);
         }
-    }, [props.off]);
+    }, [props.off, props.disabled]);
 
     // @@Note: Maybe it's silly to memoize this, since we probably
     // won't change the type once it is first set.
