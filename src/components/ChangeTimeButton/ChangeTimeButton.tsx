@@ -97,8 +97,8 @@ const ChangeTimeButton = memo((props: InternalPropsType) => {
     }), [props.off]);
 
     useEffect(() => {
-        spanRef.current.addEventListener("touchstart", press);
-        spanRef.current.addEventListener("touchend", release);
+        spanRef.current.addEventListener("touchstart", press, {passive: false});
+        spanRef.current.addEventListener("touchend", release, {passive: false});
 
         return () => {
             spanRef.current.removeEventListener("touchstart", press);
