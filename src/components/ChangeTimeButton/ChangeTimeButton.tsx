@@ -1,15 +1,13 @@
 import React, { memo, useEffect, useRef } from "react";
 import useConstructor from "@hooks/useConstructor";
 import useClasses, { serializeClasses } from "@hooks/useClasses";
+import HighResolutionTimer from "@src/HighResolutionTimer";
 import AudioManager from "@src/AudioManager";
 import Sound from "@src/Sound";
 import buttonSound from "./button.mp3";
 import PlusIcon from "./plus.svg";
 import MinusIcon from "./minus.svg";
 import "./ChangeTimeButton.scss";
-
-const CHANGE_TIME_REPEAT_PERIOD = 100;
-const CHANGE_TIME_INITIAL_DELAY = 400;
 
 export interface PropsType {
     type: types.ChangeTimeButtonType;
@@ -28,21 +26,24 @@ const ChangeTimeButton = memo((props: InternalPropsType) => {
     const [classes, setClasses] = useClasses({changeTimeButton: true, button: true});
     useEffect(() => setClasses("update", props.className), [props.className]);
 
-    const spanRef    = useRef<HTMLAnchorElement>();
-    const timeoutId  = useRef<number>();
-    const intervalId = useRef<number>();
-    const sound      = useRef<Sound>();
-    const pressed    = useRef(false);
+    const spanRef = useRef<HTMLAnchorElement>();
+    const timer   = useRef<HighResolutionTimer>();
+    const sound   = useRef<Sound>();
+    const pressed = useRef(false);
+
+    const doAction = () => {
+        props.action(props.type);
+        sound.current.play()
+    }
 
     useConstructor(() => {
+        timer.current = new HighResolutionTimer((timer: HighResolutionTimer) => {
+            doAction();
+        }, 110, 400);
+
         const audioContext = AudioManager.instance().context
         sound.current = new Sound(audioContext, buttonSound);
     });
-
-    const action = (type: types.ChangeTimeButtonType) => {
-        props.action(type);
-        sound.current.play()
-    }
 
     const press = (e: any) => {
         e.preventDefault();
@@ -65,13 +66,8 @@ const ChangeTimeButton = memo((props: InternalPropsType) => {
         pressed.current = true;
         props.onPress();
 
-        action(props.type);
-
-        timeoutId.current = window.setTimeout(() => {
-            intervalId.current = window.setInterval(() => {
-                action(props.type);
-            }, CHANGE_TIME_REPEAT_PERIOD);
-        }, CHANGE_TIME_INITIAL_DELAY);
+        doAction();
+        timer.current.start();
     };
 
     const release = (e: any) => {
@@ -92,8 +88,7 @@ const ChangeTimeButton = memo((props: InternalPropsType) => {
         pressed.current = false;
         props.onRelease();
 
-        clearTimeout(timeoutId.current);
-        clearInterval(intervalId.current);
+        timer.current.stop();
     }
 
     useEffect(() => setClasses("update", {
