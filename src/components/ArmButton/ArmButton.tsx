@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import useConstructor from "@hooks/useConstructor";
 import useClasses, { serializeClasses } from "@hooks/useClasses";
-import AudioManager from "@src/AudioManager";
-import Sound from "@src/Sound";
+import AudioManager, { Sound } from "@src/AudioManager";
 import buttonSound from "./button.mp3";
 import PlayIcon from "./play.svg";
 import PauseIcon from "./pause.svg";
@@ -17,8 +16,8 @@ export default function ArmButton(props: PropsType) {
     const sound = useRef<Sound>();
 
     useConstructor(() => {
-        const audioContext = AudioManager.instance().context;
-        sound.current = new Sound(audioContext, buttonSound);
+        const audioManager = AudioManager.instance();
+        sound.current = audioManager.load(buttonSound);
     });
 
     const [classes, setClasses] = useClasses({

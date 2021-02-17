@@ -2,8 +2,7 @@ import React, { memo, useEffect, useRef } from "react";
 import useConstructor from "@hooks/useConstructor";
 import useClasses, { serializeClasses } from "@hooks/useClasses";
 import HighResolutionTimer from "@src/HighResolutionTimer";
-import AudioManager from "@src/AudioManager";
-import Sound from "@src/Sound";
+import AudioManager, { Sound } from "@src/AudioManager";
 import buttonSound from "./button.mp3";
 import PlusIcon from "./plus.svg";
 import MinusIcon from "./minus.svg";
@@ -41,8 +40,8 @@ const ChangeTimeButton = memo((props: InternalPropsType) => {
             doAction();
         }, 110, 400);
 
-        const audioContext = AudioManager.instance().context
-        sound.current = new Sound(audioContext, buttonSound);
+        const audioManager = AudioManager.instance();
+        sound.current = audioManager.load(buttonSound);
     });
 
     const press = (e: any) => {
