@@ -16,8 +16,8 @@ export default function ArmButton(props: PropsType) {
     const sound = useRef<Sound>();
 
     useConstructor(() => {
-        const audioManager = AudioManager.instance();
-        sound.current = audioManager.load(buttonSound);
+        const audioManager = AudioManager.getInstance();
+        sound.current = audioManager.createSound(buttonSound);
     });
 
     const [classes, setClasses] = useClasses({

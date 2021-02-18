@@ -5,7 +5,7 @@ type BufferInfo = {
 };
 
 export default class AudioManager {
-    static _instance: AudioManager = null;
+    static instance: AudioManager = null;
     context: AudioContext;
     buffers: {[path: string]: BufferInfo} = {};
 
@@ -14,24 +14,17 @@ export default class AudioManager {
         this.buffers = {};
     }
 
-    static instance() {
-        if (AudioManager._instance === null) {
-            AudioManager._instance = new AudioManager();
+    static getInstance() {
+        if (AudioManager.instance === null) {
+            AudioManager.instance = new AudioManager();
         }
 
-        return AudioManager._instance;
+        return AudioManager.instance;
     }
 
-    load(url: string) {
-        if (url in this.buffers) {
-            return new Sound(this.context, this.buffers[url]);
-        }
-
-        const bufferInfo: BufferInfo = {buffer: null, path: url, ready: false};
-        this.buffers[url] = bufferInfo;
-
+    load(bufferInfo: BufferInfo) {
         const request = new XMLHttpRequest();
-        request.open("GET", url);
+        request.open("GET", bufferInfo.path);
         request.responseType = "arraybuffer";
         request.onload = () => {
             this.context.decodeAudioData(request.response, (buffer: AudioBuffer) => {
@@ -40,18 +33,29 @@ export default class AudioManager {
             });
         }
         request.send();
+    }
 
-        return new Sound(this.context, bufferInfo);
+    createSound(url: string) {
+        if (url in this.buffers) {
+            return new Sound(this, this.buffers[url]);
+        }
+
+        const bufferInfo: BufferInfo = {buffer: null, path: url, ready: false};
+        this.buffers[url] = bufferInfo;
+
+        this.load(bufferInfo);
+
+        return new Sound(this, bufferInfo);
     }
 }
 
 export class Sound {
-    context: any;
+    manager: AudioManager;
     bufferInfo: BufferInfo;
     currentSource: AudioBufferSourceNode;
 
-    constructor(context: any, bufferInfo: BufferInfo) {
-        this.context = context;
+    constructor(manager: AudioManager, bufferInfo: BufferInfo) {
+        this.manager = manager;
         this.bufferInfo = bufferInfo;
         this.currentSource = null;
     }
@@ -66,10 +70,10 @@ export class Sound {
             this.currentSource.stop();
         }
 
-        this.currentSource = this.context.createBufferSource();
+        const context = this.manager.context;
+        this.currentSource = context.createBufferSource();
         this.currentSource.buffer = this.bufferInfo.buffer;
-
-        this.currentSource.connect(this.context.destination);
+        this.currentSource.connect(context.destination);
         this.currentSource.start();
     }
 }

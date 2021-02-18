@@ -40,8 +40,8 @@ const ChangeTimeButton = memo((props: InternalPropsType) => {
             doAction();
         }, 110, 400);
 
-        const audioManager = AudioManager.instance();
-        sound.current = audioManager.load(buttonSound);
+        const audioManager = AudioManager.getInstance();
+        sound.current = audioManager.createSound(buttonSound);
     });
 
     const press = (e: any) => {
