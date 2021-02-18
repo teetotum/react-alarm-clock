@@ -1,11 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import useConstructor from "@hooks/useConstructor";
-import useClasses, { serializeClasses } from "@hooks/useClasses";
+import makeUseClasses from "@hooks/useClasses";
 import AudioManager, { Sound } from "@src/AudioManager";
 import buttonSound from "./button.mp3";
 import PlayIcon from "./play.svg";
 import PauseIcon from "./pause.svg";
+import classData from "./classData";
 import "./ArmButton.scss";
+
+const [useClasses, serializeClasses] = makeUseClasses(classData);
 
 type PropsType = {
     mode: types.AlarmClockMode;
@@ -20,17 +23,12 @@ export default function ArmButton(props: PropsType) {
         sound.current = audioManager.createSound(buttonSound);
     });
 
-    const [classes, setClasses] = useClasses({
-        armButton__isArmed: false,
-        armButton__IsFired: false,
-        armButton: true,
-        button: true
-    });
+    const [classes, setClasses] = useClasses();
 
     useEffect(() => {
-        setClasses("update", {
-            armButton__IsArmed: props.mode === "armed",
-            armButton__IsFired: props.mode === "fired"
+        setClasses({
+            armButton__isArmed: props.mode === "armed",
+            armButton__isFired: props.mode === "fired"
         });
     }, [props.mode]);
 

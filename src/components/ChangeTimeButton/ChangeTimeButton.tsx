@@ -1,16 +1,19 @@
 import React, { memo, useEffect, useRef } from "react";
 import useConstructor from "@hooks/useConstructor";
-import useClasses, { serializeClasses } from "@hooks/useClasses";
+import makeUseClasses from "@hooks/useClasses";
 import HighResolutionTimer from "@src/HighResolutionTimer";
 import AudioManager, { Sound } from "@src/AudioManager";
 import buttonSound from "./button.mp3";
 import PlusIcon from "./plus.svg";
 import MinusIcon from "./minus.svg";
+import classData from "./classData";
 import "./ChangeTimeButton.scss";
+
+const [useClasses, serializeClasses] = makeUseClasses(classData);
 
 export interface PropsType {
     type: types.ChangeTimeButtonType;
-    className: string|types.BoolDictionary;
+    className: string[];
     action: (type: types.ChangeTimeButtonType) => void;
     off: boolean;
 };
@@ -22,8 +25,7 @@ interface InternalPropsType extends PropsType {
 };
 
 const ChangeTimeButton = memo((props: InternalPropsType) => {
-    const [classes, setClasses] = useClasses({changeTimeButton: true, button: true});
-    useEffect(() => setClasses("update", props.className), [props.className]);
+    const [classes, setClasses] = useClasses(...props.className);
 
     const spanRef = useRef<HTMLAnchorElement>();
     const timer   = useRef<HighResolutionTimer>();
@@ -47,23 +49,19 @@ const ChangeTimeButton = memo((props: InternalPropsType) => {
     const press = (e: any) => {
         e.preventDefault();
 
-        if (props.off || props.disabled) {
-            return;
-        }
-
         // @@Todo: Are we checking this correctly?
         if (e.type === "mousedown" && (("buttons" in e && e.buttons !== 1) || ("which" in e && e.which !== 1))) {
             return;
         }
 
-        setClasses("update", {
-            changeTimeButton__pressed: true,
-            changeTimeButton__unpressed: false,
-            changeTimeButton__disabled: false
-        });
+        if (props.off || props.disabled) {
+            return;
+        }
 
         pressed.current = true;
         props.onPress();
+
+        setClasses("changeTimeButton__pressed");
 
         doAction();
         timer.current.start();
@@ -76,24 +74,16 @@ const ChangeTimeButton = memo((props: InternalPropsType) => {
             return;
         }
 
-        setClasses("update", (classes: types.BoolDictionary) => {
-            return {
-                changeTimeButton__unpressed: classes.changeTimeButton__pressed,
-                changeTimeButton__pressed: false,
-                changeTimeButton__disabled: false
-            };
-        });
-
         pressed.current = false;
         props.onRelease();
 
-        timer.current.stop();
-    }
+        setClasses("changeTimeButton__unpressed");
 
-    useEffect(() => setClasses("update", {
-        changeTimeButton__off: props.off,
-        changeTimeButton__pressed: false,
-        changeTimeButton__unpressed: false
+        timer.current.stop();
+    };
+
+    useEffect(() => setClasses({
+        changeTimeButton__off: props.off
     }), [props.off]);
 
     useEffect(() => {
