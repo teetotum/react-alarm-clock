@@ -1,21 +1,20 @@
 import { useState } from "react";
 import { isObject, isString, isFunction } from "@src/utils";
 
-type Spec = {[key: string]: {init: boolean; group: number; precedence: number;}};
 type StringSet = Set<string>;
+type GroupDictionary = {[key: number]: Set<string>};
+type Spec = {[key: string]: {init: boolean; group: number; precedence: number;}};
 type SetClassesArgument = string|types.BoolDictionary|UpdateFunction;
 type SetClassesFunction = (...args: SetClassesArgument[]) => void;
 type UseClassesFunction = (...initialState: string[]) => [StringSet, SetClassesFunction];
-type UpdateFunction = (x: StringSet) => string|string[]|types.BoolDictionary;
+type UpdateFunction = (oldState: StringSet) => string|string[]|types.BoolDictionary;
 type SerializeClassesFunction = (state: StringSet) => string;
 
 export default function makeUseClasses(spec: Spec): [UseClassesFunction, SerializeClassesFunction] {
-    const specGroups = groupByGroup(spec, Object.keys(spec));
+    const groups = getGroups(spec, Object.keys(spec));
 
     const useClasses = (...initialState: string[]): [StringSet, SetClassesFunction] => {
-        initialState.forEach((className: string) => {
-            console.assert(className in spec, `${className} not in spec.`);
-        });
+        checkNames(spec, ...initialState);
 
         const [classes, _setClasses] = useState<StringSet>(() => {
             const defaultState = Object.keys(spec).filter((key: string) => spec[key].init);
@@ -24,22 +23,15 @@ export default function makeUseClasses(spec: Spec): [UseClassesFunction, Seriali
 
         const setClasses = (...args: SetClassesArgument[]) => {
             _setClasses((oldState: StringSet) => {
-                let [diff, toRemove] = parseArguments(oldState, ...args);
+                let [insert, remove] = parseArguments(oldState, ...args);
 
-                let diffGroups = groupByGroup(spec, [...diff]);
-                for (let key of Object.keys(diffGroups)) {
-                    const group = parseInt(key);
-                    if (group === 0) return;
+                checkNames(spec, ...insert);
+                checkNames(spec, ...remove);
 
-                    const specArray = specGroups[group];
-                    const diffArray = diffGroups[group];
-                    const filtered = specArray.filter((key: string) => !diffArray.includes(key));
-                    toRemove = [...toRemove, ...filtered];
-                }
+                const diff = getDiff(groups, getGroups(spec, [...insert]));
+                remove = new Set([...remove, ...diff]);
 
-                const merged = new Set([...oldState, ...diff]);
-                const filtered = [...merged].filter((key: string) => !toRemove.includes(key));
-                const newState = new Set(filtered);
+                const newState = new Set([...oldState, ...insert].filter((key: string) => !remove.has(key)));
                 return newState;
             });
         };
@@ -47,7 +39,7 @@ export default function makeUseClasses(spec: Spec): [UseClassesFunction, Seriali
         return [classes, setClasses];
     }
 
-    const serializeClasses = (state: StringSet): string => {
+    const serializeClasses = (state: StringSet) => {
         const sorted = [...state].sort((a: string, b: string) => {
             return spec[a].precedence - spec[b].precedence
         });
@@ -58,42 +50,63 @@ export default function makeUseClasses(spec: Spec): [UseClassesFunction, Seriali
     return [useClasses, serializeClasses];
 }
 
-const parseArguments = ( oldState: StringSet, ...args: SetClassesArgument[]): [StringSet, string[]] => {
-    let diff = new Set<string>();
-    const toRemove: string[] = [];
+const parseArguments = (oldState: StringSet, ...args: SetClassesArgument[]) => {
+    let insert = new Set<string>();
+    let remove = new Set<string>();
 
     for (let x of args) {
         const value = isFunction(x) ? (x as UpdateFunction)(oldState) : x;
 
         if (isString(value)) {
-            diff.add(value as string);
+            const name = value as string;
+            insert.add(name);
         } else if (Array.isArray(value)) {
-            diff = new Set([...diff, ...(value as string[])]);
+            const names = value as string[];
+            insert = new Set([...insert, ...names]);
         } else {
+            const dictionary = value as types.BoolDictionary;
             for (let key of Object.keys(value)) {
-                if ((value as types.BoolDictionary)[key]) {
-                    diff.add(key)
-                } else {
-                    toRemove.push(key);
-                }
+                (dictionary[key] ? insert : remove).add(key);
             }
         }
     }
 
-    return [diff, toRemove];
+    return [insert, remove];
 }
 
-const groupByGroup = (spec: Spec, keys: string[]) => {
-    let result: {[key: number]: string[]} = {}
+const getDiff = (x: GroupDictionary, y: GroupDictionary): StringSet => {
+    let result = new Set<string>();
 
-    keys.forEach((key: string) => {
-        const group = spec[key].group;
-        if (group in result) {
-            result[group].push(key);
-        } else {
-            result[group] = [key];
-        }
-    });
+    for (let key of Object.keys(y)) {
+        const group = parseInt(key);
+        if (group === 0) return;
+
+        const a = x[group];
+        const b = y[group];
+        const c = [...a].filter((key: string) => !b.has(key));
+        result = new Set([...result, ...c]);
+    }
 
     return result;
+}
+
+const getGroups = (spec: Spec, keys: string[]) => {
+    let result: {[key: number]: Set<string>} = {};
+
+    for (let key of keys) {
+        const group = spec[key].group;
+        if (group in result) {
+            result[group].add(key);
+        } else {
+            result[group] = new Set([key]);
+        }
+    }
+
+    return result;
+}
+
+const checkNames = (spec: Spec,...names: string[]) => {
+    for (let name of names) {
+        console.assert(name in spec, `${name} not in spec.`);
+    }
 }
