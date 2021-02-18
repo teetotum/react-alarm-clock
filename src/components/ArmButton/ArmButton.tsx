@@ -1,14 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import useConstructor from "@hooks/useConstructor";
-import makeUseClasses from "@hooks/useClasses";
+import { useClasses, serializeClasses } from "./useClasses";
 import AudioManager, { Sound } from "@src/AudioManager";
-import buttonSound from "./button.mp3";
+import ArmButtonPressSound from "@assets/audio/ArmButtonPress.mp3";
 import PlayIcon from "./play.svg";
 import PauseIcon from "./pause.svg";
-import classData from "./classData";
 import "./ArmButton.scss";
-
-const [useClasses, serializeClasses] = makeUseClasses(classData);
 
 type PropsType = {
     mode: types.AlarmClockMode;
@@ -20,7 +17,7 @@ export default function ArmButton(props: PropsType) {
 
     useConstructor(() => {
         const audioManager = AudioManager.getInstance();
-        sound.current = audioManager.createSound(buttonSound);
+        sound.current = audioManager.createSound(ArmButtonPressSound);
     });
 
     const [classes, setClasses] = useClasses();

@@ -1,11 +1,8 @@
 import React, { useEffect, useMemo } from "react";
 import ArmButton from "@components/ArmButton";
 import ChangeTimeButton from "@components/ChangeTimeButton";
-import makeUseClasses from "@hooks/useClasses";
-import classData from "./classData";
+import { useClasses, serializeClasses } from "./useClasses";
 import "./Controls.scss";
-
-const [useClasses, serializeClasses] = makeUseClasses(classData);
 
 type PropsType = {
     mode: types.AlarmClockMode;

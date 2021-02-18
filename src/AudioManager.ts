@@ -60,7 +60,6 @@ export class Sound {
         this.currentSource = null;
     }
 
-    // @@Note: On mobile, we only hear sound after user presses a button.
     play() {
         if (!this.bufferInfo.ready) {
             return

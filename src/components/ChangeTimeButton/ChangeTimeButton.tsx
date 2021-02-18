@@ -1,15 +1,12 @@
 import React, { memo, useEffect, useRef } from "react";
 import useConstructor from "@hooks/useConstructor";
-import makeUseClasses from "@hooks/useClasses";
+import { useClasses, serializeClasses } from "./useClasses";
 import HighResolutionTimer from "@src/HighResolutionTimer";
 import AudioManager, { Sound } from "@src/AudioManager";
-import buttonSound from "./button.mp3";
+import ChangeTimeButtonPressSound from "@assets/audio/ChangeTimeButtonPress.mp3";
 import PlusIcon from "./plus.svg";
 import MinusIcon from "./minus.svg";
-import classData from "./classData";
 import "./ChangeTimeButton.scss";
-
-const [useClasses, serializeClasses] = makeUseClasses(classData);
 
 export interface PropsType {
     type: types.ChangeTimeButtonType;
@@ -26,25 +23,24 @@ interface InternalPropsType extends PropsType {
 
 const ChangeTimeButton = memo((props: InternalPropsType) => {
     const [classes, setClasses] = useClasses(...props.className);
+    useEffect(() => setClasses({changeTimeButton__off: props.off}), [props.off]);
 
     const spanRef = useRef<HTMLAnchorElement>();
     const timer   = useRef<HighResolutionTimer>();
     const sound   = useRef<Sound>();
     const pressed = useRef(false);
 
+    useConstructor(() => {
+        timer.current = new HighResolutionTimer(110, 400);
+
+        const audioManager = AudioManager.getInstance();
+        sound.current = audioManager.createSound(ChangeTimeButtonPressSound);
+    });
+
     const doAction = () => {
         props.action(props.type);
         sound.current.play()
     }
-
-    useConstructor(() => {
-        timer.current = new HighResolutionTimer((timer: HighResolutionTimer) => {
-            doAction();
-        }, 110, 400);
-
-        const audioManager = AudioManager.getInstance();
-        sound.current = audioManager.createSound(buttonSound);
-    });
 
     const press = (e: any) => {
         e.preventDefault();
@@ -61,10 +57,11 @@ const ChangeTimeButton = memo((props: InternalPropsType) => {
         pressed.current = true;
         props.onPress();
 
-        setClasses("changeTimeButton__pressed");
-
         doAction();
+        timer.current.setCallback(doAction);
         timer.current.start();
+
+        setClasses("changeTimeButton__pressed");
     };
 
     const release = (e: any) => {
@@ -77,14 +74,10 @@ const ChangeTimeButton = memo((props: InternalPropsType) => {
         pressed.current = false;
         props.onRelease();
 
-        setClasses("changeTimeButton__unpressed");
-
         timer.current.stop();
-    };
 
-    useEffect(() => setClasses({
-        changeTimeButton__off: props.off
-    }), [props.off]);
+        setClasses("changeTimeButton__unpressed");
+    };
 
     useEffect(() => {
         spanRef.current.addEventListener("touchstart", press, {passive: false});

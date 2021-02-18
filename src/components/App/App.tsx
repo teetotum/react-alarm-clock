@@ -4,7 +4,7 @@ import Controls from "@components/Controls";
 import useConstructor from "@hooks/useConstructor";
 import { calcTimeUntilAlert, getCurrentTime, changeTime } from "@src/time";
 import { retrieveTime, storeTime } from "@src/storage";
-import alarmSound from "@assets/audio/alarm.mp3";
+import AlarmSound from "@assets/audio/Alarm.mp3";
 import "./App.scss";
 
 export default function App() {
@@ -15,7 +15,7 @@ export default function App() {
 
     useConstructor(() => {
         setTime(retrieveTime() || getCurrentTime());
-        audio.current = new Audio(alarmSound);
+        audio.current = new Audio(AlarmSound);
         audio.current.loop = true;
     });
 
