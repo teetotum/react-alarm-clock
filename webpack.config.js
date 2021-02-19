@@ -1,5 +1,6 @@
 const path = require("path");
 
+const TerserPlugin           = require("terser-webpack-plugin");
 const MiniCssExtractPlugin   = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin      = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -102,7 +103,16 @@ module.exports = env => {
             contentBase: distDir,
             hot: true
         },
-        devtool: mode === "development" ? "inline-source-map" : false
+        devtool: mode === "development" ? "inline-source-map" : false,
+        optimization: {
+            minimizer: [
+                new TerserPlugin({
+                    terserOptions: {
+                        compress: { drop_console: true, }
+                    }
+                })
+            ]
+        }
     };
 
     return result;
