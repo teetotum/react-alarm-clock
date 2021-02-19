@@ -24,7 +24,7 @@ module.exports = env => {
 
     const plugins = [
         new CleanWebpackPlugin({
-            cleanOnceBeforeBuildPatterns: ["**/*", "!.git"] // @Note: Only do this in gh-pages build?
+            cleanOnceBeforeBuildPatterns: ["**/*", "!.git"]
         }),
         new HtmlWebpackPlugin({
             template: path.resolve(srcDir, templateFilename),
@@ -57,7 +57,7 @@ module.exports = env => {
                 {
                     test: /\.(scss|css)$/,
                     use: [
-                        // @Todo: mini-css-extract-plugin is more often used in production mode
+                        // mini-css-extract-plugin is more often used in production mode
                         // to get separate css files. For development mode
                         // (including webpack-dev-server) you can use style-loader, because it
                         // injects CSS into the DOM using multiple <style> tags and works faster.

@@ -1,19 +1,12 @@
 import React, { useCallback } from "react";
 import ChangeTimeButton, { PropsType } from "./ChangeTimeButton";
-import createGlobalState from "@hooks/useGlobal";
-
-const usePressed = createGlobalState<types.ChangeTimeButtonType|null>(null);
+import usePressed from "./usePressed";
 
 export default (props: PropsType) => {
     const [pressed, setPressed] = usePressed();
 
-    const onPress = useCallback(() => {
-        setPressed(props.type);
-    }, [props.type]);
-
-    const onRelease = useCallback(() => {
-        setPressed(null);
-    }, []);
+    const onPress   = useCallback(() => setPressed(props.type), [props.type]);
+    const onRelease = useCallback(() => setPressed(null), []);
 
     const disabled = pressed !== null && pressed !== props.type;
 

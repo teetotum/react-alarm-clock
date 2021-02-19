@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { isObject, isString, isFunction } from "@src/utils";
+import { isString, isFunction } from "@src/utils";
 
 type StringSet = Set<string>;
 type GroupDictionary = {[key: number]: Set<string>};
