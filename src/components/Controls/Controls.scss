@@ -1,6 +1,6 @@
 @import "@assets/css/globals";
 
-.controls {
+.Controls {
     @include arm-button-press-transition("border-color, box-shadow, fill");
 
     display: flex;
@@ -8,6 +8,6 @@
     box-shadow: shadow-values();
 }
 
-.controls__isNotIdle {
+.Controls__isNotIdle {
     box-shadow: none;
 }

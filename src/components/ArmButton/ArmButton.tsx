@@ -1,10 +1,8 @@
-import React, { useEffect, useRef } from "react";
-import useConstructor from "@hooks/useConstructor";
+import React, { useEffect, useMemo } from "react";
+import BasicButton from "@components/BasicButton";
+import { PlayIcon, PauseIcon } from "./icons";
 import { useClasses, serializeClasses } from "./useClasses";
-import AudioManager, { Sound } from "@src/AudioManager";
-import ArmButtonPressSound from "@assets/audio/ArmButtonPress.mp3";
-import PlayIcon from "./play.svg";
-import PauseIcon from "./pause.svg";
+import ArmButtonSound from "./ArmButton.mp3";
 import "./ArmButton.scss";
 
 type PropsType = {
@@ -12,35 +10,28 @@ type PropsType = {
     onPress: () => void;
 };
 
+// @@Note: Right now, whenever the time changes, onPress() gets
+// re-evaluated in <App> and, as a consequence, ArmButton re-renders.
+// Maybe there's a way to avoid this kind of thing?
 export default function ArmButton(props: PropsType) {
-    const sound = useRef<Sound>();
-
-    useConstructor(() => {
-        const audioManager = AudioManager.getInstance();
-        sound.current = audioManager.createSound(ArmButtonPressSound);
-    });
-
     const [classes, setClasses] = useClasses();
 
-    useEffect(() => {
-        setClasses({
-            armButton__isArmed: props.mode === "armed",
-            armButton__isFired: props.mode === "fired"
-        });
-    }, [props.mode]);
+    useEffect(() => setClasses({
+        ArmButton__isArmed: props.mode === "armed",
+        ArmButton__isFired: props.mode === "fired"
+    }), [props.mode]);
 
-    const callback = (e: React.MouseEvent) => {
-        props.onPress();
-        sound.current.play();
-    }
-
-    const icon = (props.mode === "idle") ?
-        <PlayIcon  className="button_icon" /> :
-        <PauseIcon className="button_icon" />;
+    const icon = useMemo(() => {
+        return (props.mode === "idle") ? <PlayIcon/> : <PauseIcon/>;
+    }, []);
 
     return (
-        <span className={serializeClasses(classes)} onClick={callback} >
+        <BasicButton
+            onPress={props.onPress}
+            sound={ArmButtonSound}
+            className={serializeClasses(classes)}
+        >
             {icon}
-        </span>
+        </BasicButton>
     );
 }

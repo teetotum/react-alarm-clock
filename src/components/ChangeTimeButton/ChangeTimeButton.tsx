@@ -1,111 +1,43 @@
-import React, { memo, useEffect, useRef } from "react";
-import useConstructor from "@hooks/useConstructor";
-import { useClasses, serializeClasses } from "./useClasses";
-import HighResolutionTimer from "@src/HighResolutionTimer";
-import AudioManager, { Sound } from "@src/AudioManager";
-import ChangeTimeButtonPressSound from "@assets/audio/ChangeTimeButtonPress.mp3";
-import PlusIcon from "./plus.svg";
-import MinusIcon from "./minus.svg";
+import React, { memo, useMemo, useCallback } from "react";
+import HoldableButton from "@components/HoldableButton";
+import { PlusIcon, MinusIcon } from "./icons";
+import usePressed from "./usePressed";
+import ChangeTimeButtonSound from "./ChangeTimeButton.mp3";
 import "./ChangeTimeButton.scss";
 
-export interface PropsType {
-    type: types.ChangeTimeButtonType;
-    className: string[];
-    action: (type: types.ChangeTimeButtonType) => void;
+type PropsType = {
+    callback: (type: types.ChangeTimeButtonType) => void;
     off: boolean;
+    type: types.ChangeTimeButtonType;
+    className: string;
 };
 
-interface InternalPropsType extends PropsType {
-    onPress: () => void;
-    onRelease: () => void;
-    disabled: boolean;
-};
+const ChangeTimeButton = memo((props: PropsType) => {
+    const { callback, type, off, className } = props;
 
-const ChangeTimeButton = memo((props: InternalPropsType) => {
-    const [classes, setClasses] = useClasses(...props.className);
-    useEffect(() => setClasses({changeTimeButton__off: props.off}), [props.off]);
+    const [pressed, setPressed] = usePressed();
+    const disabled = pressed !== null && pressed !== type;
 
-    const spanRef = useRef<HTMLAnchorElement>();
-    const timer   = useRef<HighResolutionTimer>();
-    const sound   = useRef<Sound>();
-    const pressed = useRef(false);
+    const onPress   = useCallback(() => { callback(type); setPressed(type) }, [type]);
+    const onRelease = useCallback(() => setPressed(null), []);
+    const onHold    = useCallback(() => callback(type), [type]);
 
-    useConstructor(() => {
-        timer.current = new HighResolutionTimer(110, 400);
-
-        const audioManager = AudioManager.getInstance();
-        sound.current = audioManager.createSound(ChangeTimeButtonPressSound);
-    });
-
-    const doAction = () => {
-        props.action(props.type);
-        sound.current.play()
-    }
-
-    const press = (e: any) => {
-        e.preventDefault();
-
-        // @@Todo: Are we checking this correctly?
-        if (e.type === "mousedown" && (("buttons" in e && e.buttons !== 1) || ("which" in e && e.which !== 1))) {
-            return;
-        }
-
-        if (props.off || props.disabled) {
-            return;
-        }
-
-        pressed.current = true;
-        props.onPress();
-
-        doAction();
-        timer.current.setCallback(doAction);
-        timer.current.start();
-
-        setClasses("changeTimeButton__pressed");
-    };
-
-    const release = (e: any) => {
-        e.preventDefault();
-
-        if (!pressed.current) {
-            return;
-        }
-
-        pressed.current = false;
-        props.onRelease();
-
-        timer.current.stop();
-
-        setClasses("changeTimeButton__unpressed");
-    };
-
-    useEffect(() => {
-        spanRef.current.addEventListener("touchstart", press, {passive: false});
-        spanRef.current.addEventListener("touchend", release, {passive: false});
-
-        return () => {
-            spanRef.current.removeEventListener("touchstart", press);
-            spanRef.current.removeEventListener("touchend", release);
-        }
-    }, [props.off, props.disabled]);
-
-    let icon;
-    if (props.type === "h+" || props.type === "m+") {
-        icon = <PlusIcon className="button_icon"/>;
-    } else {
-        icon = <MinusIcon className="button_icon"/>;
-    }
+    const icon = useMemo(() => {
+        return (type === "h+" || type === "m+") ? <PlusIcon/> : <MinusIcon/>;
+    }, []);
 
     return (
-        <span
-            onMouseDown={press}
-            onMouseUp={release}
-            onMouseLeave={release}
-            ref={spanRef}
-            className={serializeClasses(classes)}
+        <HoldableButton
+            onPress={onPress}
+            onRelease={onRelease}
+            onHold={onHold}
+            disabled={disabled}
+            off={off}
+            sound={ChangeTimeButtonSound}
+            className={`ChangeTimeButton ${className}`}
         >
             {icon}
-        </span>
+        </HoldableButton>
     );
 });
 

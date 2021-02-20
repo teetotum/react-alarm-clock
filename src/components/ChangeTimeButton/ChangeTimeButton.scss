@@ -1,6 +1,6 @@
 @import "@assets/css/globals";
 
-.changeTimeButton__pressed {
+.HoldableButton__pressed.ChangeTimeButton {
     animation-name: fadein;
     animation-duration: 100ms;
     animation-fill-mode: forwards;
@@ -20,7 +20,7 @@
     }
 }
 
-.changeTimeButton__unpressed {
+.HoldableButton__released.ChangeTimeButton {
     animation-name: fadeout;
     animation-duration: 100ms;
     animation-fill-mode: forwards;
@@ -40,16 +40,16 @@
     }
 }
 
-.changeTimeButton__off {
+.HoldableButton__off.ChangeTimeButton {
     fill: $foreground-color-2;
     border-color: $foreground-color-2;
     box-shadow: none;
 }
 
-.changeTimeButton__left {
+.ChangeTimeButton__left {
     border-right-width: 0;
 }
 
-.changeTimeButton__right {
+.ChangeTimeButton__right {
     border-left-width: 0;
 }

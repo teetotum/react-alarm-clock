@@ -2,7 +2,7 @@
 
 $font-size: $alarm-width * 0.38;
 
-.clock {
+.Clock {
     position: relative;
     font-family: "Digital";
     font-size: $font-size;
@@ -13,7 +13,7 @@ $font-size: $alarm-width * 0.38;
     }
 }
 
-.clock_fg {
+.Clock_fg {
     position: relative;
     display: inline-block;
     z-index: 1;
@@ -21,7 +21,7 @@ $font-size: $alarm-width * 0.38;
     text-shadow: shadow-values();
 }
 
-.clock_bg {
+.Clock_bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -29,6 +29,6 @@ $font-size: $alarm-width * 0.38;
     color: $foreground-color-2;
 }
 
-.clock_fg, .clock_bg {
+.Clock_fg, .Clock_bg {
     user-select: none;
 }

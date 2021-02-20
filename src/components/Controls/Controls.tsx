@@ -16,37 +16,37 @@ export default function Controls(props: PropsType) {
     const [classes, setClasses] = useClasses();
 
     const isNotIdle = mode !== "idle";
-    useEffect(() => setClasses({controls__isNotIdle: isNotIdle}), [isNotIdle]);
+    useEffect(() => setClasses({Controls__isNotIdle: isNotIdle}), [isNotIdle]);
 
     return (
         <div className={serializeClasses(classes)}>
             <ChangeTimeButton
-                type="h+"
-                className={["changeTimeButton__left"]}
-                action={onChangeTimeButtonAction}
+                callback={onChangeTimeButtonAction}
                 off={isNotIdle}
+                type="h+"
+                className={"ChangeTimeButton__left"}
             />
             <ChangeTimeButton
-                type="h-"
-                className={["changeTimeButton__left"]}
-                action={onChangeTimeButtonAction}
+                callback={onChangeTimeButtonAction}
                 off={isNotIdle}
+                type="h-"
+                className={"ChangeTimeButton__left"}
             />
             <ArmButton
                 mode={mode}
                 onPress={onArmButtonPress}
             />
             <ChangeTimeButton
-                type="m+"
-                className={["changeTimeButton__right"]}
-                action={onChangeTimeButtonAction}
+                callback={onChangeTimeButtonAction}
                 off={isNotIdle}
+                type="m+"
+                className={"ChangeTimeButton__right"}
             />
             <ChangeTimeButton
-                type="m-"
-                className={["changeTimeButton__right"]}
-                action={onChangeTimeButtonAction}
+                callback={onChangeTimeButtonAction}
                 off={isNotIdle}
+                type="m-"
+                className={"ChangeTimeButton__right"}
             />
         </div>
     );
