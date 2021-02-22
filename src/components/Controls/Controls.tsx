@@ -7,12 +7,11 @@ import "./Controls.scss";
 type PropsType = {
     mode: types.AlarmClockMode;
     armButtonCallback: () => void;
-    armButtonIsLit: boolean;
     changeTimeButtonCallback: (type: types.ChangeTimeButtonType) => void;
 };
 
 export default function Controls(props: PropsType) {
-    const {mode, armButtonCallback, armButtonIsLit, changeTimeButtonCallback} = props;
+    const {mode, armButtonCallback, changeTimeButtonCallback} = props;
 
     const [classes, setClasses] = useClasses();
 
@@ -36,7 +35,6 @@ export default function Controls(props: PropsType) {
             <ArmButton
                 callback={armButtonCallback}
                 mode={mode}
-                lit={armButtonIsLit}
             />
             <ChangeTimeButton
                 callback={changeTimeButtonCallback}

@@ -75,4 +75,10 @@ export class Sound {
         this.currentSource.connect(context.destination);
         this.currentSource.start();
     }
+
+    playIf(condition: boolean) {
+        if (condition) {
+            this.play()
+        }
+    }
 }

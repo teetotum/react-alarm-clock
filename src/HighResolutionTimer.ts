@@ -45,6 +45,7 @@ export default class HighResolutionTimer {
         console.assert(this.callback !== null, "Timer callback was not set.");
 
         this.reset();
+
         this.timeoutId = window.setTimeout(() => this.tick(), this.delay);
     }
 

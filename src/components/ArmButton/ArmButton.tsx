@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo } from "react";
-import BasicButton from "@components/BasicButton";
+import BlinkingButton from "@components/BlinkingButton";
 import { PlayIcon, PauseIcon } from "./icons";
 import { useClasses, serializeClasses } from "./useClasses";
-import ArmButtonSound from "./ArmButton.mp3";
+import ArmButtonPressSound from "./ArmButtonPressSound.mp3";
+import ArmButtonBlinkSound from "./ArmButtonBlinkSound.mp3";
 import "./ArmButton.scss";
 
 type PropsType = {
     callback: () => void;
     mode: types.AlarmClockMode;
-    lit: boolean;
 };
 
 // @@Note: Right now, whenever the time changes, onPress() gets
@@ -21,21 +21,19 @@ export default function ArmButton(props: PropsType) {
         ArmButton__isArmed: props.mode !== "idle"
     }), [props.mode]);
 
-    useEffect(() => setClasses({
-        ArmButton__isLit: props.lit
-    }), [props.lit]);
-
     const icon = useMemo(() => {
         return (props.mode === "idle") ? <PlayIcon/> : <PauseIcon/>;
     }, [props.mode]);
 
     return (
-        <BasicButton
+        <BlinkingButton
             onPress={props.callback}
-            sound={ArmButtonSound}
+            blinking={props.mode === "fired"}
+            pressSound={ArmButtonPressSound}
+            blinkSound={ArmButtonBlinkSound}
             className={serializeClasses(classes)}
         >
             {icon}
-        </BasicButton>
+        </BlinkingButton>
     );
 }
