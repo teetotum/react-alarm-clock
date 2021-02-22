@@ -19,7 +19,7 @@ export default function App() {
         audio.current.loop = true;
     });
 
-    const onArmButtonPress = useCallback(() => {
+    const armButtonCallback = useCallback(() => {
         if (mode === "idle") {
             setMode("armed");
 
@@ -40,14 +40,14 @@ export default function App() {
         }
     }, [mode, time])
 
-    const onChangeTimeButtonAction = useCallback((type: types.ChangeTimeButtonType) => {
+    const changeTimeButtonCallback = useCallback((type: types.ChangeTimeButtonType) => {
         const f = {
             "h+": (time: types.Time) => changeTime(time,  1,  0),
             "h-": (time: types.Time) => changeTime(time, -1,  0),
             "m+": (time: types.Time) => changeTime(time,  0,  1),
             "m-": (time: types.Time) => changeTime(time,  0, -1)
         }[type];
-        setTime((time: types.Time) => f(time));
+        setTime(time => f(time));
     }, []);
 
     return (
@@ -56,8 +56,8 @@ export default function App() {
                 <Clock time={time} />
                 <Controls
                     mode={mode}
-                    onArmButtonPress={onArmButtonPress}
-                    onChangeTimeButtonAction={onChangeTimeButtonAction}
+                    armButtonCallback={armButtonCallback}
+                    changeTimeButtonCallback={changeTimeButtonCallback}
                 />
             </div>
         </div>

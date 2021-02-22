@@ -6,12 +6,12 @@ import "./Controls.scss";
 
 type PropsType = {
     mode: types.AlarmClockMode;
-    onArmButtonPress: () => void;
-    onChangeTimeButtonAction: (type: types.ChangeTimeButtonType) => void;
+    armButtonCallback: () => void;
+    changeTimeButtonCallback: (type: types.ChangeTimeButtonType) => void;
 };
 
 export default function Controls(props: PropsType) {
-    const {mode, onArmButtonPress, onChangeTimeButtonAction} = props;
+    const {mode, armButtonCallback, changeTimeButtonCallback} = props;
 
     const [classes, setClasses] = useClasses();
 
@@ -21,32 +21,32 @@ export default function Controls(props: PropsType) {
     return (
         <div className={serializeClasses(classes)}>
             <ChangeTimeButton
-                callback={onChangeTimeButtonAction}
+                callback={changeTimeButtonCallback}
                 off={isNotIdle}
                 type="h+"
-                className={"ChangeTimeButton__left"}
+                className="ChangeTimeButton__left"
             />
             <ChangeTimeButton
-                callback={onChangeTimeButtonAction}
+                callback={changeTimeButtonCallback}
                 off={isNotIdle}
                 type="h-"
-                className={"ChangeTimeButton__left"}
+                className="ChangeTimeButton__left"
             />
             <ArmButton
                 mode={mode}
-                onPress={onArmButtonPress}
+                callback={armButtonCallback}
             />
             <ChangeTimeButton
-                callback={onChangeTimeButtonAction}
+                callback={changeTimeButtonCallback}
                 off={isNotIdle}
                 type="m+"
-                className={"ChangeTimeButton__right"}
+                className="ChangeTimeButton__right"
             />
             <ChangeTimeButton
-                callback={onChangeTimeButtonAction}
+                callback={changeTimeButtonCallback}
                 off={isNotIdle}
                 type="m-"
-                className={"ChangeTimeButton__right"}
+                className="ChangeTimeButton__right"
             />
         </div>
     );

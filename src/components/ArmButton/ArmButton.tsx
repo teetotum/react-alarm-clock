@@ -7,7 +7,7 @@ import "./ArmButton.scss";
 
 type PropsType = {
     mode: types.AlarmClockMode;
-    onPress: () => void;
+    callback: () => void;
 };
 
 // @@Note: Right now, whenever the time changes, onPress() gets
@@ -23,11 +23,11 @@ export default function ArmButton(props: PropsType) {
 
     const icon = useMemo(() => {
         return (props.mode === "idle") ? <PlayIcon/> : <PauseIcon/>;
-    }, []);
+    }, [props.mode]);
 
     return (
         <BasicButton
-            onPress={props.onPress}
+            onPress={props.callback}
             sound={ArmButtonSound}
             className={serializeClasses(classes)}
         >
