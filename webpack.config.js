@@ -20,8 +20,12 @@ const templateFilename = "index.hbs";
 const faviconFilename  = "favicon.ico";
 
 module.exports = env => {
-    const mode = (env.mode === "development") ? "development" : "production"
-    const publicPath  = (env.mode === "github") ? `/${dotenv.REPO_NAME}/` : "/";
+    const mode = (env.mode === "development") ? "development" : "production";
+
+    let publicPath = "/";
+    if (env.mode === "github") {
+        publicPath = `/${dotenv.REPO_NAME}/`;
+    }
 
     const plugins = [
         new CleanWebpackPlugin({
@@ -36,7 +40,7 @@ module.exports = env => {
 
     if (mode !== "development") {
         const miniCssExtractPlugin = new MiniCssExtractPlugin({
-            filename: "[name].[fullhash].css"
+            filename: "static/css/[name].[fullhash].css"
         });
         plugins.unshift(miniCssExtractPlugin);
     }
@@ -45,7 +49,7 @@ module.exports = env => {
         mode: mode,
         entry: path.resolve(srcDir, entryFilename),
         output: {
-            filename: "[name].[fullhash].js",
+            filename: "static/js/[name].[fullhash].js",
             path: outputDir,
             publicPath: publicPath
         },
@@ -77,15 +81,21 @@ module.exports = env => {
                 },
                 {
                     test: /\.(woff|woff2|eot|ttf|otf)$/i,
-                    type: "asset/resource"
+                    type: "asset/resource",
+                    generator: {
+                        filename: "static/fonts/[name].[hash][ext]"
+                    }
                 },
                 {
                     test: /\.(ogg|mp3|wav|mpe?g)$/i,
-                    type: "asset/resource"
+                    type: "asset/resource",
+                    generator: {
+                        filename: "static/audio/[name].[hash][ext]"
+                    }
                 },
                 {
                     test: /\.svg$/,
-                    use: ["@svgr/webpack"]
+                    use: ["@svgr/webpack"],
                 },
                 {
                     test: /\.hbs$/,

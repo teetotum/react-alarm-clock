@@ -2,7 +2,7 @@ import React, { memo, useMemo, useCallback } from "react";
 import HoldableButton from "@components/HoldableButton";
 import { PlusIcon, MinusIcon } from "./icons";
 import usePressed from "./usePressed";
-import ChangeTimeButtonSound from "./ChangeTimeButton.mp3";
+import ChangeTimeButtonPressAndHoldSoundPath from "./ChangeTimeButtonPressAndHold.mp3";
 import "./ChangeTimeButton.scss";
 
 type PropsType = {
@@ -33,7 +33,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
             onHold={onHold}
             disabled={disabled}
             off={off}
-            sound={ChangeTimeButtonSound}
+            sound={ChangeTimeButtonPressAndHoldSoundPath}
             className={`ChangeTimeButton ${className}`}
         >
             {icon}

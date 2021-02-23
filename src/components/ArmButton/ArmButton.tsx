@@ -2,8 +2,8 @@ import React, { useEffect, useMemo } from "react";
 import BlinkingButton from "@components/BlinkingButton";
 import { PlayIcon, PauseIcon } from "./icons";
 import { useClasses, serializeClasses } from "./useClasses";
-import ArmButtonPressSound from "./ArmButtonPressSound.mp3";
-import ArmButtonBlinkSound from "./ArmButtonBlinkSound.mp3";
+import ArmButtonPressSoundPath from "./ArmButtonPress.mp3";
+import ArmButtonBlinkSoundPath from "./ArmButtonBlink.mp3";
 import "./ArmButton.scss";
 
 type PropsType = {
@@ -29,8 +29,8 @@ export default function ArmButton(props: PropsType) {
         <BlinkingButton
             onPress={props.callback}
             blinking={props.mode === "fired"}
-            pressSound={ArmButtonPressSound}
-            blinkSound={ArmButtonBlinkSound}
+            pressSound={ArmButtonPressSoundPath}
+            blinkSound={ArmButtonBlinkSoundPath}
             className={serializeClasses(classes)}
         >
             {icon}
