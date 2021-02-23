@@ -39,13 +39,13 @@ export default function Controls(props: PropsType) {
             <ChangeTimeButton
                 callback={changeTimeButtonCallback}
                 off={isNotIdle}
-                type="m+"
+                type="m-"
                 className="ChangeTimeButton__right"
             />
             <ChangeTimeButton
                 callback={changeTimeButtonCallback}
                 off={isNotIdle}
-                type="m-"
+                type="m+"
                 className="ChangeTimeButton__right"
             />
         </div>

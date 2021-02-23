@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Set the hour and minute, then hit play">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Alarm Clock</title>
+        <link rel="icon" href="{{ htmlWebpackPlugin.files.favicon }}" type="image/x-icon" />
+        {{#each htmlWebpackPlugin.files.css}}
+            <link href="{{this}}" rel="stylesheet">
+        {{/each}}
+    </head>
+    <body>
+        <div id="root"></div>
+        {{#each htmlWebpackPlugin.files.js}}
+            <script type="text/javascript" src="{{this}}"></script>
+        {{/each}}
+    </body>
+</html>

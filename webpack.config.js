@@ -16,7 +16,7 @@ const dotenv = require("dotenv").config({
 }).parsed;
 
 const entryFilename    = "index.tsx";
-const templateFilename = "index.ejs";
+const templateFilename = "index.hbs";
 const faviconFilename  = "favicon.ico";
 
 module.exports = env => {
@@ -29,7 +29,7 @@ module.exports = env => {
         }),
         new HtmlWebpackPlugin({
             template: path.resolve(srcDir, templateFilename),
-            favicon: path.resolve(assetsDir, "images", faviconFilename),
+            favicon:  path.resolve(assetsDir, "images", faviconFilename),
             inject: false
         })
     ];
@@ -86,6 +86,10 @@ module.exports = env => {
                 {
                     test: /\.svg$/,
                     use: ["@svgr/webpack"]
+                },
+                {
+                    test: /\.hbs$/,
+                    "loader": "handlebars-loader"
                 }
             ]
         },
