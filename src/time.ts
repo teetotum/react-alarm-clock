@@ -18,6 +18,13 @@ export function calcTimeUntilAlert({hours, minutes}: types.Time): number {
     return result;
 }
 
+export function changeTime(time: types.Time, hours: number, minutes: number): types.Time {
+    let result = Object.assign({}, time);
+    result.hours = mod((result.hours + hours), MAX_HOUR);
+    result.minutes = mod((result.minutes + minutes), MAX_MINUTE);
+    return result;
+}
+
 export function getCurrentTime(): types.Time {
     const d = new Date();
     return {hours: d.getHours(), minutes: d.getMinutes()};
@@ -27,11 +34,4 @@ export function formatTime({hours, minutes}: types.Time): string {
     let hoursString = hours.toString().padStart(2, "0");
     let minutesString = minutes.toString().padStart(2, "0");
     return `${hoursString}:${minutesString}`;
-}
-
-export function changeTime(time: types.Time, hours: number, minutes: number): types.Time {
-    let result = Object.assign({}, time);
-    result.hours = mod((result.hours + hours), MAX_HOUR);
-    result.minutes = mod((result.minutes + minutes), MAX_MINUTE);
-    return result;
 }

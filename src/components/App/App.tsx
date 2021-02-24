@@ -3,8 +3,7 @@ import Clock from "@components/Clock";
 import Controls from "@components/Controls";
 import useConstructor from "@hooks/useConstructor";
 import HighResolutionTimer from "@src/HighResolutionTimer";
-import { calcTimeUntilAlert, getCurrentTime, changeTime } from "@src/time";
-import { retrieveTime, storeTime } from "@src/storage";
+import { calcTimeUntilAlert, changeTime, getCurrentTime } from "@src/time";
 import "./App.scss";
 
 export default function App() {
@@ -12,7 +11,18 @@ export default function App() {
     const [time, setTime] = useState<types.Time>();
     const timeoutId = useRef<number>();
 
-    useConstructor(() => setTime(retrieveTime() || getCurrentTime()));
+    useConstructor(() => {
+        const json = localStorage.getItem("time");
+
+        let time;
+        if (json === undefined) {
+            time = getCurrentTime();
+        } else {
+            time = JSON.parse(json);
+        }
+
+        setTime(time);
+    });
 
     const armButtonCallback = useCallback(() => {
         if (mode === "idle") {
@@ -23,7 +33,7 @@ export default function App() {
                 setMode("fired");
             }, delta);
 
-            storeTime(time);
+            localStorage.setItem("time", JSON.stringify(time));
         } else {
             setMode("idle");
             clearTimeout(timeoutId.current);

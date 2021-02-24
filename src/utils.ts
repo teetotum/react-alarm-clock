@@ -1,7 +1,3 @@
-export function isObject(obj: any) {
-    return typeof obj === "object" && obj !== null;
-}
-
 export function isFunction(obj: any) {
     return obj && Object.prototype.toString.call(obj) === '[object Function]';
 }
