@@ -15,7 +15,7 @@ export default function App() {
         const json = localStorage.getItem("time");
 
         let time;
-        if (json === undefined) {
+        if (json === null) {
             time = getCurrentTime();
         } else {
             time = JSON.parse(json);
