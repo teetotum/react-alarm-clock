@@ -1,21 +1,22 @@
 import React, { useEffect, useMemo } from "react";
-import ArmButton from "@components/ArmButton";
+import { AlarmClockMode } from '@types';
+import { ArmButton } from "@components/ArmButton";
 import ChangeTimeButton from "@components/ChangeTimeButton";
 import { useClasses, serializeClasses } from "./useClasses";
 import "./Controls.scss";
 
 type PropsType = {
-    mode: types.AlarmClockMode;
+    mode: AlarmClockMode;
     armButtonCallback: () => void;
     changeTimeButtonCallback: (type: types.ChangeTimeButtonType) => void;
 };
 
 export default function Controls(props: PropsType) {
-    const {mode, armButtonCallback, changeTimeButtonCallback} = props;
+    const { mode, armButtonCallback, changeTimeButtonCallback } = props;
 
     const [classes, setClasses] = useClasses();
 
-    const isNotIdle = mode !== "idle";
+    const isNotIdle = mode !== AlarmClockMode.IDLE;
     useEffect(() => setClasses({Controls__isNotIdle: isNotIdle}), [isNotIdle]);
 
     return (

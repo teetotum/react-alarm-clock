@@ -12,8 +12,6 @@ declare namespace types {
         minutes: number
     };
 
-    type AlarmClockMode = "idle"|"armed"|"fired";
-
     type ChangeTimeButtonType = "h+"|"h-"|"m+"|"m-";
 }
 

@@ -109,6 +109,7 @@ module.exports = env => {
                 "@src":        srcDir,
                 "@components": path.resolve(srcDir, "components"),
                 "@hooks":      path.resolve(srcDir, "hooks"),
+                "@types":      path.resolve(srcDir, "types"),
                 "@assets":     assetsDir,
             },
             extensions: [".js", ".jsx", ".json", ".ts", ".tsx"]

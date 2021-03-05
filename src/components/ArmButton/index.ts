@@ -1,1 +1,1 @@
-export { default } from "./ArmButton";
+export { ArmButton } from "./ArmButton";

@@ -1,8 +1,9 @@
 import React, { memo, useMemo, useCallback } from "react";
 import HoldableButton from "@components/HoldableButton";
-import { PlusIcon, MinusIcon } from "./icons";
+import MinusIcon from '@assets/icons/minus.svg';
+import PlusIcon from '@assets/icons/plus.svg';
 import usePressed from "./usePressed";
-import ChangeTimeButtonPressAndHoldSoundPath from "./ChangeTimeButtonPressAndHold.mp3";
+import ChangeTimeButtonPressAndHoldSoundPath from "@assets/audio/ChangeTimeButtonPressAndHold.mp3";
 import "./ChangeTimeButton.scss";
 
 type PropsType = {
@@ -23,7 +24,7 @@ const ChangeTimeButton = memo((props: PropsType) => {
     const onHold    = useCallback(() => callback(type), [type]);
 
     const icon = useMemo(() => {
-        return (type === "h+" || type === "m+") ? <PlusIcon/> : <MinusIcon/>;
+        return (type === "h+" || type === "m+") ? <PlusIcon className="icon" /> : <MinusIcon className="icon" />;
     }, []);
 
     return (

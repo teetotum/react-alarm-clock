@@ -1,34 +1,39 @@
 import React, { useEffect, useMemo } from "react";
+import { AlarmClockMode } from '@types';
+import type { HTMLAttributesFunctionComponent } from '@types';
 import BlinkingButton from "@components/BlinkingButton";
-import { PlayIcon, PauseIcon } from "./icons";
 import { useClasses, serializeClasses } from "./useClasses";
-import ArmButtonPressSoundPath from "./ArmButtonPress.mp3";
-import ArmButtonBlinkSoundPath from "./ArmButtonBlink.mp3";
+import ArmButtonPressSoundPath from "@assets/audio/ArmButtonPress.mp3";
+import ArmButtonBlinkSoundPath from "@assets/audio/ArmButtonBlink.mp3";
+import PlayIcon from '@assets/icons/play.svg';
+import PauseIcon from '@assets/icons/pause.svg';
 import "./ArmButton.scss";
 
-type PropsType = {
+type ArmButtonProps = {
     callback: () => void;
-    mode: types.AlarmClockMode;
+    mode: AlarmClockMode;
 };
 
 // @@Note: Right now, whenever the time changes, onPress() gets
 // re-evaluated in <App> and, as a consequence, ArmButton re-renders.
 // Maybe there's a way to avoid this kind of thing?
-export default function ArmButton(props: PropsType) {
+export const ArmButton: HTMLAttributesFunctionComponent<ArmButtonProps> = ({
+    callback, mode, className,
+}) => {
     const [classes, setClasses] = useClasses();
 
     useEffect(() => setClasses({
-        ArmButton__isArmed: props.mode !== "idle"
-    }), [props.mode]);
+        ArmButton__isArmed: mode !== AlarmClockMode.IDLE
+    }), [mode]);
 
     const icon = useMemo(() => {
-        return (props.mode === "idle") ? <PlayIcon/> : <PauseIcon/>;
-    }, [props.mode]);
+        return (mode === AlarmClockMode.IDLE) ? <PlayIcon className="icon" /> : <PauseIcon className="icon" />;
+    }, [mode]);
 
     return (
         <BlinkingButton
-            onPress={props.callback}
-            blinking={props.mode === "fired"}
+            onPress={callback}
+            blinking={mode === AlarmClockMode.FIRED}
             pressSound={ArmButtonPressSoundPath}
             blinkSound={ArmButtonBlinkSoundPath}
             className={serializeClasses(classes)}

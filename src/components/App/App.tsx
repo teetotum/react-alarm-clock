@@ -1,41 +1,39 @@
 import React, { useState, useRef, useCallback } from "react";
 import Clock from "@components/Clock";
 import Controls from "@components/Controls";
-import useConstructor from "@hooks/useConstructor";
+import { AlarmClockMode } from '@types';
 import HighResolutionTimer from "@src/HighResolutionTimer";
 import { calcTimeUntilAlert, changeTime, getCurrentTime } from "@src/time";
 import "./App.scss";
 
+const initTime = () => {
+    const json = localStorage.getItem("time");
+    let time;
+    if (json === null) {
+        time = getCurrentTime();
+    } else {
+        time = JSON.parse(json);
+    }
+    return time;
+};
+
 export default function App() {
-    const [mode, setMode] = useState<types.AlarmClockMode>("idle");
-    const [time, setTime] = useState<types.Time>();
+    const [mode, setMode] = useState<AlarmClockMode>(AlarmClockMode.IDLE);
+    const [time, setTime] = useState<types.Time>(initTime);
     const timeoutId = useRef<number>();
 
-    useConstructor(() => {
-        const json = localStorage.getItem("time");
-
-        let time;
-        if (json === null) {
-            time = getCurrentTime();
-        } else {
-            time = JSON.parse(json);
-        }
-
-        setTime(time);
-    });
-
     const armButtonCallback = useCallback(() => {
-        if (mode === "idle") {
-            setMode("armed");
+        if (mode === AlarmClockMode.IDLE) {
+            setMode(AlarmClockMode.ARMED);
 
             let delta = calcTimeUntilAlert(time);
             timeoutId.current = window.setTimeout(() => {
-                setMode("fired");
+                setMode(AlarmClockMode.FIRED);
             }, delta);
 
             localStorage.setItem("time", JSON.stringify(time));
         } else {
-            setMode("idle");
+            setMode(AlarmClockMode.IDLE);
             clearTimeout(timeoutId.current);
         }
     }, [mode, time])
