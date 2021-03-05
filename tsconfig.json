@@ -6,7 +6,8 @@
         "noImplicitAny": true,
         "sourceMap": true,
         "esModuleInterop": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "moduleResolution": "Node"
     },
     "include": ["src/declarations.d.ts"]
 }

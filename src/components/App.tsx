@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback } from "react";
+import type { HTMLAttributesFunctionComponent } from '@types';
 import Clock from "@components/Clock";
 import Controls from "@components/Controls";
 import { AlarmClockMode } from '@types';
@@ -17,7 +18,7 @@ const initTime = () => {
     return time;
 };
 
-export default function App() {
+export const App: HTMLAttributesFunctionComponent = () => {
     const [mode, setMode] = useState<AlarmClockMode>(AlarmClockMode.IDLE);
     const [time, setTime] = useState<types.Time>(initTime);
     const timeoutId = useRef<number>();
@@ -60,4 +61,4 @@ export default function App() {
             </div>
         </div>
     );
-}
+};

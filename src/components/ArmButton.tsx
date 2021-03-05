@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo } from "react";
+import React from "react";
+import classnames from 'classnames';
 import { AlarmClockMode } from '@types';
 import type { HTMLAttributesFunctionComponent } from '@types';
 import BlinkingButton from "@components/BlinkingButton";
-import { useClasses, serializeClasses } from "./useClasses";
 import ArmButtonPressSoundPath from "@assets/audio/ArmButtonPress.mp3";
 import ArmButtonBlinkSoundPath from "@assets/audio/ArmButtonBlink.mp3";
 import PlayIcon from '@assets/icons/play.svg';
@@ -19,26 +19,18 @@ type ArmButtonProps = {
 // Maybe there's a way to avoid this kind of thing?
 export const ArmButton: HTMLAttributesFunctionComponent<ArmButtonProps> = ({
     callback, mode, className,
-}) => {
-    const [classes, setClasses] = useClasses();
-
-    useEffect(() => setClasses({
-        ArmButton__isArmed: mode !== AlarmClockMode.IDLE
-    }), [mode]);
-
-    const icon = useMemo(() => {
-        return (mode === AlarmClockMode.IDLE) ? <PlayIcon className="icon" /> : <PauseIcon className="icon" />;
-    }, [mode]);
-
-    return (
-        <BlinkingButton
-            onPress={callback}
-            blinking={mode === AlarmClockMode.FIRED}
-            pressSound={ArmButtonPressSoundPath}
-            blinkSound={ArmButtonBlinkSoundPath}
-            className={serializeClasses(classes)}
-        >
-            {icon}
-        </BlinkingButton>
-    );
-}
+}) => (
+    <BlinkingButton
+        onPress={callback}
+        blinking={mode === AlarmClockMode.FIRED}
+        pressSound={ArmButtonPressSoundPath}
+        blinkSound={ArmButtonBlinkSoundPath}
+        className={classnames('ArmButton', className, {
+            'ArmButton__isArmed': mode !== AlarmClockMode.IDLE,
+        })}
+    >
+        {
+            (mode === AlarmClockMode.IDLE) ? <PlayIcon className="icon" /> : <PauseIcon className="icon" />
+        }
+    </BlinkingButton>
+);

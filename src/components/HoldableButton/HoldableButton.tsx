@@ -1,5 +1,4 @@
 import React, { memo, useEffect, useRef } from "react";
-import useConstructor from "@hooks/useConstructor";
 import { useClasses, serializeClasses } from "./useClasses";
 import HighResolutionTimer from "@src/HighResolutionTimer";
 import AudioManager, { Sound } from "@src/AudioManager";
@@ -23,12 +22,12 @@ const HoldableButton = memo((props: PropsType) => {
     const sound     = useRef<Sound>();
     const isPressed = useRef(false);
 
-    useConstructor(() => {
+    useEffect(() => {
         timer.current = new HighResolutionTimer(110, 400);
 
         const audioManager = AudioManager.getInstance();
         sound.current = audioManager.createSound(props.sound);
-    });
+    }, []);
 
     const press = (e: any) => {
         e.preventDefault();
