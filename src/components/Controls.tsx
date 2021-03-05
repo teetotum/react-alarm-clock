@@ -1,26 +1,25 @@
-import React, { useEffect, useMemo } from "react";
+import React from "react";
+import classnames from 'classnames';
 import { AlarmClockMode } from '@types';
+import type { HTMLAttributesFunctionComponent } from '@types';
 import { ArmButton } from "@components/ArmButton";
 import ChangeTimeButton from "@components/ChangeTimeButton";
-import { useClasses, serializeClasses } from "./useClasses";
 import "./Controls.scss";
 
-type PropsType = {
+type ControlsProps = {
     mode: AlarmClockMode;
     armButtonCallback: () => void;
     changeTimeButtonCallback: (type: types.ChangeTimeButtonType) => void;
 };
 
-export default function Controls(props: PropsType) {
-    const { mode, armButtonCallback, changeTimeButtonCallback } = props;
-
-    const [classes, setClasses] = useClasses();
-
+export const Controls: HTMLAttributesFunctionComponent<ControlsProps> = ({
+    mode, armButtonCallback, changeTimeButtonCallback,
+}) => {
     const isNotIdle = mode !== AlarmClockMode.IDLE;
-    useEffect(() => setClasses({Controls__isNotIdle: isNotIdle}), [isNotIdle]);
-
     return (
-        <div className={serializeClasses(classes)}>
+        <div className={classnames('Controls', {
+            'Controls__isNotIdle': isNotIdle,
+        })}>
             <ChangeTimeButton
                 callback={changeTimeButtonCallback}
                 off={isNotIdle}

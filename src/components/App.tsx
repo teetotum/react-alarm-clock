@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import type { HTMLAttributesFunctionComponent } from '@types';
-import Clock from "@components/Clock";
-import Controls from "@components/Controls";
+import { Clock } from "@components/Clock";
+import { Controls } from "@components/Controls";
 import { AlarmClockMode } from '@types';
 import HighResolutionTimer from "@src/HighResolutionTimer";
 import { calcTimeUntilAlert, changeTime, getCurrentTime } from "@src/time";
