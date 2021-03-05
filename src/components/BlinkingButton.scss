@@ -1,0 +1,16 @@
+@import "@assets/css/globals";
+
+@keyframes blink {
+    to {
+        background: $foreground-color-1;
+        fill: $background-color;
+    }
+}
+
+.BlinkingButton__blink {
+    animation-duration: 500ms;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: cubic-bezier(1,0,0,1);
+    animation-name: blink;
+}

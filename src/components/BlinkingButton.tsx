@@ -1,7 +1,8 @@
-import React, { useRef, useEffect } from "react";
-import HighResolutionTimer from "@src/HighResolutionTimer";
-import AudioManager, { Sound } from "@src/AudioManager";
-import { useClasses, serializeClasses } from "./useClasses";
+import React, { useRef, useEffect } from 'react';
+import classnames from 'classnames';
+import HighResolutionTimer from '@src/HighResolutionTimer';
+import AudioManager, { Sound } from '@src/AudioManager';
+import "./BlinkingButton.scss";
 
 type PropsType = React.PropsWithChildren<{
     onPress:    Function;
@@ -12,21 +13,14 @@ type PropsType = React.PropsWithChildren<{
 }>;
 
 export default function BlinkingButton(props: PropsType) {
-    const [classes, setClasses] = useClasses();
-
     const timer      = useRef<HighResolutionTimer>();
     const pressSound = useRef<Sound>();
     const blinkSound = useRef<Sound>();
     const isLit      = useRef(false);
 
-    const blink = (lit: boolean) => {
-        isLit.current = lit;
-        setClasses({BlinkingButton__isLit: lit});
-    }
-
     useEffect(() => {
         timer.current = new HighResolutionTimer(500, 500, () => {
-            blink(!isLit.current);
+            isLit.current = !isLit.current;
             blinkSound.current.playIf(isLit.current);
         });
 
@@ -41,7 +35,7 @@ export default function BlinkingButton(props: PropsType) {
         } else {
             // @@Note: Sound won't stop immediately after state change.
             timer.current.stop();
-            blink(false);
+            isLit.current = false;
         }
     }, [props.blinking]);
 
@@ -50,12 +44,12 @@ export default function BlinkingButton(props: PropsType) {
         pressSound.current.play();
     }
 
-    const className = `${serializeClasses(classes)} ${props.className}`;
-
     return (
         <span
             onClick={callback}
-            className={className}
+            className={classnames('button', 'BlinkingButton', props.className, {
+                'BlinkingButton__blink': props.blinking,
+            })}
         >
             {props.children}
         </span>

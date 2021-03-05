@@ -10,8 +10,3 @@
     box-shadow: shadow-values(inset), shadow-values();
     z-index: 2;
 }
-
-.ArmButton.BlinkingButton__isLit {
-    background: $foreground-color-1;
-    fill: $background-color;
-}
